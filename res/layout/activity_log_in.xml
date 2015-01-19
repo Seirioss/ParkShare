@@ -1,7 +1,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:linkclick="http://schemas.android.com/apk/res/com.ych.parkshare"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/beige"
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
     android:scrollbars="horizontal"
@@ -69,12 +71,23 @@
             android:paddingRight="10dp" />
     </LinearLayout>
 
+    <com.ych.views.LinkClickTextView
+        android:id="@+id/forgetpassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:autoLink="all"
+        android:layout_below="@id/linearLayout1"
+        android:layout_alignEnd="@id/linearLayout1"
+        android:layout_marginRight="8dp"
+        android:text="@string/forgetpassword"
+        linkclick:textColorLinkClick="@color/red" />
+
     <Button
         android:id="@+id/buttonlogin"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:layout_below="@+id/linearLayout1"
-        android:layout_marginTop="20dp"
+        android:layout_below="@id/forgetpassword"
+        android:layout_marginTop="2dp"
         android:background="@drawable/loginbuttonbackground"
         android:text="@string/LogIntoPortshare" />
 
@@ -86,13 +99,5 @@
         android:layout_marginBottom="8dp"
         android:background="@drawable/signupbuttonbackground"
         android:text="@string/Signupforportshare" />
-
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/buttonsignup"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="32dp" />
 
 </RelativeLayout>
