@@ -7,16 +7,16 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;  
 import android.view.View;  
   
-public class ViewPagerAdapter extends PagerAdapter{  
+public class GuideViewPagerAdapter extends PagerAdapter{  
       
     //界面列表  
     private List<View> views;  
       
-    public ViewPagerAdapter (List<View> views){  
+    public GuideViewPagerAdapter (List<View> views){  
         this.views = views;  
     }  
   
-    //�?毁arg1位置的界�?  
+    //�?毁arg1位置的界�?  
     @Override  
     public void destroyItem(View arg0, int arg1, Object arg2) {  
         ((ViewPager) arg0).removeView(views.get(arg1));       
@@ -28,7 +28,7 @@ public class ViewPagerAdapter extends PagerAdapter{
           
     }  
   
-    //获得当前界面�?  
+    //获得当前界面�?  
     @Override  
     public int getCount() {  
         if (views != null)  
@@ -40,7 +40,7 @@ public class ViewPagerAdapter extends PagerAdapter{
     }  
       
   
-    //初始化arg1位置的界�?  
+    //初始化arg1位置的界�?  
     @Override  
     public Object instantiateItem(View arg0, int arg1) {  
           
@@ -49,7 +49,7 @@ public class ViewPagerAdapter extends PagerAdapter{
         return views.get(arg1);  
     }  
   
-    //判断是否由对象生成界�?  
+    //判断是否由对象生成界�?  
     @Override  
     public boolean isViewFromObject(View arg0, Object arg1) {  
         return (arg0 == arg1);  

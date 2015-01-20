@@ -42,7 +42,7 @@
             android:label="@string/title_activity_register" >
         </activity>
         <activity
-            android:name=".AndyPagerActivity"
+            android:name=".GuideActivity"
             android:label="@string/title_activity_andy_pager" >
         </activity>
         <activity android:name="com.ych.parkshare.HomeActivity" />

@@ -17,10 +17,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-public class AndyPagerActivity extends Activity implements OnClickListener, OnPageChangeListener {
+public class GuideActivity extends Activity implements OnClickListener, OnPageChangeListener {
 
 	private ViewPager vp;
-	private ViewPagerAdapter vpAdapter;
+	private GuideViewPagerAdapter vpAdapter;
 	private List<View> views;
 	private Button button;
 
@@ -52,7 +52,7 @@ public class AndyPagerActivity extends Activity implements OnClickListener, OnPa
 		}
 		vp = (ViewPager) findViewById(R.id.viewpager);
 		// ��ʼ��Adapter
-		vpAdapter = new ViewPagerAdapter(views);
+		vpAdapter = new GuideViewPagerAdapter(views);
 		vp.setAdapter(vpAdapter);
 		// �󶨻ص�
 		vp.setOnPageChangeListener(this);
@@ -64,7 +64,7 @@ public class AndyPagerActivity extends Activity implements OnClickListener, OnPa
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent();
-				intent.setClass(AndyPagerActivity.this, StartupActivity.class);
+				intent.setClass(GuideActivity.this, StartupActivity.class);
 				startActivity(intent);
 				finish();
 			}
