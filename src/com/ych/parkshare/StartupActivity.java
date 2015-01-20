@@ -29,9 +29,8 @@ public class StartupActivity extends Activity {
 		boolean state = NetworkConnections.isNetworkAvailable(getApplicationContext());
 		if (!state) {
 			Toast.makeText(StartupActivity.this, "网络不可用", Toast.LENGTH_SHORT).show();
-		} else {
-			new Thread(timerRunnable).start();
-		}
+		} 
+		new Thread(timerRunnable).start();
 	}
 
 	private Runnable timerRunnable = new Runnable() {
