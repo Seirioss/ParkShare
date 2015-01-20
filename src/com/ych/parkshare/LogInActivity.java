@@ -1,5 +1,12 @@
 package com.ych.parkshare;
 
+import org.apache.http.Header;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 import com.ych.views.LinkClickTextView;
 
 import android.app.Activity;
@@ -66,6 +73,43 @@ public class LogInActivity extends Activity {
 		if(name.equals("123")&&password.equals("123")){
 			state=true;
 		}
+		AsyncHttpClient client=new AsyncHttpClient();
+		RequestParams params=new RequestParams();
+		params.add("accountName", name);
+		params.add("password", password);
+		client.post("http://121.40.61.76:8080/parkManagementSystem/login/", params, new JsonHttpResponseHandler(){
+
+			@Override
+			public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+				super.onSuccess(statusCode, headers, response);
+				System.out.println(response.toString());
+			}
+
+			@Override
+			public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+				super.onSuccess(statusCode, headers, response);
+				System.out.println("222");
+			}
+
+			@Override
+			public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+				super.onFailure(statusCode, headers, throwable, errorResponse);
+				System.out.println("333");
+			}
+
+			@Override
+			public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+				super.onFailure(statusCode, headers, throwable, errorResponse);
+				System.out.println("444");
+			}
+
+			@Override
+			public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+				super.onFailure(statusCode, headers, responseString, throwable);
+				System.out.println("555");
+			}
+			
+		});
 		return state;
 	}
 }
