@@ -1,5 +1,6 @@
 package com.ych.parkshare;
 
+import com.ych.tool.AssetsProperties;
 import com.ych.tool.NetworkConnections;
 import com.ych.tool.SpUtils;
 
@@ -19,7 +20,6 @@ import android.widget.Toast;
 public class StartupActivity extends Activity {
 
 	private final static int TIMER = 1;
-	private boolean rememberPassword;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +31,6 @@ public class StartupActivity extends Activity {
 			Toast.makeText(StartupActivity.this, "网络不可用", Toast.LENGTH_SHORT).show();
 		} else {
 			new Thread(timerRunnable).start();
-			rememberPassword=(Boolean) SpUtils.get(getApplicationContext(), "rememberPassword", false);
 		}
 	}
 
@@ -39,7 +38,8 @@ public class StartupActivity extends Activity {
 		@Override
 		public void run() {
 			try {
-				Thread.sleep(2000);
+				int time = AssetsProperties.load(getApplicationContext(), "propertie").getInt("startuptime", 0);
+				Thread.sleep(time);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -54,11 +54,12 @@ public class StartupActivity extends Activity {
 		@Override
 		public void handleMessage(Message msg) {
 			if (msg.what == TIMER) {
-				Intent intent=null;
-				if(rememberPassword){
-					intent=new Intent(StartupActivity.this,MainActivity.class);
-				}else {
-					intent=new Intent(StartupActivity.this,LogInActivity.class);
+				Intent intent = null;
+				boolean rememberPassword = (Boolean) SpUtils.get(getApplicationContext(), "rememberPassword", false);
+				if (rememberPassword) {
+					intent = new Intent(StartupActivity.this, MainActivity.class);
+				} else {
+					intent = new Intent(StartupActivity.this, LogInActivity.class);
 				}
 				startActivity(intent);
 				StartupActivity.this.finish();
@@ -73,5 +74,4 @@ public class StartupActivity extends Activity {
 		super.onDestroy();
 		handler = null;
 	}
-
 }

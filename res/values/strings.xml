@@ -14,5 +14,13 @@
     <string name="contentDescription">icon</string>
     <string name="forgetpassword"><u>忘记密码?</u></string>
     <string name="title_activity_register">RegisterActivity</string>
-
+    <string name="registername">用户名</string>
+    <string name="registerpassword">用户名</string>
+    <string name="registerconfirmpass">重复密码</string>
+    <string name="registertelephone">电话</string>
+    <string name="registeremail">邮箱</string>
+    <string name="registercharrange">a~a.A~Z.0~9</string>
+    <string name="registersure">确认注册</string>
+    <string name="registererrorinfo">错误信息</string>
+   
 </resources>
