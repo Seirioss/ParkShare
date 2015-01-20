@@ -17,8 +17,8 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.ych.parkshare.TabHostActivity"
-            android:label="@string/TabHostActivity" >
+            android:name=".MainActivity"
+            android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,10 +28,6 @@
         <activity
             android:name=".StartupActivity"
             android:label="@string/title_activity_startup" >
-        </activity>
-        <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name" >
         </activity>
         <activity
             android:name=".LogInActivity"
@@ -44,6 +40,10 @@
         <activity
             android:name=".GuideActivity"
             android:label="@string/title_activity_andy_pager" >
+        </activity>
+        <activity
+            android:name="com.ych.parkshare.TabHostActivity"
+            android:label="@string/TabHostActivity" >
         </activity>
         <activity android:name="com.ych.parkshare.HomeActivity" />
         <activity android:name="com.ych.parkshare.AboutActivity" />

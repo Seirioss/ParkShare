@@ -39,7 +39,7 @@ public class StartupActivity extends Activity {
 		public void run() {
 			try {
 				int time = AssetsProperties.load(getApplicationContext(), "propertie").getInt("startuptime", 0);
-				Thread.sleep(time);
+				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -54,13 +54,7 @@ public class StartupActivity extends Activity {
 		@Override
 		public void handleMessage(Message msg) {
 			if (msg.what == TIMER) {
-				Intent intent = null;
-				boolean rememberPassword = (Boolean) SpUtils.get(getApplicationContext(), "rememberPassword", false);
-				if (rememberPassword) {
-					intent = new Intent(StartupActivity.this, MainActivity.class);
-				} else {
-					intent = new Intent(StartupActivity.this, LogInActivity.class);
-				}
+				Intent intent = new Intent(StartupActivity.this, TabHostActivity.class);
 				startActivity(intent);
 				StartupActivity.this.finish();
 			}
