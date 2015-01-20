@@ -45,9 +45,9 @@
             android:name="com.ych.parkshare.TabHostActivity"
             android:label="@string/TabHostActivity" >
         </activity>
-        <activity android:name="com.ych.parkshare.HomeActivity" />
-        <activity android:name="com.ych.parkshare.AboutActivity" />
-        <activity android:name="com.ych.parkshare.ContactActivity" />
+        <activity android:name="com.ych.parkshare.TabHomeActivity" />
+        <activity android:name="com.ych.parkshare.TabMyCenterActivity" />
+        <activity android:name="com.ych.parkshare.TabNavigateActivity" />
     </application>
 
 </manifest>

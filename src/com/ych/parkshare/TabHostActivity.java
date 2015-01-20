@@ -21,17 +21,17 @@ public class TabHostActivity extends TabActivity {
 		Intent intent; // Reusable Intent for each tab
 
 		// Create an Intent to launch an Activity for the tab (to be reused)
-		intent = new Intent().setClass(this, HomeActivity.class);
+		intent = new Intent().setClass(this, TabHomeActivity.class);
 		spec = tabHost.newTabSpec("home").setIndicator("主页", res.getDrawable(R.drawable.ic_tab_home)).setContent(intent);
 		tabHost.addTab(spec);
 
 		// Do the same for the other tabs
 
-		intent = new Intent().setClass(this, AboutActivity.class);
+		intent = new Intent().setClass(this, TabMyCenterActivity.class);
 		spec = tabHost.newTabSpec("about").setIndicator("导航", res.getDrawable(R.drawable.ic_tab_about)).setContent(intent);
 		tabHost.addTab(spec);
 
-		intent = new Intent().setClass(this, ContactActivity.class);
+		intent = new Intent().setClass(this, TabNavigateActivity.class);
 		spec = tabHost.newTabSpec("contact").setIndicator("个人", res.getDrawable(R.drawable.ic_tab_contact)).setContent(intent);
 		tabHost.addTab(spec);
 
