@@ -2,19 +2,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/beige"
+    android:background="@color/lemonchiffon"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.ych.parkshare.RegisterActivity" >
+    tools:context="com.ych.parkshare.RegisterActivity" >"
+
+    <Button
+        android:id="@+id/buttonregister"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:text="@string/registersure"
+        android:background="@drawable/signupbuttonbackground"/>
 
     <LinearLayout
         android:id="@+id/linearLayout1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:orientation="horizontal" >
+        android:layout_alignLeft="@+id/linearLayout2"
+        android:orientation="vertical" >
 
         <TextView
             android:layout_width="wrap_content"
@@ -23,34 +32,22 @@
 
         <EditText
             android:id="@+id/edittextregistername"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/linearLayout1"
-        android:orientation="horizontal" >
-
-        <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/registerpassword" />
+            android:background="@drawable/loginformbackground" >
 
-        <EditText
-            android:id="@+id/edittextregisterpassone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            <requestFocus />
+        </EditText>
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/linearLayout2"
-        android:orientation="horizontal" >
+        android:layout_alignLeft="@+id/linearLayout2"
+        android:layout_below="@+id/linearLayout2"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical" >
 
         <TextView
             android:layout_width="wrap_content"
@@ -59,16 +56,40 @@
 
         <EditText
             android:id="@+id/edittextregisterpasstwo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/loginformbackground" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/buttonregister"
+        android:layout_below="@+id/linearLayout1"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical" >
+
+        <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="@string/registerpassword" />
+
+        <EditText
+            android:id="@+id/edittextregisterpassone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/loginformbackground" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/linearLayout3"
-        android:orientation="horizontal" >
+        android:layout_alignLeft="@+id/linearLayout3"
+        android:layout_below="@+id/linearLayout3"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical" >
 
         <TextView
             android:layout_width="wrap_content"
@@ -77,42 +98,50 @@
 
         <EditText
             android:id="@+id/edittextregisterphone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/loginformbackground" />
     </LinearLayout>
+
+    
 
     <LinearLayout
         android:id="@+id/linearLayout5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/linearLayout4"
-        android:orientation="horizontal" >
+        android:layout_alignLeft="@+id/linearLayout4"
+        android:layout_below="@+id/linearLayout4"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical" >
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/registeremail" />
-
+        
         <EditText
-            android:id="@+id/edittextregisteremail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+        android:id="@+id/edittextregisteremail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textvieweerrorinfo"
+        android:layout_below="@+id/linearLayout5"
+        android:background="@drawable/loginformbackground"
+        android:ems="10" />
     </LinearLayout>
 
     <TextView
         android:id="@+id/textvieweerrorinfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/linearLayout5"
-        android:textColor="@color/red"
-        android:text="@string/registererrorinfo"/>
+        android:layout_alignLeft="@+id/linearLayout5"
+        android:layout_below="@+id/linearLayout5"
+        android:layout_marginTop="30dp"
+        android:gravity="center"
+        android:text="@string/registererrorinfo"
+        android:textColor="@color/red" />
 
-    <Button
-        android:id="@+id/buttonregister"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:text="@string/registersure"/>
+"
+
+"
 
 </RelativeLayout>

@@ -139,4 +139,6 @@ public class RegisterActivity extends Activity {
 		finish();
 		return super.onOptionsItemSelected(item);
 	}
+	
 }
+
