@@ -23,5 +23,6 @@
     <string name="registersure">确认注册</string>
     <string name="registererrorinfo">错误信息</string>
     <string name="title_activity_andy_pager">title_activity_andy_pager</string>
+    <string name="TabHostActivity">TabHostActivity</string>
 
 </resources>
