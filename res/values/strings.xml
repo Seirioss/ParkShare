@@ -24,5 +24,10 @@
     <string name="registererrorinfo">错误信息</string>
     <string name="title_activity_andy_pager">title_activity_andy_pager</string>
     <string name="TabHostActivity">TabHostActivity</string>
+    <string name="parklocknumber">车位锁序列号</string>
+    <string name="parklockcode">车位锁密钥</string>
+    <string name="parkaddress">停车场地址</string>
+    <string name="beizhu">备注</string>
+    <string name="comfirmadd">确认添加</string>
 
 </resources>
