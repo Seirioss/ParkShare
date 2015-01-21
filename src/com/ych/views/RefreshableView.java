@@ -12,7 +12,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.View.OnTouchListener;
-import android.view.ViewGroup.MarginLayoutParams;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -20,6 +19,12 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+/**
+ * 可进行下拉刷新的自定义控件。
+ * 
+ * @author guolin
+ * 
+ */
 public class RefreshableView extends LinearLayout implements OnTouchListener {
 
 	/**
@@ -168,12 +173,6 @@ public class RefreshableView extends LinearLayout implements OnTouchListener {
 	 */
 	private boolean ableToPull;
 
-	/**
-	 * 下拉刷新控件的构造函数，会在运行时动态添加一个下拉头的布局。
-	 * 
-	 * @param context
-	 * @param attrs
-	 */
 	public RefreshableView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		preferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -187,6 +186,28 @@ public class RefreshableView extends LinearLayout implements OnTouchListener {
 		setOrientation(VERTICAL);
 		addView(header, 0);
 	}
+
+	public RefreshableView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+		super(context, attrs, defStyleAttr, defStyleRes);
+		// TODO Auto-generated constructor stub
+	}
+
+	public RefreshableView(Context context, AttributeSet attrs, int defStyleAttr) {
+		super(context, attrs, defStyleAttr);
+		// TODO Auto-generated constructor stub
+	}
+
+	public RefreshableView(Context context) {
+		super(context);
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * 下拉刷新控件的构造函数，会在运行时动态添加一个下拉头的布局。
+	 * 
+	 * @param context
+	 * @param attrs
+	 */
 
 	/**
 	 * 进行一些关键性的初始化操作，比如：将下拉头向上偏移进行隐藏，给ListView注册touch事件。

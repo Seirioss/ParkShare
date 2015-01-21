@@ -113,6 +113,9 @@ public class LogInActivity extends Activity {
 			@Override
 			public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
 				Toast.makeText(LogInActivity.this, "网络错误", Toast.LENGTH_SHORT).show();
+				Intent intent =new Intent(LogInActivity.this,TabHostActivity.class);
+				startActivity(intent);
+				LogInActivity.this.finish();
 			}
 			
 		});
