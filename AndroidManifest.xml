@@ -48,7 +48,6 @@
         <activity android:name="com.ych.parkshare.TabHomeActivity" />
         <activity android:name="com.ych.parkshare.TabMyCenterActivity" />
         <activity android:name="com.ych.parkshare.TabNavigateActivity" />
-        <activity android:name="com.ych.parkshare.AddParkLockActivity"/>
     </application>
 
 </manifest>
