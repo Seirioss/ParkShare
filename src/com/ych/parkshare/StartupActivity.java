@@ -53,7 +53,7 @@ public class StartupActivity extends Activity {
 		@Override
 		public void handleMessage(Message msg) {
 			if (msg.what == TIMER) {
-				Intent intent = new Intent(StartupActivity.this, TabHostActivity.class);
+				Intent intent = new Intent(StartupActivity.this, LogInActivity.class);
 				startActivity(intent);
 				StartupActivity.this.finish();
 			}
