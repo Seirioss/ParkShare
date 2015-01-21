@@ -106,27 +106,32 @@ public class RegisterActivity extends Activity {
 
 				@Override
 				public void onSuccess(int statusCode, Header[] headers, String responseString) {
-					if (responseString.equals("0")) {
-						AlertDialog.Builder builder = new Builder(RegisterActivity.this);
-						builder.setTitle("注册成功");
-						builder.setMessage("是否登陆");
-						builder.setNegativeButton("取消", null);
-						builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialog, int which) {
-								SpUtils.put(getApplicationContext(), AppConstants.USER_LOGIN, true);
-								SpUtils.put(getApplicationContext(), AppConstants.USER_REMEMBER, true);
-								SpUtils.put(getApplicationContext(), AppConstants.USER_NAME, name);
-								SpUtils.put(getApplicationContext(), AppConstants.USER_PASSWORD, pass1);
-								Intent intent = new Intent(RegisterActivity.this, TabHostActivity.class);
-								startActivity(intent);
-								RegisterActivity.this.finish();
-							}
-						});
-						builder.create().show();
-					}
-					if (responseString.equals("1")) {
-						Toast.makeText(RegisterActivity.this, "用户名已近存在", Toast.LENGTH_SHORT).show();
+					if (statusCode == 200) {
+						if (responseString.equals("0")) {
+							AlertDialog.Builder builder = new Builder(RegisterActivity.this);
+							builder.setTitle("注册成功");
+							builder.setMessage("是否登陆");
+							builder.setNegativeButton("取消", null);
+							builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+									SpUtils.put(getApplicationContext(), AppConstants.USER_LOGIN, true);
+									SpUtils.put(getApplicationContext(), AppConstants.USER_REMEMBER, true);
+									SpUtils.put(getApplicationContext(), AppConstants.USER_NAME, name);
+									SpUtils.put(getApplicationContext(), AppConstants.USER_PASSWORD, pass1);
+									Intent intent = new Intent(RegisterActivity.this, TabHostActivity.class);
+									startActivity(intent);
+									RegisterActivity.this.finish();
+									LogInActivity.getInstance().finish();
+								}
+							});
+							builder.create().show();
+						}
+						if (responseString.equals("1")) {
+							Toast.makeText(RegisterActivity.this, "用户名已近存在", Toast.LENGTH_SHORT).show();
+						}
+					}else {
+						Toast.makeText(RegisterActivity.this, "请求失败", Toast.LENGTH_SHORT).show();
 					}
 				}
 
