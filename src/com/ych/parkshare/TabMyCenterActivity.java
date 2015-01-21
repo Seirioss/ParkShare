@@ -7,6 +7,6 @@ public class TabMyCenterActivity extends Activity{
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_about);
+		setContentView(R.layout.activity_mycenter);
 	}
 }
