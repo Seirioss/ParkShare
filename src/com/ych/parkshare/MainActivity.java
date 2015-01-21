@@ -4,10 +4,10 @@ import java.net.URI;
 
 import org.apache.http.Header;
 
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.TextHttpResponseHandler;
-import com.loopj.android.image.SmartImage;
-import com.loopj.android.image.SmartImageView;
+import com.ych.http.AsyncHttpClient;
+import com.ych.http.TextHttpResponseHandler;
+import com.ych.image.SmartImage;
+import com.ych.image.SmartImageView;
 import com.ych.tool.AppConstants;
 import com.ych.tool.SpUtils;
 

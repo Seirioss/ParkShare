@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     tools:context="com.ych.parkshare.StartupActivity" >
 
-    <com.loopj.android.image.SmartImageView
+    <com.ych.image.SmartImageView
         android:id="@+id/smartImageViewstartupimage"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
