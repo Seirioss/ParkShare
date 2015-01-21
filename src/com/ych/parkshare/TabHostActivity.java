@@ -12,7 +12,7 @@ public class TabHostActivity extends TabActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		//requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_tab_host);
 
 		Resources res = getResources(); // Resource object to get Drawables
