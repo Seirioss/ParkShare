@@ -8,7 +8,7 @@ password
 
 返回：
 0 success
-1 account disable or already login
+1 already login
 2 username or password invalid 
 3 invalid request method
 
