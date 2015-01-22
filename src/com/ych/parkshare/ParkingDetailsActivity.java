@@ -57,10 +57,10 @@ public class ParkingDetailsActivity extends Activity {
 		public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 			Message message = null;
 			if (isChecked) {
-				message = Message.obtain(null, BLEservice.MSG_OPENT_BLE, BLEservice.ADDRESS);
+				message = Message.obtain(null, BLEservice.MSG_OPENT_BLE, BLEservice.ADDRESS_);
 
 			} else {
-				message = Message.obtain(null, BLEservice.MSG_CLOSE_BLE, BLEservice.ADDRESS);
+				message = Message.obtain(null, BLEservice.MSG_CLOSE_BLE, BLEservice.ADDRESS_);
 			}
 			try {
 				if (serviceMessenger != null) {

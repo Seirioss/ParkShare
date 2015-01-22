@@ -42,6 +42,8 @@ public class BLEservice extends Service {
 	public static final int MSG_CLOSE_BLE = 9;// 1
 
 	public final static String ADDRESS = "88:33:14:DD:88:92";
+	public final static String ADDRESS_ = "88:33:14:DD:8A:1E";
+	
 	
 	private BluetoothManager bluetoothManager;
 	private BluetoothAdapter bluetoothAdapter;
