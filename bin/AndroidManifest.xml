@@ -52,6 +52,10 @@
             android:name=".AddParkLockActivity"
             android:label="@string/title_activity_add_park_lock" >
         </activity>
+        <activity
+            android:name=".RentableParkInfoActivity"
+            android:label="@string/title_activity_rentable_park_info" >
+        </activity>
     </application>
 
 </manifest>
