@@ -2,9 +2,13 @@ package com.ych.parkshare;
 
 import java.util.List;
 
+import com.ych.parkshare.R.menu;
 import com.ych.serves.BLEservice;
+import com.ych.tool.AppConstants;
+import com.ych.tool.SpUtils;
 
 import android.R.anim;
+import android.R.integer;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.Activity;
@@ -20,6 +24,7 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
+import android.provider.DocumentsContract.Root;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.CompoundButton;
@@ -33,6 +38,15 @@ public class ParkingDetailsActivity extends Activity {
 	private String pk = new String();
 	protected Messenger serviceMessenger;
 	private Switch switchpark;
+	private Menu menumenu;
+	private final static String MENU_EDIT = "编辑";
+	private final static String MENU_SHARE = "分享";
+	private final static String MENU_SHARE_CANLCER = "取消分享";
+	private final static String MENU_BOOK_CANLCER = "取消预订";
+	private final static String MENU_STORE = "收藏";
+	private final static int ROLE_OWER = 0;
+	private final static int ROLE_RENTER = 1;
+	private int role;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +56,13 @@ public class ParkingDetailsActivity extends Activity {
 		actionBar.setTitle("返回");
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setDisplayShowHomeEnabled(false);
-		intentaccept = getIntent();
-		pk = intentaccept.getStringExtra("pk");
+		String name1 = (String) SpUtils.get(getApplicationContext(), AppConstants.USER_NAME, "");
+		if (name1.equals(getIntent().getStringExtra("name"))) {
+			role = ROLE_OWER;
+		} else {
+			role = ROLE_RENTER;
+		}
+
 		Intent intent = new Intent(ParkingDetailsActivity.this, BLEservice.class);
 		bindService(intent, conn, Context.BIND_AUTO_CREATE);
 		switchpark = (Switch) findViewById(R.id.unlock);
@@ -79,7 +98,6 @@ public class ParkingDetailsActivity extends Activity {
 		@Override
 		public void onServiceConnected(ComponentName name, IBinder service) {
 			serviceMessenger = new Messenger(service);
-			System.out.println(" conn ok");
 		}
 
 		@Override
@@ -90,7 +108,16 @@ public class ParkingDetailsActivity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.parking_details, menu);
+		menu.add(MENU_EDIT);
+		menu.add(MENU_STORE);
+		if (role == ROLE_OWER) {
+			menu.add(MENU_SHARE);
+			menu.add(MENU_SHARE_CANLCER);
+		}
+		if (role == ROLE_RENTER) {
+			menu.add(MENU_BOOK_CANLCER);
+		}
+
 		return true;
 
 	}
@@ -101,28 +128,25 @@ public class ParkingDetailsActivity extends Activity {
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
-		switch (id) {
-		case android.R.id.home:
+		if (id == android.R.id.home) {
 			finish();
-			break;
-		case R.id.edit:
-
-			break;
-		case R.id.share:
-
-			break;
-		case R.id.cancelshare:
-
-			break;
-		case R.id.cancelbooking:
-
-			break;
-		case R.id.collect:
-
-			break;
-
-		default:
-			break;
+			return super.onOptionsItemSelected(item);
+		}
+		String title = item.getTitle().toString();
+		if (title.equals(MENU_EDIT)) {
+			return super.onOptionsItemSelected(item);
+		}
+		if (title.equals(MENU_STORE)) {
+			return super.onOptionsItemSelected(item);
+		}
+		if (title.equals(MENU_SHARE)) {
+			return super.onOptionsItemSelected(item);
+		}
+		if (title.equals(MENU_SHARE_CANLCER)) {
+			return super.onOptionsItemSelected(item);
+		}
+		if (title.equals(MENU_BOOK_CANLCER)) {
+			return super.onOptionsItemSelected(item);
 		}
 		return super.onOptionsItemSelected(item);
 
@@ -130,9 +154,9 @@ public class ParkingDetailsActivity extends Activity {
 
 	@Override
 	protected void onDestroy() {
-		
+
 		super.onDestroy();
 		unbindService(conn);
 	}
-	
+
 }

@@ -87,14 +87,14 @@
                 android:id="@+id/textView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="描述:" />
+                android:text="pk:" />
 
             <TextView
-                android:id="@+id/describe"
+                android:id="@+id/pk"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/textView3"
-                android:text="describe" />
+                android:text="pk" />
         </RelativeLayout>
     </LinearLayout>
 

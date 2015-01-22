@@ -47,8 +47,8 @@ public class TabHomeActivity extends Activity {
 	private ListAdapter listAdapter;
 	private final static int UPDATE=1;
 
-	String[] from =new String[]{"address","describe","name"};
-	int[] to=new int[]{R.id.address,R.id.describe,R.id.name};
+	String[] from =new String[]{"address","pk","name"};
+	int[] to=new int[]{R.id.address,R.id.pk,R.id.name};
 	private SyncHttpClient client;
 
 	@Override
@@ -67,7 +67,7 @@ public class TabHomeActivity extends Activity {
 				client=new SyncHttpClient();
 				PersistentCookieStore persistentCookieStore=((GlobalVariable)getApplication()).getPersistentCookieStore();
 				client.setCookieStore(persistentCookieStore);
-				client.post("http://121.40.61.76:8080/parkManagementSystem/user/park/",new RequestParams("type", "own"), new JsonHttpResponseHandler("utf-8"){
+				client.post("http://121.40.61.76:8080/parkManagementSystem/user/park/", new JsonHttpResponseHandler("utf-8"){
 
 					@Override
 					public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -76,7 +76,6 @@ public class TabHomeActivity extends Activity {
 							int status=response.getInt("status");
 							if(status==0){
 								JSONArray jsonArray=response.getJSONArray("parks");
-								System.out.println(jsonArray.toString());
 								List<Map<String, String>> list  =jsonArraytoList(jsonArray);
 								listAdapter=new SimpleAdapter(TabHomeActivity.this, list, R.layout.item_parkinfo, from, to);
 								Message message=uihHandler.obtainMessage();
@@ -88,6 +87,7 @@ public class TabHomeActivity extends Activity {
 							e.printStackTrace();
 						}
 					}
+					
 
 					@Override
 					public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
@@ -106,6 +106,10 @@ public class TabHomeActivity extends Activity {
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 			Intent intent =new Intent(TabHomeActivity.this,ParkingDetailsActivity.class);
 			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			String name=((TextView)view.findViewById(R.id.name)).getText().toString();
+			String pk=((TextView)view.findViewById(R.id.pk)).getText().toString();
+			intent.putExtra("name",name );
+			intent.putExtra("pk",pk);
 			startActivity(intent);
 		}
 	};
@@ -129,12 +133,13 @@ public class TabHomeActivity extends Activity {
 		List<Map<String, String>> list = new ArrayList<Map<String, String>>(); 
 		try {
 			for (int i = 0; i < jsonArray.length(); i++) {
-				JSONObject jsonObject=jsonArray.getJSONObject(i);
 				Map<String, String> map = new HashMap<String, String>(); 
+				JSONObject jsonObject=jsonArray.getJSONObject(i);
+				map.put("pk", jsonObject.getString("pk"));
 				JSONObject tempJsonObject=jsonObject.getJSONObject("fields");
 				map.put("address", tempJsonObject.getString("address"));
-				map.put("describe", tempJsonObject.getString("describe"));
-				map.put("name", tempJsonObject.getString("owner"));
+				
+				map.put("name", tempJsonObject.getString("username"));
 				list.add(map);
 			}
 		} catch (JSONException e) {
