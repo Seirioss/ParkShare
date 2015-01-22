@@ -1,0 +1,44 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.ych.parkshare.ParkingDetailsActivity" >
+
+    <item
+        android:id="@+id/list"
+        android:orderInCategory="100"
+        android:showAsAction="ifRoom"
+        android:icon="@android:drawable/ic_menu_sort_by_size"
+        android:title="@string/list">
+        
+        <menu >
+             <item
+                 android:id="@+id/edit"
+                 android:orderInCategory="100"
+                 android:showAsAction="never"
+                 android:title="@string/edit"/>
+    
+             <item
+                 android:id="@+id/share"
+                 android:orderInCategory="100"
+                 android:showAsAction="never"
+                 android:title="@string/share"/>
+    
+             <item
+                 android:id="@+id/cancelshare"
+                 android:orderInCategory="100"
+                 android:showAsAction="never"
+                 android:title="@string/cancelshare"/>
+    
+             <item
+                 android:id="@+id/cancelbooking"
+                 android:orderInCategory="100"
+                 android:showAsAction="never"
+                 android:title="@string/cancelbooking"/>
+    
+             <item
+                 android:id="@+id/collect"
+                 android:orderInCategory="100"
+                 android:showAsAction="never"
+                 android:title="@string/collect"/>
+        </menu>
+    </item>
+</menu>

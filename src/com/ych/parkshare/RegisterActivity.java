@@ -44,26 +44,9 @@ public class RegisterActivity extends Activity {
 		setContentView(R.layout.activity_register);
 		ActionBar actionBar = getActionBar();
 		actionBar.setTitle("返回");
-		actionBar.setIcon(new Drawable() {
-
-			@Override
-			public void setColorFilter(ColorFilter cf) {
-			}
-
-			@Override
-			public void setAlpha(int alpha) {
-			}
-
-			@Override
-			public int getOpacity() {
-				return 0;
-			}
-
-			@Override
-			public void draw(Canvas canvas) {
-			}
-		});
+		actionBar.setDisplayShowHomeEnabled(false);
 		actionBar.setDisplayHomeAsUpEnabled(true);
+		
 		nameEditText = (EditText) findViewById(R.id.edittextregistername);
 		pass1EditText = (EditText) findViewById(R.id.edittextregisterpassone);
 		pass2EditText = (EditText) findViewById(R.id.edittextregisterpasstwo);
