@@ -38,13 +38,13 @@
     <string name="cancelbooking">取消预订</string>
     <string name="collect">收藏</string>
     <string name="pull_to_refresh">下拉可以刷新</string>
-	<string name="release_to_refresh">释放立即刷新</string>
-	<string name="refreshing">正在刷新…</string>
-	<string name="not_updated_yet">暂未更新过</string>
-	<string name="updated_at">上次更新于%1$s前</string>
-	<string name="updated_just_now">刚刚更新</string>
-	<string name="time_error">时间有问题</string>
-	<string name="title_activity_add_park_lock">AddParkLockActivity</string>
+    <string name="release_to_refresh">释放立即刷新</string>
+    <string name="refreshing">正在刷新…</string>
+    <string name="not_updated_yet">暂未更新过</string>
+    <string name="updated_at">上次更新于%1$s前</string>
+    <string name="updated_just_now">刚刚更新</string>
+    <string name="time_error">时间有问题</string>
+    <string name="title_activity_add_park_lock">AddParkLockActivity</string>
     <string name="locknumber">车位锁序列号</string>
     <string name="lockcode">车位锁密钥</string>
     <string name="parkaddress">停车库地址</string>
@@ -52,5 +52,6 @@
     <string name="confirmaddlock">确认添加车位锁</string>
     <string name="search">搜索</string>
     <string name="addpark">添加车位锁</string>
-    
+    <string name="title_activity_search">SearchActivity</string>
+
 </resources>

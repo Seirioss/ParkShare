@@ -46,13 +46,12 @@
             android:name=".TabHostActivity"
             android:label="@string/TabHostActivity" >
         </activity>
-        <activity
-            android:name="com.ych.parkshare.AddParkLockActivity"
-            android:label="@string/title_activity_add_park_lock" >
+        <activity android:name=".AddParkLockActivity" />
+        <activity android:name=".TabHomeActivity" />
+        <activity android:name=".TabMyCenterActivity" />
+        <activity android:name=".TabNavigateActivity" />
+        <activity android:name=".SearchActivity" >
         </activity>
-        <activity android:name="com.ych.parkshare.TabHomeActivity" />
-        <activity android:name="com.ych.parkshare.TabMyCenterActivity" />
-        <activity android:name="com.ych.parkshare.TabNavigateActivity" />
         <activity android:name="com.ych.parkshare.TabHomeActivity" />
         <activity android:name="com.ych.parkshare.TabMyCenterActivity" />
         <activity android:name="com.ych.parkshare.TabNavigateActivity" />

@@ -28,25 +28,7 @@ public class AddParkLockActivity extends Activity {
 		
 		ActionBar actionBar = getActionBar();
 		actionBar.setTitle("返回");
-		actionBar.setIcon(new Drawable() {
-
-			@Override
-			public void setColorFilter(ColorFilter cf) {
-			}
-
-			@Override
-			public void setAlpha(int alpha) {
-			}
-
-			@Override
-			public int getOpacity() {
-				return 0;
-			}
-
-			@Override
-			public void draw(Canvas canvas) {
-			}
-		});
+		actionBar.setDisplayShowHomeEnabled(false);
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		
 		locknumberEditText=(EditText)findViewById(R.id.editlocknumber);
