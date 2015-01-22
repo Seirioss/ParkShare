@@ -53,5 +53,13 @@
     <string name="search">搜索</string>
     <string name="addpark">添加车位锁</string>
     <string name="title_activity_search">SearchActivity</string>
+    <string name="title_activity_rentable_park_info">RentableParkInfoActivity</string>
+    <string name="parkdescription">车位描述</string>
+    <string name="validity">车位有效期</string>
+    <string name="ownertelephone">车位主联系方式</string>
+    <string name="feescale">车位租用收费标准</string>
+    <string name="starttime">起始时间</string>
+    <string name="endtime">结束时间</string>
+    <string name="makeoder">预约</string>
 
 </resources>
