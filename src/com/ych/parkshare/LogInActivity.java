@@ -6,14 +6,17 @@ import org.json.JSONObject;
 
 import com.ych.http.AsyncHttpClient;
 import com.ych.http.JsonHttpResponseHandler;
+import com.ych.http.PersistentCookieStore;
 import com.ych.http.RequestParams;
 import com.ych.http.TextHttpResponseHandler;
 import com.ych.tool.AppConstants;
+import com.ych.tool.GlobalVariable;
 import com.ych.tool.SpUtils;
 import com.ych.views.LinkClickTextView;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
@@ -85,6 +88,8 @@ public class LogInActivity extends Activity {
 		RequestParams params = new RequestParams();
 		params.add("username", name);
 		params.add("password", password);
+		PersistentCookieStore persistentCookieStore=((GlobalVariable)getApplication()).getPersistentCookieStore();
+		client.setCookieStore(persistentCookieStore);
 		//测试账户:name:test   password:test
 		client.post("http://121.40.61.76:8080/parkManagementSystem/login/", params, new TextHttpResponseHandler("utf-8") {
 
