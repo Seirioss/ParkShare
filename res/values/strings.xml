@@ -24,5 +24,18 @@
     <string name="registererrorinfo">错误信息</string>
     <string name="title_activity_andy_pager">title_activity_andy_pager</string>
     <string name="TabHostActivity">TabHostActivity</string>
+    <string name="title_activity_parking_details">ParkingDetailsActivity</string>
+    <string name="description">车位描述</string>
+    <string name="period">有效期</string>
+    <string name="address">停车场地址</string>
+    <string name="remarks">备注</string>
+    <string name="navigation">导航</string>
+    <string name="unlock">开锁</string>
+    <string name="list">菜单</string>
+    <string name="edit">编辑</string>
+    <string name="share">分享</string>
+    <string name="cancelshare">取消分享</string>
+    <string name="cancelbooking">取消预订</string>
+    <string name="collect">收藏</string>
 
 </resources>
