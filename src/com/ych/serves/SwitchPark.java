@@ -48,7 +48,7 @@ public class SwitchPark extends BluetoothGattCallback {
 	@Override
 	public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
 		super.onCharacteristicWrite(gatt, characteristic, status);
-		gatt.connect();
+		gatt.disconnect();
 		gatt.close();
 	}
 

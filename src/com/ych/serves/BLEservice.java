@@ -49,12 +49,6 @@ public class BLEservice extends Service {
 		@Override
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
-			case MSG_SEARCH_BLE:
-
-				break;
-			case MSG_SEARCH_BLE_RESULT:
-
-				break;
 			case MSG_CONNECT_BLE:
 
 				break;
