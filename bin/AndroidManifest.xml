@@ -43,16 +43,20 @@
             android:label="@string/title_activity_andy_pager" >
         </activity>
         <activity
-            android:name="com.ych.parkshare.TabHostActivity"
+            android:name=".TabHostActivity"
             android:label="@string/TabHostActivity" >
         </activity>
         <activity
-            android:name="com.ych.parkshare.AddParkLockActivity"
+            android:name=".AddParkLockActivity"
             android:label="@string/title_activity_add_park_lock" >
         </activity>
-        <activity android:name="com.ych.parkshare.TabHomeActivity" />
-        <activity android:name="com.ych.parkshare.TabMyCenterActivity" />
-        <activity android:name="com.ych.parkshare.TabNavigateActivity" />
+        <activity android:name=".TabHomeActivity" />
+        <activity android:name=".TabMyCenterActivity" />
+        <activity android:name=".TabNavigateActivity" />
+        <activity
+            android:name=".SearchActivity"
+            android:label="@string/title_activity_search" >
+        </activity>
     </application>
 
 </manifest>
