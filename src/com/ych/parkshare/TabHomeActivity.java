@@ -23,17 +23,20 @@ import com.ych.views.RefreshableView.PullToRefreshListener;
 
 import android.R.integer;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 //fdfsdf
 //123
@@ -56,16 +59,7 @@ public class TabHomeActivity extends Activity {
 	
 		refreshableView = (RefreshableView) findViewById(R.id.refreshable_view);
 		listView = (ListView) findViewById(R.id.list_view);
-		listView.setOnItemSelectedListener(new OnItemSelectedListener() {
-
-			@Override
-			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> parent) {
-			}
-		});
+		listView.setOnItemClickListener(onItemClickListener);
 		refreshableView.setOnRefreshListener(new PullToRefreshListener() {
 			@Override
 			public void onRefresh() {
@@ -104,7 +98,17 @@ public class TabHomeActivity extends Activity {
 			}
 		}, 0);
 	}
-	
+	private OnItemClickListener onItemClickListener=new OnItemClickListener() {
+
+		@Override
+		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+			Intent intent =new Intent(TabHomeActivity.this,ParkingDetailsActivity.class);
+			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			TextView pkTextView=(TextView) view.findViewById(R.id.pk);
+			intent.putExtra("pk", pkTextView.getText());
+			startActivity(intent);
+		}
+	};
 	private Handler uihHandler=new Handler(){
 
 		@Override
