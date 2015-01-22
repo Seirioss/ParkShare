@@ -46,16 +46,11 @@
             android:name=".TabHostActivity"
             android:label="@string/TabHostActivity" >
         </activity>
-        <activity
-            android:name=".AddParkLockActivity"
-            android:label="@string/title_activity_add_park_lock" >
-        </activity>
+        <activity android:name=".AddParkLockActivity" />
         <activity android:name=".TabHomeActivity" />
         <activity android:name=".TabMyCenterActivity" />
         <activity android:name=".TabNavigateActivity" />
-        <activity
-            android:name=".SearchActivity"
-            android:label="@string/title_activity_search" >
+        <activity android:name=".SearchActivity" >
         </activity>
     </application>
 

@@ -18,8 +18,10 @@ public class TabHostActivity extends TabActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		// requestWindowFeature(Window.FEATURE_NO_TITLE);
-		actionBar = getActionBar();
 		setContentView(R.layout.activity_tab_host);
+		actionBar = getActionBar();
+		actionBar.setTitle("主页");
+		actionBar.setDisplayShowHomeEnabled(false);
 		Resources res = getResources(); // Resource object to get Drawables
 		TabHost tabHost = getTabHost(); // The activity TabHost
 		TabHost.TabSpec spec; // Reusable TabSpec for each tab
@@ -48,12 +50,14 @@ public class TabHostActivity extends TabActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.menu_search:
-			
-			break;
-		case R.id.menu_addpark:
-			Intent intent=new Intent(TabHostActivity.this,AddParkLockActivity.class);
+			Intent intent=new Intent(TabHostActivity.this,SearchActivity.class);
 			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
+			break;
+		case R.id.menu_addpark:
+			Intent intent2=new Intent(TabHostActivity.this,AddParkLockActivity.class);
+			intent2.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(intent2);
 			break;
 		default:
 			break;
