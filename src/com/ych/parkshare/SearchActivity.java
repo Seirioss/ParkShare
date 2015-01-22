@@ -38,12 +38,13 @@ public class SearchActivity extends Activity {
 			
 			@Override
 			public boolean onQueryTextSubmit(String query) {
+				
 				return false;
 			}
 			
 			@Override
 			public boolean onQueryTextChange(String newText) {
-				System.out.println("-----------------");
+				
 				return false;
 			}
 		});
