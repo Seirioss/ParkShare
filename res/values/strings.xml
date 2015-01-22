@@ -31,4 +31,10 @@
 	<string name="updated_at">上次更新于%1$s前</string>
 	<string name="updated_just_now">刚刚更新</string>
 	<string name="time_error">时间有问题</string>
+	<string name="title_activity_add_park_lock">AddParkLockActivity</string>
+    <string name="locknumber">车位锁序列号</string>
+    <string name="lockcode">车位锁密钥</string>
+    <string name="parkaddress">停车库地址</string>
+    <string name="remark">备注</string>
+    <string name="confirmaddlock">确认添加车位锁</string>
 </resources>
