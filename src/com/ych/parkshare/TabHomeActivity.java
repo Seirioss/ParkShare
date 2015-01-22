@@ -80,7 +80,6 @@ public class TabHomeActivity extends Activity {
 						try {
 							int status=response.getInt("status");
 							if(status==0){
-								System.out.println(response.toString());
 								JSONArray jsonArray=response.getJSONArray("parks");
 								List<Map<String, String>> list =jsonArraytoList(jsonArray);
 								listAdapter=new SimpleAdapter(TabHomeActivity.this, list, R.layout.item_parkinfo, from, to);

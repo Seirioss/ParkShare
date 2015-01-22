@@ -1,20 +1,25 @@
 package com.ych.parkshare;
 
+import android.app.ActionBar;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.Window;
 import android.widget.TabHost;
 
 public class TabHostActivity extends TabActivity {
 	/** Called when the activity is first created. */
+	private ActionBar actionBar;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		//requestWindowFeature(Window.FEATURE_NO_TITLE);
+		// requestWindowFeature(Window.FEATURE_NO_TITLE);
+		actionBar = getActionBar();
 		setContentView(R.layout.activity_tab_host);
-
 		Resources res = getResources(); // Resource object to get Drawables
 		TabHost tabHost = getTabHost(); // The activity TabHost
 		TabHost.TabSpec spec; // Reusable TabSpec for each tab
@@ -28,7 +33,7 @@ public class TabHostActivity extends TabActivity {
 		// Do the same for the other tabs
 
 		intent = new Intent().setClass(this, TabMyCenterActivity.class);
-		spec = tabHost.newTabSpec("about").setIndicator("导航", res.getDrawable(R.drawable.ic_tab_about)).setContent(intent);
+		spec = tabHost.newTabSpec("about").setIndicator("收藏", res.getDrawable(R.drawable.ic_tab_about)).setContent(intent);
 		tabHost.addTab(spec);
 
 		intent = new Intent().setClass(this, TabNavigateActivity.class);
@@ -37,7 +42,29 @@ public class TabHostActivity extends TabActivity {
 
 		// set tab which one you want open first time 0 or 1 or 2
 		tabHost.setCurrentTab(0);
+	}
 
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.menu_search:
+			
+			break;
+		case R.id.menu_addpark:
+			Intent intent=new Intent(TabHostActivity.this,AddParkLockActivity.class);
+			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(intent);
+			break;
+		default:
+			break;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.item_actionbar_tabhostactivity, menu);
+		return true;
 	}
 
 }

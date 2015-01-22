@@ -27,7 +27,7 @@ public class AddParkLockActivity extends Activity {
 		setContentView(R.layout.activity_add_park_lock);
 		
 		ActionBar actionBar = getActionBar();
-		actionBar.setTitle("添加车位锁");
+		actionBar.setTitle("返回");
 		actionBar.setIcon(new Drawable() {
 
 			@Override
@@ -76,10 +76,7 @@ public class AddParkLockActivity extends Activity {
 		// Handle action bar item clicks here. The action bar will
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		}
+		finish();
 		return super.onOptionsItemSelected(item);
 	}
 }

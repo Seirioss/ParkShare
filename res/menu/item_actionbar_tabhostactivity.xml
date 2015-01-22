@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/menu_search"
+        android:showAsAction="always"
+        android:icon="@drawable/searchpark"
+        android:title="@string/search"/>
+    <item
+        android:id="@+id/menu_addpark"
+        android:showAsAction="always"
+        android:icon="@drawable/pluspark"
+        android:title="@string/addpark"/>
+
+</menu>
