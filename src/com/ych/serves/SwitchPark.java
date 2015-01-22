@@ -9,8 +9,8 @@ import android.bluetooth.BluetoothGattService;
 
 public class SwitchPark extends BluetoothGattCallback {
 	private String sw;
-	public static final String OPEN="0";
-	public static final String CLOSE="1";
+	public static final String OPEN="O";
+	public static final String CLOSE="C";
 	private static final UUID RX_CHAR_UUID = UUID.fromString("0000fff1-0000-1000-8000-00805f9b34fb");
 	private static final UUID TX_CHAR_UUID = UUID.fromString("0000fff4-0000-1000-8000-00805f9b34fb");
 	private static final UUID RX_SERVICE_UUID = UUID.fromString("0000fff0-0000-1000-8000-00805f9b34fb");
@@ -48,6 +48,7 @@ public class SwitchPark extends BluetoothGattCallback {
 	@Override
 	public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
 		super.onCharacteristicWrite(gatt, characteristic, status);
+		System.out.println(sw);
 		gatt.disconnect();
 		gatt.close();
 	}

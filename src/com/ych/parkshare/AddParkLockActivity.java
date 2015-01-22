@@ -25,7 +25,7 @@ public class AddParkLockActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_add_park_lock);
-		
+
 		ActionBar actionBar = getActionBar();
 		actionBar.setTitle("添加车位锁");
 		actionBar.setIcon(new Drawable() {
@@ -48,18 +48,18 @@ public class AddParkLockActivity extends Activity {
 			}
 		});
 		actionBar.setDisplayHomeAsUpEnabled(true);
-		
-		locknumberEditText=(EditText)findViewById(R.id.editlocknumber);
-		lockcodeEditText=(EditText)findViewById(R.id.editlockcode);
-		parkaddressEditText=(EditText)findViewById(R.id.editparkaddress);
-		remarkEditText=(EditText)findViewById(R.id.editremark);
-		addlockbutton=(Button)findViewById(R.id.addlockbutton);
+
+		locknumberEditText = (EditText) findViewById(R.id.editlocknumber);
+		lockcodeEditText = (EditText) findViewById(R.id.editlockcode);
+		parkaddressEditText = (EditText) findViewById(R.id.editparkaddress);
+		remarkEditText = (EditText) findViewById(R.id.editremark);
+		addlockbutton = (Button) findViewById(R.id.addlockbutton);
 		addlockbutton.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				
+
 			}
 		});
 	}
@@ -77,8 +77,12 @@ public class AddParkLockActivity extends Activity {
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
+		switch (id) {
+		case android.R.id.home:
+			finish();
+
+		default:
+			break;
 		}
 		return super.onOptionsItemSelected(item);
 	}

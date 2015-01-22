@@ -29,7 +29,7 @@
             </intent-filter>
         </activity>
 
-        <service android:name="com.example.serve.BLEservice" />
+        <service android:name="com.ych.serves.BLEservice" />
 
         <activity android:name="com.ych.parkshare.StartupActivity" />
         <activity android:name="com.ych.parkshare.LogInActivity" />
