@@ -73,5 +73,6 @@
 
     <string name="activity_text_starttime">开始时间</string>
     <string name="activity_text_endtime">结束时间</string>
+    <string name="rentstate">租用状态</string>
 	
 </resources>
