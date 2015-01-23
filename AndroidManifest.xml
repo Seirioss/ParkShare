@@ -47,6 +47,10 @@
             android:name=".ParkOwnActivity"
             android:label="@string/title_activity_park_own" >
         </activity>
+        <activity
+            android:name=".ReceiveRequestActivity"
+            android:label="@string/title_activity_receive" >
+        </activity>
     </application>
 
 </manifest>

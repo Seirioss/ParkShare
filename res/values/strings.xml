@@ -65,5 +65,10 @@
     <string name="closepark">关</string>
     <string name="timeexmaple">2014-10-02 12:50:30</string>
     <string name="title_activity_park_own">ParkOwnActivity</string>
+    <string name="title_activity_receive">ReceiveRequestActivity</string>
+    <string name="estimatedfee">预计费用</string>
+    <string name="rentertelephone">申请者联系电话</string>
+    <string name="accept">接收申请</string>
+    <string name="refuse">拒绝申请</string>
 
 </resources>
