@@ -1,5 +1,22 @@
 package com.ych.parkshare;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.http.Header;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.ych.http.AsyncHttpClient;
+import com.ych.http.JsonHttpResponseHandler;
+import com.ych.http.PersistentCookieStore;
+import com.ych.http.RequestParams;
+import com.ych.tool.GlobalVariable;
+
+import android.R.integer;
+import android.R.string;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.graphics.Canvas;
@@ -12,6 +29,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnKeyListener;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
@@ -20,6 +38,8 @@ public class SearchActivity extends Activity {
 	private ActionBar actionBar;
 	private SearchView searchView;
 	private ListView searchresult;
+	private String parkpk;
+	private Map<String, String> rentableparkinfo;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +50,7 @@ public class SearchActivity extends Activity {
 		actionBar.setDisplayShowHomeEnabled(false);
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		searchresult = (ListView)findViewById(R.id.searchresult);
+		searchresult.setAdapter(ListAdapter);
 
 	}
 
@@ -54,6 +75,41 @@ public class SearchActivity extends Activity {
 		});
 		return super.onCreateOptionsMenu(menu);
 	}
+	
+	private void seachresult(){
+		AsyncHttpClient client = new AsyncHttpClient();
+		PersistentCookieStore persistentCookieStore = ((GlobalVariable)getApplication()).getPersistentCookieStore();
+		client.setCookieStore(persistentCookieStore);
+		client.post("http://121.40.61.76:8080/parkManagementSystem/park/search/", new RequestParams(), new JsonHttpResponseHandler("utf-8"){
+			
+			@Override
+			public void onSuccess(int statusCode,Header[] headers,JSONObject response){
+				super.onSuccess(statusCode, headers, response);
+				if(statusCode == 200){
+					rentableparkinfo=jsontomap(response);
+					searchresult.
+				}
+			}
+		});
+	}
+	
+	private Map<String, String> jsontomap(JSONObject jsonObject){
+		Map<String, String> map = new HashMap<String, String>();
+		try{
+			JSONObject jsonObject1 = jsonObject.getJSONObject("status");
+			JSONArray jsonArray = jsonObject.getJSONArray("parks");
+			JSONObject jsonObject2 = jsonArray.getJSONObject(0).getJSONObject("fields");
+//			map.put("status", jsonObject1.getString("status"));
+			if(jsonObject1.equals(1)){
+				map.put("username",jsonObject2.getString("username"));
+			}
+		}catch(JSONException e){
+			e.printStackTrace();
+		}
+		return map;
+	}
+	
+	
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
