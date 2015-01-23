@@ -61,7 +61,9 @@
     <string name="starttime">起始时间</string>
     <string name="endtime">结束时间</string>
     <string name="makeoder">预约</string>
-    <string name="openpark">开锁</string>
-    <string name="closepark">关锁</string>
+    <string name="openpark">开</string>
+    <string name="closepark">关</string>
+    <string name="timeexmaple">2014-10-02 12:50:30</string>
+    <string name="title_activity_park_own">ParkOwnActivity</string>
 
 </resources>

@@ -104,7 +104,7 @@ public class TabHomeActivity extends Activity {
 
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-			Intent intent =new Intent(TabHomeActivity.this,ParkingDetailsActivity.class);
+			Intent intent =new Intent(TabHomeActivity.this,ParkRentActivity.class);
 			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			String name=((TextView)view.findViewById(R.id.name)).getText().toString();
 			String pk=((TextView)view.findViewById(R.id.pk)).getText().toString();

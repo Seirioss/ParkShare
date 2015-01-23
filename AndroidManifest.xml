@@ -31,18 +31,22 @@
 
         <service android:name="com.ych.serves.BLEservice" />
 
-        <activity android:name="com.ych.parkshare.StartupActivity" />
-        <activity android:name="com.ych.parkshare.LogInActivity" />
-        <activity android:name="com.ych.parkshare.RegisterActivity" />
-        <activity android:name="com.ych.parkshare.GuideActivity" />
-        <activity android:name="com.ych.parkshare.TabHomeActivity" />
-        <activity android:name="com.ych.parkshare.TabMyCenterActivity" />
-        <activity android:name="com.ych.parkshare.TabNavigateActivity" />
-        <activity android:name="com.ych.parkshare.TabHostActivity" />
-        <activity android:name="com.ych.parkshare.ParkingDetailsActivity" />
-        <activity android:name="com.ych.parkshare.SearchActivity" />
-        <activity android:name="com.ych.parkshare.AddParkLockActivity" />
-        <activity android:name="com.ych.parkshare.RentableParkInfoActivity" />
+        <activity android:name=".StartupActivity" />
+        <activity android:name=".LogInActivity" />
+        <activity android:name=".RegisterActivity" />
+        <activity android:name=".GuideActivity" />
+        <activity android:name=".TabHomeActivity" />
+        <activity android:name=".TabMyCenterActivity" />
+        <activity android:name=".TabNavigateActivity" />
+        <activity android:name=".TabHostActivity" />
+        <activity android:name=".ParkRentActivity" />
+        <activity android:name=".SearchActivity" />
+        <activity android:name=".AddParkLockActivity" />
+        <activity android:name=".RentableParkInfoActivity" />
+        <activity
+            android:name=".ParkOwnActivity"
+            android:label="@string/title_activity_park_own" >
+        </activity>
     </application>
 
 </manifest>
