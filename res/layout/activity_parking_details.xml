@@ -42,7 +42,7 @@
     <TextView
         android:id="@+id/period"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="65dp"
         android:layout_below="@id/textView2"
         android:background="@color/white" />
 

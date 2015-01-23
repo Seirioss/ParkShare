@@ -1,10 +1,22 @@
 package com.ych.parkshare;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.http.Header;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.ych.http.AsyncHttpClient;
+import com.ych.http.JsonHttpResponseHandler;
+import com.ych.http.PersistentCookieStore;
+import com.ych.http.RequestParams;
 import com.ych.parkshare.R.menu;
 import com.ych.serves.BLEservice;
 import com.ych.tool.AppConstants;
+import com.ych.tool.GlobalVariable;
 import com.ych.tool.SpUtils;
 
 import android.R.anim;
@@ -31,6 +43,7 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.RadioGroup;
 import android.widget.Switch;
+import android.widget.TextView;
 
 public class ParkingDetailsActivity extends Activity {
 
@@ -44,10 +57,16 @@ public class ParkingDetailsActivity extends Activity {
 	private final static String MENU_SHARE_CANLCER = "取消分享";
 	private final static String MENU_BOOK_CANLCER = "取消预订";
 	private final static String MENU_STORE = "收藏";
+	private final static String MENU_REFRESH="刷新";
 	private final static int ROLE_OWER = 0;
 	private final static int ROLE_RENTER = 1;
 	private int role;
-
+	private TextView textdescription;
+	private TextView textperiod;
+	private TextView textaddress;
+	private TextView textremark;
+	private String parkpk;
+	private Map<String, String> parkinfo;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -57,19 +76,75 @@ public class ParkingDetailsActivity extends Activity {
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setDisplayShowHomeEnabled(false);
 		String name1 = (String) SpUtils.get(getApplicationContext(), AppConstants.USER_NAME, "");
+		parkpk = getIntent().getStringExtra("pk");
 		if (name1.equals(getIntent().getStringExtra("name"))) {
 			role = ROLE_OWER;
 		} else {
 			role = ROLE_RENTER;
 		}
-
+		textaddress=(TextView)findViewById(R.id.address);
+		textdescription=(TextView)findViewById(R.id.description);
+		textperiod=(TextView)findViewById(R.id.period);
+		textremark=(TextView)findViewById(R.id.remarks);
 		Intent intent = new Intent(ParkingDetailsActivity.this, BLEservice.class);
 		bindService(intent, conn, Context.BIND_AUTO_CREATE);
 		switchpark = (Switch) findViewById(R.id.parkdetail_switch_control);
 		switchpark.setOnCheckedChangeListener(onCheckedChangeListener);
-
+		updateuiinfo();
+		
 	}
+	
+	private void updateuiinfo(){
+		AsyncHttpClient client=new AsyncHttpClient();
+		PersistentCookieStore persistentCookieStore=((GlobalVariable)getApplication()).getPersistentCookieStore();
+		client.setCookieStore(persistentCookieStore);
+		client.post("http://121.40.61.76:8080/parkManagementSystem/park/", new RequestParams("parkid",parkpk),new JsonHttpResponseHandler("utf-8"){
 
+			@Override
+			public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+				super.onSuccess(statusCode, headers, response);
+				if(statusCode==200){
+					try {
+						JSONArray jsonArrayinfos=response.getJSONArray("parks");
+						parkinfo=new HashMap<String, String>();
+						JSONObject jsonObject1=jsonArrayinfos.getJSONObject(0).getJSONObject("fields");
+						JSONObject jsonObject2=jsonArrayinfos.getJSONObject(1).getJSONObject("fields");
+						JSONObject jsonObject3=jsonArrayinfos.getJSONObject(2).getJSONObject("fields");
+						parkinfo.put("username", jsonObject1.getString("username"));
+						parkinfo.put("is_borrowed", jsonObject1.getString("is_borrowed"));
+						parkinfo.put("comment", jsonObject1.getString("comment"));
+						parkinfo.put("describe", jsonObject1.getString("describe"));
+						parkinfo.put("address", jsonObject1.getString("address"));
+						parkinfo.put("user_borrowed", jsonObject2.getString("user_borrowed"));
+						parkinfo.put("price", jsonObject2.getString("price"));
+						parkinfo.put("start_time", jsonObject2.getString("start_time"));
+						parkinfo.put("end_time", jsonObject2.getString("end_time"));
+						parkinfo.put("mac_address", jsonObject3.getString("mac_address"));
+						parkinfo.put("close_key", jsonObject3.getString("close_key"));
+						parkinfo.put("open_key", jsonObject3.getString("open_key"));
+						parkinfo.put("serial_number", jsonObject3.getString("serial_number"));
+						
+						textdescription.setText(parkinfo.get("describe"));
+						textperiod.setText(parkinfo.get("start_time")+"\n"+parkinfo.get("end_time"));
+						textaddress.setText(parkinfo.get("address"));
+						
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+
+			@Override
+			public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+				super.onFailure(statusCode, headers, responseString, throwable);
+				System.out.println("net error:  statusCode"+statusCode);
+			}
+
+			
+			
+		});
+	}
 	private OnCheckedChangeListener onCheckedChangeListener = new OnCheckedChangeListener() {
 
 		@Override
@@ -110,6 +185,7 @@ public class ParkingDetailsActivity extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		menu.add(MENU_EDIT);
 		menu.add(MENU_STORE);
+		menu.add(MENU_REFRESH);
 		if (role == ROLE_OWER) {
 			menu.add(MENU_SHARE);
 			menu.add(MENU_SHARE_CANLCER);
@@ -146,6 +222,11 @@ public class ParkingDetailsActivity extends Activity {
 			return super.onOptionsItemSelected(item);
 		}
 		if (title.equals(MENU_BOOK_CANLCER)) {
+			return super.onOptionsItemSelected(item);
+		}
+		if (title.equals(MENU_REFRESH)) {
+			updateuiinfo();
+			System.out.println("update");
 			return super.onOptionsItemSelected(item);
 		}
 		return super.onOptionsItemSelected(item);
