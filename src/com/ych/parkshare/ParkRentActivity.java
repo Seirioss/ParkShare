@@ -43,6 +43,7 @@ import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
 import android.provider.DocumentsContract.Root;
+import android.util.Range;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -67,7 +68,8 @@ public class ParkRentActivity extends Activity {
 	private final static String MENU_STORE = "收藏";
 	private final static int WHAT_REFRESH = 1;
 	private TextView textdescription;
-	private TextView textperiod;
+	private TextView texttimestart;
+	private TextView texttimesend;
 	private TextView textaddress;
 	private TextView textremark;
 	private String parkpk;
@@ -84,6 +86,8 @@ public class ParkRentActivity extends Activity {
 		parkpk = getIntent().getStringExtra("pk").toString();
 		textaddress = (TextView) findViewById(R.id.address);
 		textdescription = (TextView) findViewById(R.id.description);
+		texttimestart=(TextView)findViewById(R.id.activity_park_rent_text_starttime);
+		texttimesend=(TextView)findViewById(R.id.activity_park_rent_text_endtime);
 		textremark = (TextView) findViewById(R.id.remarks);
 		switchpark = (Switch) findViewById(R.id.parkdetail_switch_control);
 		Intent intent = new Intent(ParkRentActivity.this, BLEservice.class);
@@ -103,13 +107,18 @@ public class ParkRentActivity extends Activity {
 				super.onSuccess(statusCode, headers, response);
 				if (statusCode == 200) {
 					parkinfo=jsontomap(response);
+					textdescription.setText(parkinfo.get("describe"));
+					textaddress.setText(parkinfo.get("address"));
+					texttimestart.setText(parkinfo.get("start_time"));
+					texttimesend.setText(parkinfo.get("end_time"));
+					textremark.setText("");
 				}
 			}
 
 			@Override
 			public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
 				super.onFailure(statusCode, headers, responseString, throwable);
-				System.out.println("net error:  statusCode" + statusCode);
+				textremark.setText(statusCode+throwable.getMessage());
 			}
 
 		});
@@ -199,14 +208,17 @@ public class ParkRentActivity extends Activity {
 		String title = item.getTitle().toString();
 
 		if (title.equals(MENU_STORE)) {
-			return super.onOptionsItemSelected(item);
+
 		}
 		if (title.equals(MENU_BOOK_CANLCER)) {
-			return super.onOptionsItemSelected(item);
+			bookcancel();
+			System.out.println(MENU_BOOK_CANLCER);
+
 		}
 		if (title.equals(MENU_REFRESH)) {
 			updateuiinfo();
-			return super.onOptionsItemSelected(item);
+			System.out.println(MENU_REFRESH);
+	
 		}
 		return super.onOptionsItemSelected(item);
 
@@ -218,7 +230,47 @@ public class ParkRentActivity extends Activity {
 		super.onDestroy();
 		unbindService(conn);
 	}
+	private void bookcancel(){
+		AsyncHttpClient client = new AsyncHttpClient();
+		PersistentCookieStore persistentCookieStore = ((GlobalVariable) getApplication()).getPersistentCookieStore();
+		client.setCookieStore(persistentCookieStore);
+		client.post("http://121.40.61.76:8080/parkManagementSystem/park/cancelborrow/",new RequestParams("parkid",parkpk), new JsonHttpResponseHandler("utf-8"){
 
+			@Override
+			public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+				super.onSuccess(statusCode, headers, response);
+				System.out.println(response.toString());
+				if(statusCode==200){
+					try {
+						int resulet= response.getInt("status");
+						
+						if(resulet==0){
+							textaddress.setText("");
+							textdescription.setText("");
+							texttimesend.setText("");
+							texttimestart.setText("");
+							textaddress.setText("");
+							textremark.setText(response.getString("message"));
+							textremark.setText("\n价格："+Math.random()/100);
+							
+							//updateuiinfo();
+						}else {
+							textremark.setText(response.getString("message"));
+						}
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+
+			@Override
+			public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+				super.onFailure(statusCode, headers, responseString, throwable);
+			}
+			
+		});
+	}
 	private void sharepark() {
 		LayoutInflater inflater = getLayoutInflater();
 		final View layout = inflater.inflate(R.layout.dialog_sharetime, (ViewGroup) findViewById(R.id.sharetime));
