@@ -9,99 +9,69 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.ych.parkshare.ParkingDetailsActivity" >
 
-    <LinearLayout
-        android:id="@+id/details1"
-        android:orientation="vertical"
-        android:layout_width="fill_parent"
+    <Switch
+        android:id="@+id/parkdetail_switch_control"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="30dp"
-        android:paddingRight="30dp"
-        android:paddingTop="40dp">
-        
-        <TextView 
-            android:id="@+id/description"
-            android:layout_width="fill_parent"
-            android:layout_height="40dp"
-            android:background="@color/white"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:gravity="center_vertical"
-            android:hint="@string/description"/>
-        
-        <View android:layout_width="fill_parent"
-              android:layout_height="20dp" 
-              android:background="#ffffcc"/>
-        
-        <TextView 
-            android:id="@+id/period"
-            android:layout_width="fill_parent"
-            android:layout_height="40dp"
-            android:background="@color/white"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:gravity="center_vertical"
-            android:hint="@string/period"/>
-        
-        <View android:layout_width="fill_parent"
-              android:layout_height="20dp" 
-              android:background="#ffffcc"/>
-        
-        <TextView 
-            android:id="@+id/address"
-            android:layout_width="fill_parent"
-            android:layout_height="40dp"
-            android:background="@color/white"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:gravity="center_vertical"
-            android:hint="@string/address"/>
-        
-        <View android:layout_width="fill_parent"
-              android:layout_height="20dp" 
-              android:background="#ffffcc"/>
-        
-        <TextView 
-            android:id="@+id/remarks"
-            android:layout_width="fill_parent"
-            android:layout_height="120dp"
-            android:background="@color/white"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:gravity="center_vertical"
-            android:hint="@string/remarks"/>
-        
-    </LinearLayout>
-    
-    <LinearLayout 
-        android:id="@+id/details2"
-        android:layout_width="fill_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:textOff="@string/closepark"
+        android:textOn="@string/openpark" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/details1"
-        android:orientation="vertical"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingTop="30dp">
-        
-        <Button 
-            android:id="@+id/navigation"
-            android:layout_width="fill_parent"
-            android:background="@color/white"
-            android:layout_height="45dp"
-            android:text="@string/navigation"
-            android:textColor="#cc3300"/>
-        
-         <View android:layout_width="fill_parent"
-              android:layout_height="30dp" 
-              android:background="#ffffcc"/>
-        
-        <Switch 
-            android:id="@+id/unlock"
-            android:layout_width="fill_parent"
-            android:background="@color/white"
-            android:layout_height="45dp"
-            android:text="@string/unlock"
-            android:textColor="#cc3300"/>
-        
-    </LinearLayout>
+        android:layout_alignParentTop="true"
+        android:text="@string/description" />
+
+    <TextView
+        android:id="@+id/description"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@id/textView1"
+        android:background="@color/white" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/description"
+        android:text="@string/period" />
+
+    <TextView
+        android:id="@+id/period"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@id/textView2"
+        android:background="@color/white" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/period"
+        android:text="@string/address" />
+
+    <TextView
+        android:id="@+id/address"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@id/textView3"
+        android:background="@color/white" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/address"
+        android:text="@string/remark" />
+
+    <TextView
+        android:id="@+id/remarks"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_below="@+id/textView4"
+        android:background="@color/white" />
 
 </RelativeLayout>

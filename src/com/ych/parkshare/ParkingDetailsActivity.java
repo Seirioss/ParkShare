@@ -65,7 +65,7 @@ public class ParkingDetailsActivity extends Activity {
 
 		Intent intent = new Intent(ParkingDetailsActivity.this, BLEservice.class);
 		bindService(intent, conn, Context.BIND_AUTO_CREATE);
-		switchpark = (Switch) findViewById(R.id.unlock);
+		switchpark = (Switch) findViewById(R.id.parkdetail_switch_control);
 		switchpark.setOnCheckedChangeListener(onCheckedChangeListener);
 
 	}
