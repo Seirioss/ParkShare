@@ -61,5 +61,10 @@
     <string name="starttime">起始时间</string>
     <string name="endtime">结束时间</string>
     <string name="makeoder">预约</string>
+    <string name="title_activity_receive">ReceiveRequestActivity</string>
+    <string name="estimatedfee">预计费用</string>
+    <string name="rentertelephone">申请者联系电话</string>
+    <string name="accept">接收申请</string>
+    <string name="refuse">拒绝申请</string>
 
 </resources>

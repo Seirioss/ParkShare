@@ -56,6 +56,10 @@
             android:name=".RentableParkInfoActivity"
             android:label="@string/title_activity_rentable_park_info" >
         </activity>
+        <activity
+            android:name=".ReceiveRequestActivity"
+            android:label="@string/title_activity_receive" >
+        </activity>
     </application>
 
 </manifest>
