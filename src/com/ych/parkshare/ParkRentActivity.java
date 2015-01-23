@@ -73,8 +73,9 @@ public class ParkRentActivity extends Activity {
 	private TextView textaddress;
 	private TextView textremark;
 	private String parkpk;
-	private Map<String, String> parkinfo;
-
+	private Map<String, Object> parkinfo;
+	private AsyncHttpClient asyncHttpClient;
+	private boolean bookstate;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -84,55 +85,96 @@ public class ParkRentActivity extends Activity {
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setDisplayShowHomeEnabled(false);
 		parkpk = getIntent().getStringExtra("pk").toString();
+		asyncHttpClient = new AsyncHttpClient();
+		PersistentCookieStore PersistentCookieStore = ((GlobalVariable) getApplication()).getPersistentCookieStore();
+		asyncHttpClient.setCookieStore(PersistentCookieStore);
 		textaddress = (TextView) findViewById(R.id.address);
 		textdescription = (TextView) findViewById(R.id.description);
-		texttimestart=(TextView)findViewById(R.id.activity_park_rent_text_starttime);
-		texttimesend=(TextView)findViewById(R.id.activity_park_rent_text_endtime);
+		texttimestart = (TextView) findViewById(R.id.activity_park_rent_text_starttime);
+		texttimesend = (TextView) findViewById(R.id.activity_park_rent_text_endtime);
 		textremark = (TextView) findViewById(R.id.remarks);
 		switchpark = (Switch) findViewById(R.id.parkdetail_switch_control);
 		Intent intent = new Intent(ParkRentActivity.this, BLEservice.class);
 		bindService(intent, conn, Context.BIND_AUTO_CREATE);
 		switchpark.setOnCheckedChangeListener(onCheckedChangeListener);
-		updateuiinfo();
+		asyncHttpClient.post(AppConstants.BASE_URL + AppConstants.URL_PARKINFO, new RequestParams("parkid", parkpk), refreshuiJsonHttpResponseHandler);
 	}
 
-	private void updateuiinfo() {
-		AsyncHttpClient client = new AsyncHttpClient();
-		PersistentCookieStore persistentCookieStore = ((GlobalVariable) getApplication()).getPersistentCookieStore();
-		client.setCookieStore(persistentCookieStore);
-		client.post("http://121.40.61.76:8080/parkManagementSystem/park/", new RequestParams("parkid", parkpk), new JsonHttpResponseHandler("utf-8") {
+	private ServiceConnection conn = new ServiceConnection() {
 
-			@Override
-			public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-				super.onSuccess(statusCode, headers, response);
-				if (statusCode == 200) {
-					parkinfo=jsontomap(response);
-					textdescription.setText(parkinfo.get("describe"));
-					textaddress.setText(parkinfo.get("address"));
-					texttimestart.setText(parkinfo.get("start_time"));
-					texttimesend.setText(parkinfo.get("end_time"));
-					textremark.setText("");
-				}
-			}
+		@Override
+		public void onServiceConnected(ComponentName name, IBinder service) {
+			serviceMessenger = new Messenger(service);
+		}
 
-			@Override
-			public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-				super.onFailure(statusCode, headers, responseString, throwable);
-				textremark.setText(statusCode+throwable.getMessage());
-			}
+		@Override
+		public void onServiceDisconnected(ComponentName name) {
+		}
+	};
 
-		});
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		menu.add(MENU_STORE);
+		menu.add(MENU_REFRESH);
+		menu.add(MENU_BOOK_CANLCER);
+		return true;
+
+	}
+	
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		menu.clear();
+		if(!bookstate){
+			menu.add(MENU_STORE);
+			menu.add(MENU_REFRESH);
+			menu.add(MENU_BOOK_CANLCER);
+		}
+		
+		return super.onPrepareOptionsMenu(menu);
 	}
 
-	private Map<String, String> jsontomap(JSONObject jsonObject) {
-		Map<String, String> map = new HashMap<String, String>();
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle action bar item clicks here. The action bar will
+		// automatically handle clicks on the Home/Up button, so long
+		// as you specify a parent activity in AndroidManifest.xml.
+		int id = item.getItemId();
+		if (id == android.R.id.home) {
+			finish();
+			return super.onOptionsItemSelected(item);
+		}
+		String title = item.getTitle().toString();
+
+		if (title.equals(MENU_STORE)) {
+
+		}
+		if (title.equals(MENU_BOOK_CANLCER)) {
+			asyncHttpClient.post(AppConstants.BASE_URL + AppConstants.URL_BOOKCANCEL, new RequestParams("parkid", parkpk), bookcancelJsonHttpResponseHandler);
+		}
+		if (title.equals(MENU_REFRESH)) {
+			asyncHttpClient.post(AppConstants.BASE_URL + AppConstants.URL_PARKINFO, new RequestParams("parkid", parkpk), refreshuiJsonHttpResponseHandler);
+		}
+		return super.onOptionsItemSelected(item);
+
+	}
+
+	@Override
+	protected void onDestroy() {
+
+		super.onDestroy();
+		unbindService(conn);
+	}
+
+	private Map<String, Object> jsontomap(JSONObject jsonObject) {
+		Map<String, Object> map = new HashMap<String, Object>();
 		try {
 			JSONArray jsonArrayinfos = jsonObject.getJSONArray("parks");
 			JSONObject jsonObject1 = jsonArrayinfos.getJSONObject(0).getJSONObject("fields");
 			JSONObject jsonObject2 = jsonArrayinfos.getJSONObject(1).getJSONObject("fields");
 			JSONObject jsonObject3 = jsonArrayinfos.getJSONObject(2).getJSONObject("fields");
 			map.put("username", jsonObject1.getString("username"));
-			map.put("is_borrowed", jsonObject1.getString("is_borrowed"));
+			map.put("is_borrowed", jsonObject1.getBoolean("is_borrowed"));
 			map.put("comment", jsonObject1.getString("comment"));
 			map.put("describe", jsonObject1.getString("describe"));
 			map.put("address", jsonObject1.getString("address"));
@@ -143,7 +185,6 @@ public class ParkRentActivity extends Activity {
 			map.put("mac_address", jsonObject3.getString("mac_address"));
 			map.put("close_key", jsonObject3.getString("close_key"));
 			map.put("open_key", jsonObject3.getString("open_key"));
-			map.put("serial_number", jsonObject3.getString("serial_number"));
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -173,104 +214,6 @@ public class ParkRentActivity extends Activity {
 		}
 	};
 
-	private ServiceConnection conn = new ServiceConnection() {
-
-		@Override
-		public void onServiceConnected(ComponentName name, IBinder service) {
-			serviceMessenger = new Messenger(service);
-		}
-
-		@Override
-		public void onServiceDisconnected(ComponentName name) {
-		}
-	};
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		menu.add(MENU_STORE);
-		menu.add(MENU_REFRESH);
-		menu.add(MENU_BOOK_CANLCER);
-		return true;
-
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == android.R.id.home) {
-			finish();
-			return super.onOptionsItemSelected(item);
-		}
-		String title = item.getTitle().toString();
-
-		if (title.equals(MENU_STORE)) {
-
-		}
-		if (title.equals(MENU_BOOK_CANLCER)) {
-			bookcancel();
-			System.out.println(MENU_BOOK_CANLCER);
-
-		}
-		if (title.equals(MENU_REFRESH)) {
-			updateuiinfo();
-			System.out.println(MENU_REFRESH);
-	
-		}
-		return super.onOptionsItemSelected(item);
-
-	}
-
-	@Override
-	protected void onDestroy() {
-
-		super.onDestroy();
-		unbindService(conn);
-	}
-	private void bookcancel(){
-		AsyncHttpClient client = new AsyncHttpClient();
-		PersistentCookieStore persistentCookieStore = ((GlobalVariable) getApplication()).getPersistentCookieStore();
-		client.setCookieStore(persistentCookieStore);
-		client.post("http://121.40.61.76:8080/parkManagementSystem/park/cancelborrow/",new RequestParams("parkid",parkpk), new JsonHttpResponseHandler("utf-8"){
-
-			@Override
-			public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-				super.onSuccess(statusCode, headers, response);
-				System.out.println(response.toString());
-				if(statusCode==200){
-					try {
-						int resulet= response.getInt("status");
-						
-						if(resulet==0){
-							textaddress.setText("");
-							textdescription.setText("");
-							texttimesend.setText("");
-							texttimestart.setText("");
-							textaddress.setText("");
-							textremark.setText(response.getString("message"));
-							textremark.setText("\n价格："+Math.random()/100);
-							
-							//updateuiinfo();
-						}else {
-							textremark.setText(response.getString("message"));
-						}
-					} catch (JSONException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-			}
-
-			@Override
-			public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-				super.onFailure(statusCode, headers, responseString, throwable);
-			}
-			
-		});
-	}
 	private void sharepark() {
 		LayoutInflater inflater = getLayoutInflater();
 		final View layout = inflater.inflate(R.layout.dialog_sharetime, (ViewGroup) findViewById(R.id.sharetime));
@@ -316,6 +259,76 @@ public class ParkRentActivity extends Activity {
 			}
 		});
 		builder.create().show();
-
 	}
+
+	private JsonHttpResponseHandler refreshuiJsonHttpResponseHandler = new JsonHttpResponseHandler("utf-8") {
+
+		public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+			super.onSuccess(statusCode, headers, response);
+			if (statusCode == 200) {
+				try {
+					int status = response.getInt("status");
+					if (status == 0) {
+						parkinfo=jsontomap(response);
+						textdescription.setText(parkinfo.get("describe").toString());
+						texttimestart.setText(parkinfo.get("start_time").toString());
+						texttimesend.setText(parkinfo.get("end_time").toString());
+						textaddress.setText(parkinfo.get("address").toString());
+						textremark.setText("刷新成功："+statusCode);
+					}
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+
+		@Override
+		public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+			super.onFailure(statusCode, headers, responseString, throwable);
+			textremark.setText("刷新失败："+statusCode);
+		}
+	};
+	private JsonHttpResponseHandler storelJsonHttpResponseHandler = new JsonHttpResponseHandler("utf-8") {
+		@Override
+		public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+			super.onSuccess(statusCode, headers, response);
+		}
+
+		@Override
+		public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+			super.onFailure(statusCode, headers, responseString, throwable);
+		}
+		
+	};
+	private JsonHttpResponseHandler bookcancelJsonHttpResponseHandler = new JsonHttpResponseHandler("utf-8") {
+		@Override
+		public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+			super.onSuccess(statusCode, headers, response);
+			if(statusCode==200){
+				try {
+					int status= response.getInt("status");
+					if(status==0){
+						textremark.setText("退订成功\n"+(int)(Math.random()*100+1));
+						textaddress.setText("");
+						textdescription.setText("");
+						texttimesend.setText("");
+						texttimestart.setText("");
+						switchpark.setEnabled(false);
+						bookstate=true;
+						
+					}
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+
+		@Override
+		public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+			super.onFailure(statusCode, headers, responseString, throwable);
+		}
+		
+	};
 }

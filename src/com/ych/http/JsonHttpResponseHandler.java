@@ -63,7 +63,7 @@ public class JsonHttpResponseHandler extends TextHttpResponseHandler {
      * @param response   parsed response if any
      */
     public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-        Log.w(LOG_TAG, "onSuccess(int, Header[], JSONObject) was not overriden, but callback was received");
+        //Log.w(LOG_TAG, "onSuccess(int, Header[], JSONObject) was not overriden, but callback was received");
     }
 
     /**
