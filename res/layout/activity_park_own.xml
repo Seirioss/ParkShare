@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:text="租用车位信息"
+        android:text="车位信息"
         android:textSize="20dp" />
 <!--  描述 -->
     <TextView
@@ -75,18 +75,18 @@
         android:layout_height="40dp"
         android:layout_below="@id/textView3"
         android:background="@color/white" />
-    
+    <!--租借状态  -->
     <TextView
-        android:id="@+id/rentstate"
+        android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/address"
         android:text="@string/rentstate" />
     <TextView 
-        android:id="@+id/textView6"
+        android:id="@+id/rentstate"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_below="@+id/rentstate"
+        android:layout_below="@+id/textView6"
         android:background="@color/white"/>
 
 <!-- 备注 -->
@@ -94,7 +94,7 @@
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView6"
+        android:layout_below="@+id/rentstate"
         android:text="@string/remark" />  
     
 
