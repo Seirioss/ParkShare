@@ -13,6 +13,7 @@ import com.ych.http.JsonHttpResponseHandler;
 import com.ych.http.PersistentCookieStore;
 import com.ych.http.RequestParams;
 import com.ych.serves.BLEservice;
+import com.ych.tool.AppConstants;
 import com.ych.tool.GlobalVariable;
 import com.ych.tool.SpUtils;
 
@@ -48,10 +49,10 @@ public class ParkOwnActivity extends Activity {
 	private String pk = new String();
 	protected Messenger serviceMessenger;
 	private Switch switchpark;
-	private Menu menumenu;
 	private final static String MENU_REFRESH = "刷新";
 	private final static String MENU_SHARE = "分享";
 	private final static String MENU_SHARE_CANLCER = "取消分享";
+	private AsyncHttpClient asyncHttpClient;
 	private TextView textdescription;
 	private TextView texttimestart;
 	private TextView texttimesend;
@@ -59,7 +60,9 @@ public class ParkOwnActivity extends Activity {
 	private TextView textremark;
 	private TextView textrentstate;
 	private String parkpk;
-	private Map<String, String> parkinfo;
+	private Map<String, Object> parkinfo;
+	private boolean rentstatus;
+	private boolean sharestatus=true;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +73,9 @@ public class ParkOwnActivity extends Activity {
 		actionBar.setTitle("返回");
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setDisplayShowHomeEnabled(false);
+		asyncHttpClient=new AsyncHttpClient();
+		PersistentCookieStore persistentCookieStore=((GlobalVariable)getApplication()).getPersistentCookieStore();
+		asyncHttpClient.setCookieStore(persistentCookieStore);
 		
 		parkpk = getIntent().getStringExtra("pk").toString();
 		textaddress = (TextView) findViewById(R.id.address);
@@ -82,10 +88,15 @@ public class ParkOwnActivity extends Activity {
 		Intent intent = new Intent(ParkOwnActivity.this, BLEservice.class);
 		bindService(intent, conn, Context.BIND_AUTO_CREATE);
 		switchpark.setOnCheckedChangeListener(onCheckedChangeListener);
-		updateuiinfo();
-		
+		//asyncHttpClient.post(AppConstants.BASE_URL+AppConstants.URL_PARKINFO,new RequestParams("parkid",parkpk) ,refreshJsonHttpResponseHandler);
 	}
 	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		unbindService(conn);
+	}
+
 	private void updateuiinfo() {
 		AsyncHttpClient client = new AsyncHttpClient();
 		PersistentCookieStore persistentCookieStore = ((GlobalVariable) getApplication()).getPersistentCookieStore();
@@ -96,13 +107,14 @@ public class ParkOwnActivity extends Activity {
 			public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
 				super.onSuccess(statusCode, headers, response);
 				if (statusCode == 200) {
+					System.out.println(response.toString());
 					parkinfo=jsontomap(response);
-					textdescription.setText(parkinfo.get("describe"));
-					textaddress.setText(parkinfo.get("address"));
-					texttimestart.setText(parkinfo.get("start_time"));
-					texttimesend.setText(parkinfo.get("end_time"));
+					textdescription.setText(parkinfo.get("describe").toString());
+					textaddress.setText(parkinfo.get("address").toString());
+					texttimestart.setText(parkinfo.get("start_time").toString());
+					texttimesend.setText(parkinfo.get("end_time").toString());
 					textremark.setText("");
-					textrentstate.setText(parkinfo.get("is_borrowed"));
+					textrentstate.setText(parkinfo.get("is_borrowed").toString());
 				}
 			}
 
@@ -115,15 +127,15 @@ public class ParkOwnActivity extends Activity {
 		});
 	}
 	
-	private Map<String, String> jsontomap(JSONObject jsonObject) {
-		Map<String, String> map = new HashMap<String, String>();
+	private Map<String, Object> jsontomap(JSONObject jsonObject) {
+		Map<String, Object> map = new HashMap<String, Object>();
 		try {
 			JSONArray jsonArrayinfos = jsonObject.getJSONArray("parks");
 			JSONObject jsonObject1 = jsonArrayinfos.getJSONObject(0).getJSONObject("fields");
 			JSONObject jsonObject2 = jsonArrayinfos.getJSONObject(1).getJSONObject("fields");
 			JSONObject jsonObject3 = jsonArrayinfos.getJSONObject(2).getJSONObject("fields");
 			map.put("username", jsonObject1.getString("username"));
-			map.put("is_borrowed", jsonObject1.getString("is_borrowed"));
+			map.put("is_borrowed", jsonObject1.getBoolean("is_borrowed"));
 			map.put("comment", jsonObject1.getString("comment"));
 			map.put("describe", jsonObject1.getString("describe"));
 			map.put("address", jsonObject1.getString("address"));
@@ -134,7 +146,6 @@ public class ParkOwnActivity extends Activity {
 			map.put("mac_address", jsonObject3.getString("mac_address"));
 			map.put("close_key", jsonObject3.getString("close_key"));
 			map.put("open_key", jsonObject3.getString("open_key"));
-			map.put("serial_number", jsonObject3.getString("serial_number"));
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -178,19 +189,29 @@ public class ParkOwnActivity extends Activity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-//		getMenuInflater().inflate(R.menu.park_own, menu);
+
 		menu.add(MENU_REFRESH);
 		menu.add(MENU_SHARE);
 		menu.add(MENU_SHARE_CANLCER);
 		return true;
 	}
+	
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		menu.clear();
+		menu.add(MENU_REFRESH);
+		if(sharestatus==true&&rentstatus==false){
+			menu.add(MENU_SHARE_CANLCER);
+		}
+		if(sharestatus==false){
+			menu.add(MENU_SHARE);
+		}
+		return super.onPrepareOptionsMenu(menu);
+	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
+
 		int id = item.getItemId();
 		if (id == android.R.id.home) {
 			finish();
@@ -198,15 +219,13 @@ public class ParkOwnActivity extends Activity {
 		}
 		String title = item.getTitle().toString();
 		if(title.equals(MENU_REFRESH)){
-			updateuiinfo();
-			System.out.println(MENU_REFRESH);
+			asyncHttpClient.post(AppConstants.BASE_URL+AppConstants.URL_PARKINFO,new RequestParams("parkid",parkpk) ,refreshJsonHttpResponseHandler);
 		}
 		if(title.equals(MENU_SHARE)){
 			sharepark();
-			System.out.println(MENU_SHARE);
 		}
 		if(title.equals(MENU_SHARE_CANLCER)){
-			
+			asyncHttpClient.post(AppConstants.BASE_URL+AppConstants.URL_SHARECANCEL,new RequestParams("parkid",parkpk) ,sharecancelJsonHttpResponseHandler);
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -235,27 +254,82 @@ public class ParkOwnActivity extends Activity {
 				requestParams.put("starttime", timeStart);
 				requestParams.put("endtime", timeend);
 				requestParams.put("price", 100);
-				System.out.println(timeStart);
-				System.out.println(timeend);
-				System.out.println(parkpk);
-				client.post("http://121.40.61.76:8080/parkManagementSystem/user/share/", requestParams, new JsonHttpResponseHandler("utf-8") {
-
-					@Override
-					public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-						super.onSuccess(statusCode, headers, response);
-						System.out.println(response.toString());
-					}
-
-					@Override
-					public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-						super.onFailure(statusCode, headers, responseString, throwable);
-					}
-
-				});
-
+				asyncHttpClient.post(AppConstants.BASE_URL+AppConstants.URL_SHARE,requestParams ,shareJsonHttpResponseHandler);
 			}
 		});
 		builder.create().show();
-
 	}
+	
+	private JsonHttpResponseHandler refreshJsonHttpResponseHandler=new JsonHttpResponseHandler("utf-8"){
+
+		@Override
+		public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+			super.onSuccess(statusCode, headers, response);
+			if (statusCode == 200) {
+				System.out.println(response.toString());
+				parkinfo=jsontomap(response);
+				textdescription.setText(parkinfo.get("describe").toString());
+				textaddress.setText(parkinfo.get("address").toString());
+				texttimestart.setText(parkinfo.get("start_time").toString());
+				texttimesend.setText(parkinfo.get("end_time").toString());
+				if(Boolean.valueOf(parkinfo.get("is_borrowed").toString())){
+					textrentstate.setText("被租用");
+					switchpark.setEnabled(false);
+				}else {
+					textrentstate.setText("无人租用");
+					switchpark.setEnabled(true);
+				}
+				textremark.setText("刷新成功");
+			}
+		}
+
+		@Override
+		public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+			super.onFailure(statusCode, headers, responseString, throwable);
+			textremark.setText("刷新失败:"+statusCode);
+		}
+	};
+	private JsonHttpResponseHandler shareJsonHttpResponseHandler=new JsonHttpResponseHandler("utf-8"){
+
+		@Override
+		public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+			super.onSuccess(statusCode, headers, response);
+			System.out.println(response.toString());
+			if(statusCode==200){
+				try {
+					textremark.setText(response.getString("message"));
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+
+		@Override
+		public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+			super.onFailure(statusCode, headers, responseString, throwable);
+		}
+	};
+	private JsonHttpResponseHandler sharecancelJsonHttpResponseHandler=new JsonHttpResponseHandler("utf-8"){
+
+		@Override
+		public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+			super.onSuccess(statusCode, headers, response);
+			System.out.println(response.toString());
+			if(statusCode==200){
+				try {
+					textremark.setText(response.getString("message"));
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
+		}
+
+		@Override
+		public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+			super.onFailure(statusCode, headers, responseString, throwable);
+		}
+	};
 }
