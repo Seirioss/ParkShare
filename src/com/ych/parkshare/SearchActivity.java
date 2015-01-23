@@ -12,12 +12,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnKeyListener;
+import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
 
 public class SearchActivity extends Activity {
 	private ActionBar actionBar;
 	private SearchView searchView;
+	private ListView searchresult;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +29,7 @@ public class SearchActivity extends Activity {
 		actionBar.setTitle("返回");
 		actionBar.setDisplayShowHomeEnabled(false);
 		actionBar.setDisplayHomeAsUpEnabled(true);
+		searchresult = (ListView)findViewById(R.id.searchresult);
 
 	}
 
