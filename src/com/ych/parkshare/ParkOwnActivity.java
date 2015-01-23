@@ -6,11 +6,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 public class ParkOwnActivity extends Activity {
-
+	private final static String MENU_SHARE = "分享";
+	private final static String MENU_SHARE_CANLCER = "取消分享";
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_park_own);
+		
 	}
 
 	@Override

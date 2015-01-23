@@ -17,7 +17,9 @@ import com.ych.http.SaxAsyncHttpResponseHandler;
 import com.ych.http.SyncHttpClient;
 import com.ych.http.JsonHttpResponseHandler;
 import com.ych.http.TextHttpResponseHandler;
+import com.ych.tool.AppConstants;
 import com.ych.tool.GlobalVariable;
+import com.ych.tool.SpUtils;
 import com.ych.views.RefreshableView;
 import com.ych.views.RefreshableView.PullToRefreshListener;
 
@@ -104,13 +106,25 @@ public class TabHomeActivity extends Activity {
 
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-			Intent intent =new Intent(TabHomeActivity.this,ParkRentActivity.class);
-			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		
 			String name=((TextView)view.findViewById(R.id.name)).getText().toString();
 			String pk=((TextView)view.findViewById(R.id.pk)).getText().toString();
-			intent.putExtra("name",name );
-			intent.putExtra("pk",pk);
-			startActivity(intent);
+			String currentusername=(String) SpUtils.get(getApplicationContext(), AppConstants.USER_NAME, "");
+			if(currentusername.equals(name)){
+				Intent intent =new Intent(TabHomeActivity.this,ParkOwnActivity.class);
+				intent.putExtra("name",name );
+				intent.putExtra("pk",pk);
+				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				startActivity(intent);
+			}else {
+				Intent intent =new Intent(TabHomeActivity.this,ParkRentActivity.class);
+				intent.putExtra("name",name );
+				intent.putExtra("pk",pk);
+				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				startActivity(intent);
+			}
+			
+			
 		}
 	};
 	private Handler uihHandler=new Handler(){
@@ -138,7 +152,7 @@ public class TabHomeActivity extends Activity {
 				map.put("pk", jsonObject.getString("pk"));
 				JSONObject tempJsonObject=jsonObject.getJSONObject("fields");
 				map.put("address", tempJsonObject.getString("address"));
-				
+
 				map.put("name", tempJsonObject.getString("username"));
 				list.add(map);
 			}

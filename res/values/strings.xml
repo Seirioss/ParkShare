@@ -71,4 +71,7 @@
     <string name="accept">接收申请</string>
     <string name="refuse">拒绝申请</string>
 
+    <string name="activity_text_starttime">开始时间</string>
+    <string name="activity_text_endtime">结束时间</string>
+	
 </resources>

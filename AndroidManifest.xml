@@ -51,6 +51,6 @@
             android:name=".ReceiveRequestActivity"
             android:label="@string/title_activity_receive" >
         </activity>
-    </application>
+   </application>
 
 </manifest>
