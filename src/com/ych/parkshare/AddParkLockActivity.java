@@ -1,5 +1,15 @@
 package com.ych.parkshare;
 
+import org.apache.http.Header;
+import org.json.JSONObject;
+
+import com.ych.http.AsyncHttpClient;
+import com.ych.http.JsonHttpResponseHandler;
+import com.ych.http.PersistentCookieStore;
+import com.ych.http.RequestParams;
+import com.ych.tool.AppConstants;
+import com.ych.tool.GlobalVariable;
+
 import android.app.ActionBar;
 import android.app.Activity;
 import android.view.View.OnClickListener;
@@ -12,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class AddParkLockActivity extends Activity {
 
@@ -20,7 +31,7 @@ public class AddParkLockActivity extends Activity {
 	private EditText lockcodeEditText;
 	private EditText parkaddressEditText;
 	private EditText remarkEditText;
-
+	private AsyncHttpClient asyncHttpClient;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -28,25 +39,7 @@ public class AddParkLockActivity extends Activity {
 
 		ActionBar actionBar = getActionBar();
 		actionBar.setTitle("添加车位锁");
-		actionBar.setIcon(new Drawable() {
-
-			@Override
-			public void setColorFilter(ColorFilter cf) {
-			}
-
-			@Override
-			public void setAlpha(int alpha) {
-			}
-
-			@Override
-			public int getOpacity() {
-				return 0;
-			}
-
-			@Override
-			public void draw(Canvas canvas) {
-			}
-		});
+		actionBar.setDisplayShowHomeEnabled(false);
 		actionBar.setDisplayHomeAsUpEnabled(true);
 
 		locknumberEditText = (EditText) findViewById(R.id.editlocknumber);
@@ -54,23 +47,55 @@ public class AddParkLockActivity extends Activity {
 		parkaddressEditText = (EditText) findViewById(R.id.editparkaddress);
 		remarkEditText = (EditText) findViewById(R.id.editremark);
 		addlockbutton = (Button) findViewById(R.id.addlockbutton);
+		
+		asyncHttpClient = new AsyncHttpClient();
+		PersistentCookieStore PersistentCookieStore = ((GlobalVariable) getApplication()).getPersistentCookieStore();
+		
+		asyncHttpClient.setCookieStore(PersistentCookieStore);
+		
 		addlockbutton.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-
+				String openkey="o";
+				String closekey="c";
+				String macaddress="haha";
+				String serialnumber="haha";
+				String describe="haha";
+				String address=parkaddressEditText.getEditableText().toString();
+				String comment="haha";
+				RequestParams requestParams=new RequestParams();
+				requestParams.put("openkey",openkey );
+				requestParams.put("closekey",closekey );
+				requestParams.put("macaddress",macaddress );
+				requestParams.put("serialnumber",serialnumber );
+				requestParams.put("address", address);
+				requestParams.put("describe", describe);
+				requestParams.put("comment", comment);
+				asyncHttpClient.post(AppConstants.BASE_URL+AppConstants.URL_ADDPARK, requestParams,bookJsonHttpResponseHandler);
 			}
 		});
 	}
+	private JsonHttpResponseHandler bookJsonHttpResponseHandler=new JsonHttpResponseHandler("utf-8"){
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.add_park_lock, menu);
-		return true;
-	}
+		@Override
+		public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+			// TODO Auto-generated method stub
+			if(statusCode==200){
+				Toast.makeText(AddParkLockActivity.this, response.toString(), Toast.LENGTH_SHORT).show();
+			}
+			super.onSuccess(statusCode, headers, response);
+		}
 
+		@Override
+		public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+			// TODO Auto-generated method stub
+			super.onFailure(statusCode, headers, responseString, throwable);
+			Toast.makeText(AddParkLockActivity.this, "添加失败 , 网络有问题"+statusCode,Toast.LENGTH_SHORT).show();
+		}
+		
+	};
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle action bar item clicks here. The action bar will
