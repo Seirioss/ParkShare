@@ -40,11 +40,11 @@ public class TabHostActivity extends TabActivity {
 
 		// Do the same for the other tabs
 
-		intent = new Intent().setClass(this, TabMyCenterActivity.class);
+		intent = new Intent().setClass(this, TabNavigateActivity.class);
 		spec = tabHost.newTabSpec(TAB_STORE).setIndicator("收藏", res.getDrawable(R.drawable.ic_tab_about)).setContent(intent);
 		tabHost.addTab(spec);
 
-		intent = new Intent().setClass(this, TabNavigateActivity.class);
+		intent = new Intent().setClass(this, TabMyCenterActivity.class);
 		spec = tabHost.newTabSpec(TAB_PERSONAL).setIndicator("个人", res.getDrawable(R.drawable.ic_tab_contact)).setContent(intent);
 		tabHost.addTab(spec);
 		// set tab which one you want open first time 0 or 1 or 2
