@@ -3,7 +3,7 @@
     xmlns:linkclick="http://schemas.android.com/apk/res/com.ych.parkshare"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/beige"
+    android:background="@color/powderblue"
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
     android:scrollbars="horizontal"

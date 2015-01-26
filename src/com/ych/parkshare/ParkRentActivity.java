@@ -55,6 +55,7 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class ParkRentActivity extends Activity {
 
@@ -316,7 +317,7 @@ public class ParkRentActivity extends Activity {
 						texttimestart.setText("");
 						switchpark.setEnabled(false);
 						bookstate=true;
-						
+						Toast.makeText(ParkRentActivity.this, response.toString(), Toast.LENGTH_SHORT).show();
 					}
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
