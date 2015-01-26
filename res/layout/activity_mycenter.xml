@@ -22,12 +22,11 @@
             android:src="@drawable/avatar_default" />
 
         <TextView
-            android:id="@+id/editText1"
+            android:id="@+id/usernametext"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:gravity="center_vertical"
-            android:layout_marginLeft="20dp"
-            android:text="@string/username" >
+            android:layout_marginLeft="20dp" >
         </TextView>
     </LinearLayout>
 
@@ -51,7 +50,7 @@
             android:src="@drawable/parklock" />
 
         <TextView
-            android:id="@+id/textView1"
+            android:id="@+id/parmanagment"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:gravity="center_vertical"
@@ -80,7 +79,7 @@
             android:src="@drawable/logout" />
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/logout"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:gravity="center_vertical"
