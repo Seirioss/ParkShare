@@ -18,6 +18,7 @@ import com.ych.tool.GlobalVariable;
 import com.ych.tool.SpUtils;
 
 import android.R.anim;
+import android.R.integer;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -42,6 +43,7 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.Toast;
 
 public class ParkOwnActivity extends Activity {
 
@@ -63,7 +65,9 @@ public class ParkOwnActivity extends Activity {
 	private Map<String, Object> parkinfo;
 	private boolean rentstatus;
 	private boolean sharestatus = true;
-	private int parkslength;
+	private int parkstate;
+	private boolean isborrow;
+	private String macaddress;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +96,7 @@ public class ParkOwnActivity extends Activity {
 		switchpark.setEnabled(false);
 		// asyncHttpClient.post(AppConstants.BASE_URL+AppConstants.URL_PARKINFO,new
 		// RequestParams("parkid",parkpk) ,refreshJsonHttpResponseHandler);
+		asyncHttpClient.post(AppConstants.BASE_URL + AppConstants.URL_PARKINFO, new RequestParams("parkid", parkpk), refreshJsonHttpResponseHandler);
 	}
 
 	@Override
@@ -162,10 +167,10 @@ public class ParkOwnActivity extends Activity {
 		public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 			Message message = null;
 			if (!isChecked) {
-				message = Message.obtain(null, BLEservice.MSG_OPENT_BLE, BLEservice.ADDRESS);
+				message = Message.obtain(null, BLEservice.MSG_OPENT_BLE, macaddress);
 
 			} else {
-				message = Message.obtain(null, BLEservice.MSG_CLOSE_BLE, BLEservice.ADDRESS);
+				message = Message.obtain(null, BLEservice.MSG_CLOSE_BLE, macaddress);
 			}
 			try {
 				if (serviceMessenger != null) {
@@ -203,10 +208,10 @@ public class ParkOwnActivity extends Activity {
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		menu.clear();
 		menu.add(MENU_REFRESH);
-		if (parkslength==1) {
+		if (parkstate == 2) {
 			menu.add(MENU_SHARE);
 		}
-		if (parkslength==2) {
+		if (parkstate == 1&&isborrow==false) {
 			menu.add(MENU_SHARE_CANLCER);
 		}
 		return super.onPrepareOptionsMenu(menu);
@@ -269,48 +274,37 @@ public class ParkOwnActivity extends Activity {
 		public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
 			super.onSuccess(statusCode, headers, response);
 			if (statusCode == 200) {
-				System.out.println(response.toString());
 				try {
-					JSONArray jsonArray=response.getJSONArray("parks");
-					parkslength = jsonArray.length();
-					String describe=jsonArray.getJSONObject(0).getJSONObject("fields").getString("describe");
-					String address=jsonArray.getJSONObject(0).getJSONObject("fields").getString("address");			
+					JSONArray jsonArray = response.getJSONArray("parks");
+					parkstate = response.getInt("parkstate");
+					String describe = jsonArray.getJSONObject(0).getJSONObject("fields").getString("describe");
+					String address = jsonArray.getJSONObject(0).getJSONObject("fields").getString("address");
+					isborrow = jsonArray.getJSONObject(0).getJSONObject("fields").getBoolean("is_borrowed");
 					textaddress.setText(address);
 					textdescription.setText(describe);
-					if (parkslength == 1) {
+					if (parkstate == 2) {
 						textrentstate.setText("车位没有分享");
 						switchpark.setEnabled(true);
 						texttimesend.setText("");
 						texttimestart.setText("");
-						
+						macaddress = jsonArray.getJSONObject(1).getJSONObject("fields").getString("mac_address");
 					}
-					if (parkslength == 2) {
-						textrentstate.setText("车位分享出去，被租用");
+					if (parkstate == 1) {
+						if (isborrow == true) {
+							textrentstate.setText("车位分享出去了,被租用");
+						}else {
+							textrentstate.setText("车位分享出去了,没有被租用");
+						}
 						switchpark.setEnabled(false);
-						String time_start=jsonArray.getJSONObject(1).getJSONObject("fields").getString("start_time");	
-						String time_end=jsonArray.getJSONObject(1).getJSONObject("fields").getString("end_time");	
+						String time_start = jsonArray.getJSONObject(1).getJSONObject("fields").getString("start_time");
+						String time_end = jsonArray.getJSONObject(1).getJSONObject("fields").getString("end_time");
 						texttimesend.setText(time_start);
 						texttimestart.setText(time_end);
-					}
-					if (parkslength == 3) {
-						textrentstate.setText("车位分享出去，没有被租用");
-						switchpark.setEnabled(false);
 					}
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				/*
-				 * //parkinfo=jsontomap(response);
-				 * textdescription.setText(parkinfo.get("describe").toString());
-				 * textaddress.setText(parkinfo.get("address").toString());
-				 * texttimestart.setText(parkinfo.get("start_time").toString());
-				 * texttimesend.setText(parkinfo.get("end_time").toString());
-				 * if(Boolean.valueOf(parkinfo.get("is_borrowed").toString())){
-				 * textrentstate.setText("被租用"); switchpark.setEnabled(false);
-				 * }else { textrentstate.setText("无人租用");
-				 * switchpark.setEnabled(true); } textremark.setText("刷新成功");
-				 */
 			}
 		}
 
@@ -329,6 +323,7 @@ public class ParkOwnActivity extends Activity {
 			if (statusCode == 200) {
 				try {
 					textremark.setText(response.getString("message"));
+					asyncHttpClient.post(AppConstants.BASE_URL + AppConstants.URL_PARKINFO, new RequestParams("parkid", parkpk), refreshJsonHttpResponseHandler);
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -350,6 +345,7 @@ public class ParkOwnActivity extends Activity {
 			if (statusCode == 200) {
 				try {
 					textremark.setText(response.getString("message"));
+					asyncHttpClient.post(AppConstants.BASE_URL + AppConstants.URL_PARKINFO, new RequestParams("parkid", parkpk), refreshJsonHttpResponseHandler);
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

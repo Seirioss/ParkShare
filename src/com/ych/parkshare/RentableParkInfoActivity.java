@@ -45,6 +45,7 @@ public class RentableParkInfoActivity extends Activity {
 	private String pk;
 	private AsyncHttpClient asyncHttpClient;
 	private Map<String, Object> parkinfo;;
+	private int parkstate;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -117,6 +118,7 @@ public class RentableParkInfoActivity extends Activity {
 					if(status==0){
 						String mes=response.getString("message");
 						Toast.makeText(RentableParkInfoActivity.this,mes, Toast.LENGTH_SHORT).show();
+						makeorderbutton.setEnabled(false);
 					}
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
@@ -142,10 +144,24 @@ public class RentableParkInfoActivity extends Activity {
 			// TODO Auto-generated method stub
 			super.onSuccess(statusCode, headers, response);
 			if(statusCode==200){
-				parkinfo= jsontomap(response);
-				 editparkdescription.setText(parkinfo.get("describe").toString());
-				 editparkaddress.setText(parkinfo.get("address").toString());
-				 editofeescale.setText(parkinfo.get("price").toString());
+				try {
+					parkstate=response.getInt("parkstate");
+					if(parkstate==4){
+						String address=response.getJSONArray("parks").getJSONObject(0).getJSONObject("fields").getString("address");
+						String describe=response.getJSONArray("parks").getJSONObject(0).getJSONObject("fields").getString("describe");
+						String end_time=response.getJSONArray("parks").getJSONObject(1).getJSONObject("fields").getString("end_time");
+						String start_time=response.getJSONArray("parks").getJSONObject(1).getJSONObject("fields").getString("start_time");
+						String price=response.getJSONArray("parks").getJSONObject(1).getJSONObject("fields").getString("price");
+						editparkaddress.setText(address);
+						editparkdescription.setText(describe);
+						editendtime.setText(end_time);
+						editstarttime.setText(start_time);
+						editofeescale.setText(price);
+					}
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		}
 

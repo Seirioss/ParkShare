@@ -21,6 +21,7 @@ import com.ych.tool.GlobalVariable;
 import com.ych.tool.SpUtils;
 
 import android.R.anim;
+import android.R.bool;
 import android.R.integer;
 import android.R.string;
 import android.app.ActionBar;
@@ -77,6 +78,9 @@ public class ParkRentActivity extends Activity {
 	private Map<String, Object> parkinfo;
 	private AsyncHttpClient asyncHttpClient;
 	private boolean bookstate;
+	private int parkstate;
+	private boolean is_borrowed;
+	private String macaddress=new String();
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -126,11 +130,13 @@ public class ParkRentActivity extends Activity {
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		menu.clear();
-		if(!bookstate){
-			menu.add(MENU_STORE);
-			menu.add(MENU_REFRESH);
+		menu.add(MENU_REFRESH);
+		menu.add(MENU_STORE);
+		if(parkstate==3&&is_borrowed==true)
+		{
 			menu.add(MENU_BOOK_CANLCER);
 		}
+
 		
 		return super.onPrepareOptionsMenu(menu);
 	}
@@ -199,10 +205,10 @@ public class ParkRentActivity extends Activity {
 		public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 			Message message = null;
 			if (!isChecked) {
-				message = Message.obtain(null, BLEservice.MSG_OPENT_BLE, BLEservice.ADDRESS);
+				message = Message.obtain(null, BLEservice.MSG_OPENT_BLE, macaddress);
 
 			} else {
-				message = Message.obtain(null, BLEservice.MSG_CLOSE_BLE, BLEservice.ADDRESS);
+				message = Message.obtain(null, BLEservice.MSG_CLOSE_BLE, macaddress);
 			}
 			try {
 				if (serviceMessenger != null) {
@@ -268,15 +274,34 @@ public class ParkRentActivity extends Activity {
 			super.onSuccess(statusCode, headers, response);
 			if (statusCode == 200) {
 				try {
-					int status = response.getInt("status");
-					if (status == 0) {
+					parkstate=response.getInt("parkstate");
+					is_borrowed=response.getJSONArray("parks").getJSONObject(0).getJSONObject("fields").getBoolean("is_borrowed");
+					String address=response.getJSONArray("parks").getJSONObject(0).getJSONObject("fields").getString("address");
+					String describe=response.getJSONArray("parks").getJSONObject(0).getJSONObject("fields").getString("describe");
+					String time_start=new String();
+					String time_end=new String();
+					if(parkstate==3&&is_borrowed==true){
+						time_start=response.getJSONArray("parks").getJSONObject(1).getJSONObject("fields").getString("start_time");
+						time_end=response.getJSONArray("parks").getJSONObject(1).getJSONObject("fields").getString("end_time");
+						macaddress=response.getJSONArray("parks").getJSONObject(2).getJSONObject("fields").getString("mac_address");
+						switchpark.setEnabled(true);
+					}else {
+						switchpark.setEnabled(false);
+					}
+					textaddress.setText(address);
+					textdescription.setText(describe);
+					texttimesend.setText(time_end);
+					texttimestart.setText(time_start);
+					
+					/*if (status == 0) {
 						parkinfo=jsontomap(response);
 						textdescription.setText(parkinfo.get("describe").toString());
 						texttimestart.setText(parkinfo.get("start_time").toString());
 						texttimesend.setText(parkinfo.get("end_time").toString());
 						textaddress.setText(parkinfo.get("address").toString());
 						textremark.setText("刷新成功："+statusCode);
-					}
+					}*/
+					
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -309,6 +334,7 @@ public class ParkRentActivity extends Activity {
 			if(statusCode==200){
 				try {
 					int status= response.getInt("status");
+					System.out.println(response.toString());
 					if(status==0){
 						textremark.setText("退订成功\n"+(int)(Math.random()*100+1));
 						textaddress.setText("");
@@ -317,7 +343,11 @@ public class ParkRentActivity extends Activity {
 						texttimestart.setText("");
 						switchpark.setEnabled(false);
 						bookstate=true;
-						Toast.makeText(ParkRentActivity.this, response.toString(), Toast.LENGTH_SHORT).show();
+						asyncHttpClient.post(AppConstants.BASE_URL + AppConstants.URL_PARKINFO, new RequestParams("parkid", parkpk), refreshuiJsonHttpResponseHandler);
+						//Toast.makeText(ParkRentActivity.this, response.toString(), Toast.LENGTH_SHORT).show();
+					}
+					if(status==3){
+						textremark.setText(response.getString("message"));
 					}
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
