@@ -166,7 +166,7 @@ public class ParkOwnActivity extends Activity {
 		@Override
 		public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 			Message message = null;
-			if (!isChecked) {
+			if (isChecked) {
 				message = Message.obtain(null, BLEservice.MSG_OPENT_BLE, macaddress);
 
 			} else {

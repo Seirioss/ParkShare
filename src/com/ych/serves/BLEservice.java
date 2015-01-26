@@ -57,7 +57,9 @@ public class BLEservice extends Service {
 			case MSG_OPENT_BLE:
 				if (checkBLEstate()) {
 					String mac = (String) msg.obj;
+					
 					if (BluetoothAdapter.checkBluetoothAddress(mac)) {
+						System.out.println("MSG_OPENT_BLE"+mac);
 						BluetoothDevice bluetoothDevice = bluetoothAdapter.getRemoteDevice(mac);
 						bluetoothDevice.connectGatt(getApplicationContext(), false, new SwitchPark(SwitchPark.OPEN));
 					}
@@ -68,7 +70,9 @@ public class BLEservice extends Service {
 			case MSG_CLOSE_BLE:
 				if (checkBLEstate()) {
 					String mac = (String) msg.obj;
+					
 					if (BluetoothAdapter.checkBluetoothAddress(mac)) {
+						System.out.println("MSG_CLOSE_BLE"+mac);
 						BluetoothDevice bluetoothDevice = bluetoothAdapter.getRemoteDevice(mac);
 						bluetoothDevice.connectGatt(getApplicationContext(), false,new SwitchPark(SwitchPark.CLOSE));
 					}
