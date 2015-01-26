@@ -27,10 +27,13 @@ import android.widget.Toast;
 public class AddParkLockActivity extends Activity {
 
 	private Button addlockbutton;
-	private EditText locknumberEditText;
-	private EditText lockcodeEditText;
-	private EditText parkaddressEditText;
-	private EditText remarkEditText;
+	private EditText editTextopenkey;
+	private EditText editTextclosekey;
+	private EditText editTextmacaddress;
+	private EditText editTextserialnumber;
+	private EditText editTextdescribe;
+	private EditText editTextaddress;
+
 	private AsyncHttpClient asyncHttpClient;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -42,10 +45,13 @@ public class AddParkLockActivity extends Activity {
 		actionBar.setDisplayShowHomeEnabled(false);
 		actionBar.setDisplayHomeAsUpEnabled(true);
 
-		locknumberEditText = (EditText) findViewById(R.id.editlocknumber);
-		lockcodeEditText = (EditText) findViewById(R.id.editlockcode);
-		parkaddressEditText = (EditText) findViewById(R.id.editparkaddress);
-		remarkEditText = (EditText) findViewById(R.id.editremark);
+		editTextaddress=(EditText)findViewById(R.id.editopenkey);
+		editTextopenkey=(EditText)findViewById(R.id.editopenkey);
+		editTextclosekey=(EditText)findViewById(R.id.editclosekey);
+		editTextmacaddress=(EditText)findViewById(R.id.editmac);
+		editTextserialnumber=(EditText)findViewById(R.id.editlocknumber);
+		editTextdescribe=(EditText)findViewById(R.id.editdescribe);
+		editTextaddress=(EditText)findViewById(R.id.editparkaddress);
 		addlockbutton = (Button) findViewById(R.id.addlockbutton);
 		
 		asyncHttpClient = new AsyncHttpClient();
@@ -58,12 +64,12 @@ public class AddParkLockActivity extends Activity {
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				String openkey="o";
-				String closekey="c";
-				String macaddress="haha";
-				String serialnumber="haha";
-				String describe="haha";
-				String address=parkaddressEditText.getEditableText().toString();
+				String openkey=editTextopenkey.getText().toString();
+				String closekey=editTextopenkey.getText().toString();
+				String macaddress=editTextmacaddress.getText().toString();
+				String serialnumber=editTextserialnumber.getText().toString();
+				String describe=editTextdescribe.getText().toString();
+				String address=editTextaddress.getText().toString();
 				String comment="haha";
 				RequestParams requestParams=new RequestParams();
 				requestParams.put("openkey",openkey );

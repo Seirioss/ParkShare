@@ -74,5 +74,8 @@
     <string name="activity_text_starttime">开始时间</string>
     <string name="activity_text_endtime">结束时间</string>
     <string name="rentstate">租用状态</string>
+    <string name="openkey">开锁密钥</string>
+    <string name="closekey">关锁密钥</string>
+    <string name="macaddress">蓝牙地址</string>
 	
 </resources>
