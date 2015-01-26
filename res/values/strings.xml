@@ -74,5 +74,7 @@
     <string name="activity_text_starttime">开始时间</string>
     <string name="activity_text_endtime">结束时间</string>
     <string name="rentstate">租用状态</string>
+    <string name="parkmanagment">我的车位管理</string>
+    <string name="logout">注销账户</string>
 	
 </resources>
