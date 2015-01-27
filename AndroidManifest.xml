@@ -38,7 +38,10 @@
         <activity android:name=".TabHomeActivity" />
         <activity android:name=".TabMyCenterActivity" />
         <activity android:name=".TabNavigateActivity" />
-        <activity android:name=".TabHostActivity" />
+        <activity 
+            android:name=".TabHostActivity" 
+            android:logo="@drawable/ic_drawer">
+            </activity>>
         <activity android:name=".ParkRentActivity" />
         <activity android:name=".SearchActivity" />
         <activity android:name=".AddParkLockActivity" />
