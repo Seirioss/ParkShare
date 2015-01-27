@@ -89,6 +89,7 @@ public class LogInActivity extends Activity {
 		params.add("username", name);
 		params.add("password", password);
 		PersistentCookieStore persistentCookieStore=((GlobalVariable)getApplication()).getPersistentCookieStore();
+		persistentCookieStore.clear();
 		client.setCookieStore(persistentCookieStore);
 		//测试账户:name:test   password:test
 		client.post("http://121.40.61.76:8080/parkManagementSystem/login/", params, new TextHttpResponseHandler("utf-8") {

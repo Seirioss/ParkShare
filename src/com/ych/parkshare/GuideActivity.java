@@ -24,13 +24,10 @@ public class GuideActivity extends Activity implements OnClickListener, OnPageCh
 	private List<View> views;
 	private Button button;
 
-	// ��ͼƬ��Դ
 	private static final int[] pics = { R.drawable.guide1, R.drawable.guide2, R.drawable.guide3, R.drawable.guide4 };
 
-	// �ײ�С��ͼƬ
 	private ImageView[] dots;
 
-	// ��¼��ǰѡ��λ��
 	private int currentIndex;
 
 	@Override
@@ -43,7 +40,6 @@ public class GuideActivity extends Activity implements OnClickListener, OnPageCh
 
 		LinearLayout.LayoutParams mParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
-		// ��ʼ����ͼƬ�б�
 		for (int i = 0; i < pics.length; i++) {
 			ImageView iv = new ImageView(this);
 			iv.setLayoutParams(mParams);
@@ -51,10 +47,10 @@ public class GuideActivity extends Activity implements OnClickListener, OnPageCh
 			views.add(iv);
 		}
 		vp = (ViewPager) findViewById(R.id.viewpager);
-		// ��ʼ��Adapter
+		
 		vpAdapter = new GuideViewPagerAdapter(views);
 		vp.setAdapter(vpAdapter);
-		// �󶨻ص�
+	
 		vp.setOnPageChangeListener(this);
 		button = (Button) findViewById(R.id.button);
 
@@ -70,7 +66,7 @@ public class GuideActivity extends Activity implements OnClickListener, OnPageCh
 			}
 		});
 
-		// ��ʼ���ײ�С��
+		
 		initDots();
 
 	}
