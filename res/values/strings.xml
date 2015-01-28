@@ -70,7 +70,6 @@
     <string name="rentertelephone">申请者联系电话</string>
     <string name="accept">接收申请</string>
     <string name="refuse">拒绝申请</string>
-
     <string name="activity_text_starttime">开始时间</string>
     <string name="activity_text_endtime">结束时间</string>
     <string name="rentstate">租用状态</string>
@@ -82,4 +81,6 @@
     <string name="longitude">经度</string>
     <string name="latitude">维度</string>
 	
+    <string name="title_activity_bnavigator">BNavigatorActivity</string>
+
 </resources>
