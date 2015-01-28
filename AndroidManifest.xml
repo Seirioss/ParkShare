@@ -41,9 +41,13 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+        <!--  -->
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="buiszDnXAPUNv6hBMobM0jGo" />
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="H1Ko7kw7sUFHEaXZ2yITfbCc" />
 
         <activity
             android:name=".MainActivity"
@@ -84,8 +88,8 @@
 
         <activity
             android:name=".BNavigatorActivity"
-            android:label="@string/title_activity_bnavigator" 
-            android:configChanges="orientation|screenSize|keyboard|keyboardHidden">
+            android:configChanges="orientation|screenSize|keyboard|keyboardHidden"
+            android:label="@string/title_activity_bnavigator" >
         </activity>
     </application>
 
