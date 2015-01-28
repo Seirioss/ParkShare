@@ -28,7 +28,7 @@ public class TabHostActivity extends TabActivity {
 		setContentView(R.layout.activity_tab_host);
 		actionBar = getActionBar();
 		actionBar.setTitle("主页");
-//		actionBar.setBackgroundDrawable(getResources().getDrawable(R.drawable.actionbar_background));
+     	actionBar.setBackgroundDrawable(getResources().getDrawable(R.drawable.actionbar_background));
 		//actionBar.setDisplayShowHomeEnabled(false);
 		
 		Resources res = getResources(); // Resource object to get Drawables
