@@ -14,6 +14,7 @@ import com.ych.http.AsyncHttpClient;
 import com.ych.http.JsonHttpResponseHandler;
 import com.ych.http.PersistentCookieStore;
 import com.ych.http.RequestParams;
+import com.ych.http.TextHttpResponseHandler;
 import com.ych.parkshare.R.menu;
 import com.ych.serves.BLEservice;
 import com.ych.tool.AppConstants;
@@ -75,11 +76,10 @@ public class ParkRentActivity extends Activity {
 	private TextView textaddress;
 	private TextView textremark;
 	private String parkpk;
-	private Map<String, Object> parkinfo;
 	private AsyncHttpClient asyncHttpClient;
-	private boolean bookstate;
-	private int parkstate;
 	private boolean is_borrowed;
+	private boolean is_shared;
+	
 	private String macaddress=new String();
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -132,11 +132,9 @@ public class ParkRentActivity extends Activity {
 		menu.clear();
 		menu.add(MENU_REFRESH);
 		menu.add(MENU_STORE);
-		if(parkstate==3&&is_borrowed==true)
-		{
+		if(is_borrowed==true&&is_shared==true){
 			menu.add(MENU_BOOK_CANLCER);
 		}
-
 		
 		return super.onPrepareOptionsMenu(menu);
 	}
@@ -157,7 +155,7 @@ public class ParkRentActivity extends Activity {
 
 		}
 		if (title.equals(MENU_BOOK_CANLCER)) {
-			asyncHttpClient.post(AppConstants.BASE_URL + AppConstants.URL_BOOKCANCEL, new RequestParams("parkid", parkpk), bookcancelJsonHttpResponseHandler);
+			asyncHttpClient.post(AppConstants.BASE_URL + AppConstants.URL_BOOKCANCEL, new RequestParams("parkid", parkpk), bookcanceltextHttpResponseHandler);
 		}
 		if (title.equals(MENU_REFRESH)) {
 			asyncHttpClient.post(AppConstants.BASE_URL + AppConstants.URL_PARKINFO, new RequestParams("parkid", parkpk), refreshuiJsonHttpResponseHandler);
@@ -172,33 +170,6 @@ public class ParkRentActivity extends Activity {
 		super.onDestroy();
 		unbindService(conn);
 	}
-
-	private Map<String, Object> jsontomap(JSONObject jsonObject) {
-		Map<String, Object> map = new HashMap<String, Object>();
-		try {
-			JSONArray jsonArrayinfos = jsonObject.getJSONArray("parks");
-			JSONObject jsonObject1 = jsonArrayinfos.getJSONObject(0).getJSONObject("fields");
-			JSONObject jsonObject2 = jsonArrayinfos.getJSONObject(1).getJSONObject("fields");
-			JSONObject jsonObject3 = jsonArrayinfos.getJSONObject(2).getJSONObject("fields");
-			map.put("username", jsonObject1.getString("username"));
-			map.put("is_borrowed", jsonObject1.getBoolean("is_borrowed"));
-			map.put("comment", jsonObject1.getString("comment"));
-			map.put("describe", jsonObject1.getString("describe"));
-			map.put("address", jsonObject1.getString("address"));
-			map.put("user_borrowed", jsonObject2.getString("user_borrowed"));
-			map.put("price", jsonObject2.getString("price"));
-			map.put("start_time", jsonObject2.getString("start_time"));
-			map.put("end_time", jsonObject2.getString("end_time"));
-			map.put("mac_address", jsonObject3.getString("mac_address"));
-			map.put("close_key", jsonObject3.getString("close_key"));
-			map.put("open_key", jsonObject3.getString("open_key"));
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return map;
-	}
-
 	private OnCheckedChangeListener onCheckedChangeListener = new OnCheckedChangeListener() {
 
 		@Override
@@ -220,87 +191,29 @@ public class ParkRentActivity extends Activity {
 			}
 		}
 	};
-
-	private void sharepark() {
-		LayoutInflater inflater = getLayoutInflater();
-		final View layout = inflater.inflate(R.layout.dialog_sharetime, (ViewGroup) findViewById(R.id.sharetime));
-		AlertDialog.Builder builder = new Builder(ParkRentActivity.this);
-		builder.setTitle("分享时间");
-		builder.setView(layout);
-		builder.setNegativeButton("取消", null);
-		builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				EditText editTextstart = (EditText) layout.findViewById(R.id.dialog_edit_starttime);
-				EditText editTextend = (EditText) layout.findViewById(R.id.dialog_edit_endtime);
-				String timeStart = editTextstart.getEditableText().toString();
-				String timeend = editTextend.getEditableText().toString();
-				String name = (String) SpUtils.get(getApplicationContext(), "name", "");
-				AsyncHttpClient client = new AsyncHttpClient();
-				PersistentCookieStore persistentCookieStore = ((GlobalVariable) getApplication()).getPersistentCookieStore();
-				client.setCookieStore(persistentCookieStore);
-				RequestParams requestParams = new RequestParams();
-				requestParams.put("parkid", parkpk);
-				requestParams.put("starttime", timeStart);
-				requestParams.put("endtime", timeend);
-				requestParams.put("price", 100);
-				System.out.println(timeStart);
-				System.out.println(timeend);
-				System.out.println(parkpk);
-				client.post("http://121.40.61.76:8080/parkManagementSystem/user/share/", requestParams, new JsonHttpResponseHandler("utf-8") {
-
-					@Override
-					public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-						super.onSuccess(statusCode, headers, response);
-						System.out.println(response.toString());
-					}
-
-					@Override
-					public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-						super.onFailure(statusCode, headers, responseString, throwable);
-					}
-
-				});
-
-			}
-		});
-		builder.create().show();
-	}
-
 	private JsonHttpResponseHandler refreshuiJsonHttpResponseHandler = new JsonHttpResponseHandler("utf-8") {
 
 		public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
 			super.onSuccess(statusCode, headers, response);
 			if (statusCode == 200) {
 				try {
-					parkstate=response.getInt("parkstate");
-					is_borrowed=response.getJSONArray("parks").getJSONObject(0).getJSONObject("fields").getBoolean("is_borrowed");
-					String address=response.getJSONArray("parks").getJSONObject(0).getJSONObject("fields").getString("address");
-					String describe=response.getJSONArray("parks").getJSONObject(0).getJSONObject("fields").getString("describe");
-					String time_start=new String();
-					String time_end=new String();
-					if(parkstate==3&&is_borrowed==true){
-						time_start=response.getJSONArray("parks").getJSONObject(1).getJSONObject("fields").getString("start_time");
-						time_end=response.getJSONArray("parks").getJSONObject(1).getJSONObject("fields").getString("end_time");
-						macaddress=response.getJSONArray("parks").getJSONObject(2).getJSONObject("fields").getString("mac_address");
+					is_borrowed=response.getBoolean("is_borrowed");
+					is_shared=response.getBoolean("is_shared");
+					String address=response.getString("address");
+					String describe=response.getString("describe");
+					String time_start=response.getJSONObject("shareinfo").getString("start_time");
+					String time_end=response.getJSONObject("shareinfo").getString("end_time");
+					macaddress=response.getJSONObject("lockkey").getString("mac_address");
+					if(is_borrowed==true&&is_shared==true){
 						switchpark.setEnabled(true);
-					}else {
+					}
+					if (is_borrowed==false) {
 						switchpark.setEnabled(false);
 					}
 					textaddress.setText(address);
 					textdescription.setText(describe);
 					texttimesend.setText(time_end);
 					texttimestart.setText(time_start);
-					
-					/*if (status == 0) {
-						parkinfo=jsontomap(response);
-						textdescription.setText(parkinfo.get("describe").toString());
-						texttimestart.setText(parkinfo.get("start_time").toString());
-						texttimesend.setText(parkinfo.get("end_time").toString());
-						textaddress.setText(parkinfo.get("address").toString());
-						textremark.setText("刷新成功："+statusCode);
-					}*/
 					
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
@@ -327,39 +240,28 @@ public class ParkRentActivity extends Activity {
 		}
 		
 	};
-	private JsonHttpResponseHandler bookcancelJsonHttpResponseHandler = new JsonHttpResponseHandler("utf-8") {
+	private TextHttpResponseHandler bookcanceltextHttpResponseHandler=new TextHttpResponseHandler("utf-8") {
+		
 		@Override
-		public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-			super.onSuccess(statusCode, headers, response);
+		public void onSuccess(int statusCode, Header[] headers, String responseString) {
 			if(statusCode==200){
-				try {
-					int status= response.getInt("status");
-					System.out.println(response.toString());
-					if(status==0){
-						textremark.setText("退订成功\n"+(int)(Math.random()*100+1));
-						textaddress.setText("");
-						textdescription.setText("");
-						texttimesend.setText("");
-						texttimestart.setText("");
-						switchpark.setEnabled(false);
-						bookstate=true;
-						asyncHttpClient.post(AppConstants.BASE_URL + AppConstants.URL_PARKINFO, new RequestParams("parkid", parkpk), refreshuiJsonHttpResponseHandler);
-						//Toast.makeText(ParkRentActivity.this, response.toString(), Toast.LENGTH_SHORT).show();
-					}
-					if(status==3){
-						textremark.setText(response.getString("message"));
-					}
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				if(responseString.equals("0")){
+					textremark.setText("退订成功\n"+(int)(Math.random()*100+1));
+					textaddress.setText("");
+					textdescription.setText("");
+					texttimesend.setText("");
+					texttimestart.setText("");
+					switchpark.setEnabled(false);
+					asyncHttpClient.post(AppConstants.BASE_URL + AppConstants.URL_PARKINFO, new RequestParams("parkid", parkpk), refreshuiJsonHttpResponseHandler);
+				}else {
+					Toast.makeText(ParkRentActivity.this, responseString, Toast.LENGTH_SHORT).show();
 				}
 			}
 		}
-
+		
 		@Override
 		public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-			super.onFailure(statusCode, headers, responseString, throwable);
+			
 		}
-		
 	};
 }

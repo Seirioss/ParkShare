@@ -50,7 +50,7 @@ public class SearchActivity extends Activity {
 	private String parkpk;
 	private Map<String, String> rentableparkinfo;
 	private AsyncHttpClient client;
-	private List<Map<String, String>> data = new ArrayList<Map<String, String>>();
+	private List<Map<String, String>> data;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -88,12 +88,12 @@ public class SearchActivity extends Activity {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 			// TODO Auto-generated method stub
-			TextView textView=(TextView)view.findViewById(android.R.id.text1);
+			TextView textView = (TextView) view.findViewById(android.R.id.text1);
 			Intent intent = new Intent(SearchActivity.this, RentableParkInfoActivity.class);
 			intent.putExtra("pk", textView.getText());
 			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
-		
+
 		}
 	};
 
@@ -122,36 +122,27 @@ public class SearchActivity extends Activity {
 	private JsonHttpResponseHandler searchJsonHttpResponseHandler = new JsonHttpResponseHandler("utf-8") {
 
 		@Override
-		public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-
-			super.onSuccess(statusCode, headers, response);
+		public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
 			if (statusCode == 200) {
+				data = new ArrayList<Map<String, String>>();
 				try {
-					int status = response.getInt("status");
-					if (status == 0) {
-						JSONArray parkjsonArray = response.getJSONArray("parks");
-						SimpleAdapter simpleAdapter = new SimpleAdapter(SearchActivity.this, data, android.R.layout.simple_list_item_2, 
-								new String[] { "pk", "address" }, 
-								new int[] { android.R.id.text1,android.R.id.text2 });
-
-						for (int i = 0; i < parkjsonArray.length(); i++) {
-							JSONObject parkObject = parkjsonArray.getJSONObject(i);
-							String pk = parkObject.getString("pk");
-							JSONObject fieldsObject=parkObject.getJSONObject("fields");
-							String address= fieldsObject.getString("address");
-							Map<String, String> map = new HashMap<String, String>(); 
-							map.put("pk", pk);
-							map.put("address", address);
-							data.add(map);
-
-						}
-						listViewsearch.setAdapter(simpleAdapter);
+					for (int i = 0; i < response.length(); i++) {
+						Map<String, String> map = new HashMap<String, String>();
+						JSONObject jsonObject = response.getJSONObject(i);
+						String pk = jsonObject.getString("pk");
+						String address = jsonObject.getString("address");
+						map.put("pk", pk);
+						map.put("address", address);
+						data.add(map);
 					}
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+				SimpleAdapter simpleAdapter = new SimpleAdapter(SearchActivity.this, data, android.R.layout.simple_list_item_2, new String[] { "pk", "address" }, new int[] { android.R.id.text1, android.R.id.text2 });
+				listViewsearch.setAdapter(simpleAdapter);
 			}
+			super.onSuccess(statusCode, headers, response);
 		}
 
 		@Override
@@ -160,21 +151,5 @@ public class SearchActivity extends Activity {
 		}
 
 	};
-
-	private Map<String, String> jsontomap(JSONObject jsonObject) {
-		Map<String, String> map = new HashMap<String, String>();
-		try {
-			JSONObject jsonObject1 = jsonObject.getJSONObject("status");
-			JSONArray jsonArray = jsonObject.getJSONArray("parks");
-			JSONObject jsonObject2 = jsonArray.getJSONObject(0).getJSONObject("fields");
-			// map.put("status", jsonObject1.getString("status"));
-			if (jsonObject1.equals(1)) {
-				map.put("username", jsonObject2.getString("username"));
-			}
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-		return map;
-	}
 
 }

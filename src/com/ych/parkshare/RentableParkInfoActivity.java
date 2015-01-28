@@ -12,6 +12,7 @@ import com.ych.http.AsyncHttpClient;
 import com.ych.http.JsonHttpResponseHandler;
 import com.ych.http.PersistentCookieStore;
 import com.ych.http.RequestParams;
+import com.ych.http.TextHttpResponseHandler;
 import com.ych.tool.AppConstants;
 import com.ych.tool.GlobalVariable;
 
@@ -68,18 +69,18 @@ public class RentableParkInfoActivity extends Activity {
 		editremark = (EditText) findViewById(R.id.editremark);
 		makeorderbutton.setOnClickListener(OnClickListener);
 		pk = getIntent().getStringExtra("pk");
-		
+
 		makeorderbutton.setOnClickListener(OnClickListener);
-		
+
 		asyncHttpClient = new AsyncHttpClient();
 		PersistentCookieStore PersistentCookieStore = ((GlobalVariable) getApplication()).getPersistentCookieStore();
-		RequestParams requestParams=new RequestParams();
+		RequestParams requestParams = new RequestParams();
 		requestParams.put("parkid", pk);
 		asyncHttpClient.setCookieStore(PersistentCookieStore);
-		asyncHttpClient.post(AppConstants.BASE_URL+AppConstants.URL_PARKINFO, requestParams,refreshjsonhHttpResponseHandler);
+		asyncHttpClient.post(AppConstants.BASE_URL + AppConstants.URL_PARKINFO, requestParams, refreshjsonhHttpResponseHandler);
 
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// TODO Auto-generated method stub
@@ -99,43 +100,27 @@ public class RentableParkInfoActivity extends Activity {
 		@Override
 		public void onClick(View arg0) {
 			// TODO Auto-generated method stub
-			String time_start=editstarttime.getText().toString();
-			String time_end=editendtime.getText().toString();
-			RequestParams requestParams=new RequestParams();
+			RequestParams requestParams = new RequestParams();
 			requestParams.put("parkid", pk);
-			asyncHttpClient.post(AppConstants.BASE_URL+AppConstants.URL_BOOK,requestParams, bookjsonhHttpResponseHandler);
+			asyncHttpClient.post(AppConstants.BASE_URL + AppConstants.URL_BOOK, requestParams, booktexthHttpResponseHandler);
 		}
 	};
 
-	private JsonHttpResponseHandler bookjsonhHttpResponseHandler = new JsonHttpResponseHandler("utf-8") {
+	private TextHttpResponseHandler booktexthHttpResponseHandler = new TextHttpResponseHandler("utf-8") {
 
 		@Override
-		public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-			// TODO Auto-generated method stub
-			if(statusCode==200){
-				try {
-					int status=response.getInt("status");
-					if(status==0){
-						String mes=response.getString("message");
-						Toast.makeText(RentableParkInfoActivity.this,mes, Toast.LENGTH_SHORT).show();
-						makeorderbutton.setEnabled(false);
-					}
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
+		public void onSuccess(int statusCode, Header[] headers, String responseString) {
+			if (responseString.equals(responseString)) {
+				Toast.makeText(RentableParkInfoActivity.this, "预约成功", Toast.LENGTH_SHORT).show();
+				makeorderbutton.setEnabled(false);
+			}else {
+				Toast.makeText(RentableParkInfoActivity.this, responseString, Toast.LENGTH_LONG).show();
 			}
-			super.onSuccess(statusCode, headers, response);
 		}
 
 		@Override
 		public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-			// TODO Auto-generated method stub
-			Toast.makeText(RentableParkInfoActivity.this, "预约失败，网络错误", Toast.LENGTH_SHORT).show();
-			super.onFailure(statusCode, headers, responseString, throwable);
 		}
-		
 	};
 	private JsonHttpResponseHandler refreshjsonhHttpResponseHandler = new JsonHttpResponseHandler("utf-8") {
 
@@ -143,21 +128,18 @@ public class RentableParkInfoActivity extends Activity {
 		public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
 			// TODO Auto-generated method stub
 			super.onSuccess(statusCode, headers, response);
-			if(statusCode==200){
+			if (statusCode == 200) {
 				try {
-					parkstate=response.getInt("parkstate");
-					if(parkstate==4){
-						String address=response.getJSONArray("parks").getJSONObject(0).getJSONObject("fields").getString("address");
-						String describe=response.getJSONArray("parks").getJSONObject(0).getJSONObject("fields").getString("describe");
-						String end_time=response.getJSONArray("parks").getJSONObject(1).getJSONObject("fields").getString("end_time");
-						String start_time=response.getJSONArray("parks").getJSONObject(1).getJSONObject("fields").getString("start_time");
-						String price=response.getJSONArray("parks").getJSONObject(1).getJSONObject("fields").getString("price");
-						editparkaddress.setText(address);
-						editparkdescription.setText(describe);
-						editendtime.setText(end_time);
-						editstarttime.setText(start_time);
-						editofeescale.setText(price);
-					}
+					String address = response.getString("address");
+					String describe = response.getString("describe");
+					String end_time = response.getJSONObject("shareinfo").getString("end_time");
+					String start_time = response.getJSONObject("shareinfo").getString("start_time");
+					String price = response.getJSONObject("shareinfo").getString("price");
+					editparkaddress.setText(address);
+					editparkdescription.setText(describe);
+					editendtime.setText(end_time);
+					editstarttime.setText(start_time);
+					editofeescale.setText(price);
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -170,33 +152,8 @@ public class RentableParkInfoActivity extends Activity {
 			// TODO Auto-generated method stub
 			Toast.makeText(RentableParkInfoActivity.this, "更新失败", Toast.LENGTH_SHORT).show();
 			super.onFailure(statusCode, headers, responseString, throwable);
-			
+
 		}
-		
+
 	};
-	private Map<String, Object> jsontomap(JSONObject jsonObject) {
-		Map<String, Object> map = new HashMap<String, Object>();
-		try {
-			JSONArray jsonArrayinfos = jsonObject.getJSONArray("parks");
-			JSONObject jsonObject1 = jsonArrayinfos.getJSONObject(0).getJSONObject("fields");
-			JSONObject jsonObject2 = jsonArrayinfos.getJSONObject(1).getJSONObject("fields");
-			JSONObject jsonObject3 = jsonArrayinfos.getJSONObject(2).getJSONObject("fields");
-			map.put("username", jsonObject1.getString("username"));
-			map.put("is_borrowed", jsonObject1.getBoolean("is_borrowed"));
-			map.put("comment", jsonObject1.getString("comment"));
-			map.put("describe", jsonObject1.getString("describe"));
-			map.put("address", jsonObject1.getString("address"));
-			map.put("user_borrowed", jsonObject2.getString("user_borrowed"));
-			map.put("price", jsonObject2.getString("price"));
-			map.put("start_time", jsonObject2.getString("start_time"));
-			map.put("end_time", jsonObject2.getString("end_time"));
-			map.put("mac_address", jsonObject3.getString("mac_address"));
-			map.put("close_key", jsonObject3.getString("close_key"));
-			map.put("open_key", jsonObject3.getString("open_key"));
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return map;
-	}
 }

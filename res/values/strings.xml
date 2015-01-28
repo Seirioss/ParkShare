@@ -79,5 +79,7 @@
     <string name="macaddress">蓝牙地址</string>
     <string name="parkmanagment">我的车位管理</string>
     <string name="logout">注销账户</string>
+    <string name="longitude">经度</string>
+    <string name="latitude">维度</string>
 	
 </resources>

@@ -45,10 +45,10 @@
             android:id="@+id/textView2"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="@string/openkey" />
+            android:text="@string/longitude" />
 
         <EditText
-            android:id="@+id/editopenkey"
+            android:id="@+id/editlongitude"
             android:layout_width="fill_parent"
             android:layout_height="30dp"
             android:layout_marginTop="5dp"
@@ -68,10 +68,10 @@
             android:id="@+id/textView98"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="@string/closekey" />
+            android:text="@string/latitude" />
 
         <EditText
-            android:id="@+id/editclosekey"
+            android:id="@+id/editlatitude"
             android:layout_width="fill_parent"
             android:layout_height="30dp"
             android:layout_marginTop="5dp"
@@ -127,6 +127,7 @@
             android:background="@drawable/loginformbackground"
             android:inputType="textMultiLine" />
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/linearLayout452"
         android:layout_width="match_parent"
@@ -151,6 +152,7 @@
             android:inputType="textMultiLine" />
     </LinearLayout>
 
+	
     <Button
         android:id="@+id/addlockbutton"
         android:layout_width="fill_parent"

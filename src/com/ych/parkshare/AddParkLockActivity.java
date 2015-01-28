@@ -7,6 +7,7 @@ import com.ych.http.AsyncHttpClient;
 import com.ych.http.JsonHttpResponseHandler;
 import com.ych.http.PersistentCookieStore;
 import com.ych.http.RequestParams;
+import com.ych.http.TextHttpResponseHandler;
 import com.ych.tool.AppConstants;
 import com.ych.tool.GlobalVariable;
 
@@ -27,14 +28,15 @@ import android.widget.Toast;
 public class AddParkLockActivity extends Activity {
 
 	private Button addlockbutton;
-	private EditText editTextopenkey;
-	private EditText editTextclosekey;
+	private EditText editlatitude;
+	private EditText editlongitude;
 	private EditText editTextmacaddress;
 	private EditText editTextserialnumber;
 	private EditText editTextdescribe;
 	private EditText editTextaddress;
 
 	private AsyncHttpClient asyncHttpClient;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -45,63 +47,66 @@ public class AddParkLockActivity extends Activity {
 		actionBar.setDisplayShowHomeEnabled(false);
 		actionBar.setDisplayHomeAsUpEnabled(true);
 
-		editTextaddress=(EditText)findViewById(R.id.editopenkey);
-		editTextopenkey=(EditText)findViewById(R.id.editopenkey);
-		editTextclosekey=(EditText)findViewById(R.id.editclosekey);
-		editTextmacaddress=(EditText)findViewById(R.id.editmac);
-		editTextserialnumber=(EditText)findViewById(R.id.editlocknumber);
-		editTextdescribe=(EditText)findViewById(R.id.editdescribe);
-		editTextaddress=(EditText)findViewById(R.id.editparkaddress);
+		editlatitude = (EditText) findViewById(R.id.editlatitude);
+		editlongitude = (EditText) findViewById(R.id.editlongitude);
+		editTextaddress = (EditText) findViewById(R.id.editparkaddress);
+		editTextmacaddress = (EditText) findViewById(R.id.editmac);
+		editTextserialnumber = (EditText) findViewById(R.id.editlocknumber);
+		editTextdescribe = (EditText) findViewById(R.id.editdescribe);
+		editTextaddress = (EditText) findViewById(R.id.editparkaddress);
 		addlockbutton = (Button) findViewById(R.id.addlockbutton);
-		
+
 		asyncHttpClient = new AsyncHttpClient();
 		PersistentCookieStore PersistentCookieStore = ((GlobalVariable) getApplication()).getPersistentCookieStore();
-		
+
 		asyncHttpClient.setCookieStore(PersistentCookieStore);
-		
+
 		addlockbutton.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				String openkey=editTextopenkey.getText().toString();
-				String closekey=editTextopenkey.getText().toString();
-				String macaddress=editTextmacaddress.getText().toString();
-				String serialnumber=editTextserialnumber.getText().toString();
-				String describe=editTextdescribe.getText().toString();
-				String address=editTextaddress.getText().toString();
-				String comment="haha";
-				RequestParams requestParams=new RequestParams();
-				requestParams.put("openkey",openkey );
-				requestParams.put("closekey",closekey );
-				requestParams.put("macaddress",macaddress );
-				requestParams.put("serialnumber",serialnumber );
+				String latitude = editlatitude.getText().toString();
+				String longitude = editlongitude.getText().toString();
+				String macaddress = editTextmacaddress.getText().toString();
+				String serialnumber = editTextserialnumber.getText().toString();
+				String describe = editTextdescribe.getText().toString();
+				String address = editTextaddress.getText().toString();
+				String comment = "haha";
+				RequestParams requestParams = new RequestParams();
+				requestParams.put("longitude", longitude);
+				requestParams.put("latitude", latitude);
+				requestParams.put("macaddress", macaddress);
+				requestParams.put("serialnumber", serialnumber);
 				requestParams.put("address", address);
 				requestParams.put("describe", describe);
 				requestParams.put("comment", comment);
-				asyncHttpClient.post(AppConstants.BASE_URL+AppConstants.URL_ADDPARK, requestParams,bookJsonHttpResponseHandler);
+				requestParams.put("longitude", latitude);
+				requestParams.put("latitude", longitude);
+				asyncHttpClient.post(AppConstants.BASE_URL + AppConstants.URL_ADDPARK, requestParams, addparkTextHttpResponseHandler);
 			}
 		});
 	}
-	private JsonHttpResponseHandler bookJsonHttpResponseHandler=new JsonHttpResponseHandler("utf-8"){
+
+	private TextHttpResponseHandler addparkTextHttpResponseHandler = new TextHttpResponseHandler("utf-8") {
 
 		@Override
-		public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-			// TODO Auto-generated method stub
-			if(statusCode==200){
-				Toast.makeText(AddParkLockActivity.this, response.toString(), Toast.LENGTH_SHORT).show();
+		public void onSuccess(int statusCode, Header[] headers, String responseString) {
+			if (statusCode == 200) {
+				if (responseString.equals("0")) {
+					Toast.makeText(AddParkLockActivity.this, "添加成功", Toast.LENGTH_SHORT).show();
+				}else {
+					Toast.makeText(AddParkLockActivity.this, responseString.toString(), Toast.LENGTH_SHORT).show();
+				}
 			}
-			super.onSuccess(statusCode, headers, response);
 		}
 
 		@Override
 		public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-			// TODO Auto-generated method stub
-			super.onFailure(statusCode, headers, responseString, throwable);
-			Toast.makeText(AddParkLockActivity.this, "添加失败 , 网络有问题"+statusCode,Toast.LENGTH_SHORT).show();
+			Toast.makeText(AddParkLockActivity.this, "添加失败 , 网络有问题" + statusCode, Toast.LENGTH_SHORT).show();
 		}
-		
 	};
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle action bar item clicks here. The action bar will

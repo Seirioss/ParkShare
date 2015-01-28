@@ -12,6 +12,7 @@ import com.ych.http.AsyncHttpClient;
 import com.ych.http.JsonHttpResponseHandler;
 import com.ych.http.PersistentCookieStore;
 import com.ych.http.RequestParams;
+import com.ych.http.TextHttpResponseHandler;
 import com.ych.serves.BLEservice;
 import com.ych.tool.AppConstants;
 import com.ych.tool.GlobalVariable;
@@ -62,11 +63,9 @@ public class ParkOwnActivity extends Activity {
 	private TextView textremark;
 	private TextView textrentstate;
 	private String parkpk;
-	private Map<String, Object> parkinfo;
-	private boolean rentstatus;
-	private boolean sharestatus = true;
-	private int parkstate;
-	private boolean isborrow;
+	private boolean is_shared;
+	private boolean is_borrowed = true;
+
 	private String macaddress;
 
 	@Override
@@ -103,62 +102,6 @@ public class ParkOwnActivity extends Activity {
 	protected void onDestroy() {
 		super.onDestroy();
 		unbindService(conn);
-	}
-
-	private void updateuiinfo() {
-		AsyncHttpClient client = new AsyncHttpClient();
-		PersistentCookieStore persistentCookieStore = ((GlobalVariable) getApplication()).getPersistentCookieStore();
-		client.setCookieStore(persistentCookieStore);
-		client.post("http://121.40.61.76:8080/parkManagementSystem/park/", new RequestParams("parkid", parkpk), new JsonHttpResponseHandler("utf-8") {
-
-			@Override
-			public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-				super.onSuccess(statusCode, headers, response);
-				if (statusCode == 200) {
-					System.out.println(response.toString());
-					parkinfo = jsontomap(response);
-					textdescription.setText(parkinfo.get("describe").toString());
-					textaddress.setText(parkinfo.get("address").toString());
-					texttimestart.setText(parkinfo.get("start_time").toString());
-					texttimesend.setText(parkinfo.get("end_time").toString());
-					textremark.setText("");
-					textrentstate.setText(parkinfo.get("is_borrowed").toString());
-				}
-			}
-
-			@Override
-			public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-				super.onFailure(statusCode, headers, responseString, throwable);
-				textremark.setText(statusCode + throwable.getMessage());
-			}
-
-		});
-	}
-
-	private Map<String, Object> jsontomap(JSONObject jsonObject) {
-		Map<String, Object> map = new HashMap<String, Object>();
-		try {
-			JSONArray jsonArrayinfos = jsonObject.getJSONArray("parks");
-			JSONObject jsonObject1 = jsonArrayinfos.getJSONObject(0).getJSONObject("fields");
-			JSONObject jsonObject2 = jsonArrayinfos.getJSONObject(1).getJSONObject("fields");
-			JSONObject jsonObject3 = jsonArrayinfos.getJSONObject(2).getJSONObject("fields");
-			map.put("username", jsonObject1.getString("username"));
-			map.put("is_borrowed", jsonObject1.getBoolean("is_borrowed"));
-			map.put("comment", jsonObject1.getString("comment"));
-			map.put("describe", jsonObject1.getString("describe"));
-			map.put("address", jsonObject1.getString("address"));
-			map.put("user_borrowed", jsonObject2.getString("user_borrowed"));
-			map.put("price", jsonObject2.getString("price"));
-			map.put("start_time", jsonObject2.getString("start_time"));
-			map.put("end_time", jsonObject2.getString("end_time"));
-			map.put("mac_address", jsonObject3.getString("mac_address"));
-			map.put("close_key", jsonObject3.getString("close_key"));
-			map.put("open_key", jsonObject3.getString("open_key"));
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return map;
 	}
 
 	private OnCheckedChangeListener onCheckedChangeListener = new OnCheckedChangeListener() {
@@ -208,10 +151,10 @@ public class ParkOwnActivity extends Activity {
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		menu.clear();
 		menu.add(MENU_REFRESH);
-		if (parkstate == 2) {
+		if (is_shared == false) {
 			menu.add(MENU_SHARE);
 		}
-		if (parkstate == 1&&isborrow==false) {
+		if (is_shared == true && is_borrowed == false) {
 			menu.add(MENU_SHARE_CANLCER);
 		}
 		return super.onPrepareOptionsMenu(menu);
@@ -233,7 +176,7 @@ public class ParkOwnActivity extends Activity {
 			sharepark();
 		}
 		if (title.equals(MENU_SHARE_CANLCER)) {
-			asyncHttpClient.post(AppConstants.BASE_URL + AppConstants.URL_SHARECANCEL, new RequestParams("parkid", parkpk), sharecancelJsonHttpResponseHandler);
+			asyncHttpClient.post(AppConstants.BASE_URL + AppConstants.URL_SHARECANCEL, new RequestParams("parkid", parkpk), sharecancelTextHttpResponseHandler);
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -262,7 +205,7 @@ public class ParkOwnActivity extends Activity {
 				requestParams.put("starttime", timeStart);
 				requestParams.put("endtime", timeend);
 				requestParams.put("price", 100);
-				asyncHttpClient.post(AppConstants.BASE_URL + AppConstants.URL_SHARE, requestParams, shareJsonHttpResponseHandler);
+				asyncHttpClient.post(AppConstants.BASE_URL + AppConstants.URL_SHARE, requestParams, shareTextHttpResponseHandler);
 			}
 		});
 		builder.create().show();
@@ -271,40 +214,45 @@ public class ParkOwnActivity extends Activity {
 	private JsonHttpResponseHandler refreshJsonHttpResponseHandler = new JsonHttpResponseHandler("utf-8") {
 
 		@Override
+		public void onSuccess(int statusCode, Header[] headers, String responseString) {
+			super.onSuccess(statusCode, headers, responseString);
+			System.out.println(responseString);
+		}
+
+		@Override
 		public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
 			super.onSuccess(statusCode, headers, response);
 			if (statusCode == 200) {
 				try {
-					JSONArray jsonArray = response.getJSONArray("parks");
-					parkstate = response.getInt("parkstate");
-					String describe = jsonArray.getJSONObject(0).getJSONObject("fields").getString("describe");
-					String address = jsonArray.getJSONObject(0).getJSONObject("fields").getString("address");
-					isborrow = jsonArray.getJSONObject(0).getJSONObject("fields").getBoolean("is_borrowed");
-					textaddress.setText(address);
-					textdescription.setText(describe);
-					if (parkstate == 2) {
-						textrentstate.setText("车位没有分享");
+					is_borrowed = response.getBoolean("is_borrowed");
+					is_shared = response.getBoolean("is_shared");
+					textaddress.setText(response.getString("address"));
+					textdescription.setText(response.getString("describe"));
+					if (is_shared == false) {
+
 						switchpark.setEnabled(true);
-						texttimesend.setText("");
+						macaddress = response.getJSONObject("lockkey").getString("mac_address");
+						textrentstate.setText("车位还没有分享");
 						texttimestart.setText("");
-						macaddress = jsonArray.getJSONObject(1).getJSONObject("fields").getString("mac_address");
+						texttimesend.setText("");
 					}
-					if (parkstate == 1) {
-						if (isborrow == true) {
-							textrentstate.setText("车位分享出去了,被租用");
-						}else {
-							textrentstate.setText("车位分享出去了,没有被租用");
-						}
+					if (is_shared == true && is_borrowed == true) {
 						switchpark.setEnabled(false);
-						String time_start = jsonArray.getJSONObject(1).getJSONObject("fields").getString("start_time");
-						String time_end = jsonArray.getJSONObject(1).getJSONObject("fields").getString("end_time");
-						texttimesend.setText(time_start);
-						texttimestart.setText(time_end);
+						textrentstate.setText("车位被借用");
+						texttimestart.setText(response.getJSONObject("shareinfo").getString("start_time"));
+						texttimesend.setText(response.getJSONObject("shareinfo").getString("end_time"));
 					}
-				} catch (JSONException e) {
+					if (is_shared == true && is_borrowed == false) {
+						switchpark.setEnabled(false);
+						textrentstate.setText("车位分享还没有被借用");
+						texttimestart.setText(response.getJSONObject("shareinfo").getString("start_time"));
+						texttimesend.setText(response.getJSONObject("shareinfo").getString("end_time"));
+					}
+				} catch (JSONException e1) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					e1.printStackTrace();
 				}
+
 			}
 		}
 
@@ -314,49 +262,37 @@ public class ParkOwnActivity extends Activity {
 			textremark.setText("刷新失败:" + statusCode);
 		}
 	};
-	private JsonHttpResponseHandler shareJsonHttpResponseHandler = new JsonHttpResponseHandler("utf-8") {
+	private TextHttpResponseHandler shareTextHttpResponseHandler = new TextHttpResponseHandler("utf-8") {
 
 		@Override
-		public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-			super.onSuccess(statusCode, headers, response);
-			System.out.println(response.toString());
+		public void onSuccess(int statusCode, Header[] headers, String responseString) {
 			if (statusCode == 200) {
-				try {
-					textremark.setText(response.getString("message"));
+				if (responseString.equals("0")) {
 					asyncHttpClient.post(AppConstants.BASE_URL + AppConstants.URL_PARKINFO, new RequestParams("parkid", parkpk), refreshJsonHttpResponseHandler);
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				} else {
+					textremark.setText(responseString);
 				}
 			}
 		}
 
 		@Override
 		public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-			super.onFailure(statusCode, headers, responseString, throwable);
 		}
 	};
-	private JsonHttpResponseHandler sharecancelJsonHttpResponseHandler = new JsonHttpResponseHandler("utf-8") {
-
+	private TextHttpResponseHandler sharecancelTextHttpResponseHandler=new TextHttpResponseHandler("utf-8") {
+		
 		@Override
-		public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-			super.onSuccess(statusCode, headers, response);
-			System.out.println(response.toString());
+		public void onSuccess(int statusCode, Header[] headers, String responseString) {
 			if (statusCode == 200) {
-				try {
-					textremark.setText(response.getString("message"));
+				if (responseString.equals("0")) {
 					asyncHttpClient.post(AppConstants.BASE_URL + AppConstants.URL_PARKINFO, new RequestParams("parkid", parkpk), refreshJsonHttpResponseHandler);
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				} else {
+					textremark.setText(responseString);
 				}
 			}
-
 		}
-
 		@Override
 		public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-			super.onFailure(statusCode, headers, responseString, throwable);
 		}
 	};
 }
