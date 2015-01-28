@@ -66,7 +66,7 @@
         <activity android:name=".TabNavigateActivity" />
         <activity 
             android:name=".TabHostActivity" 
-            android:logo="@drawable/ic_drawer">
+            android:logo="@drawable/ic_launcher">
             </activity>>
         <activity android:name=".ParkRentActivity" />
         <activity android:name=".SearchActivity" />
