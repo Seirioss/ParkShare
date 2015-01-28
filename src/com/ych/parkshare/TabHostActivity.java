@@ -16,6 +16,7 @@ import android.widget.TabHost.OnTabChangeListener;
 public class TabHostActivity extends TabActivity {
 	/** Called when the activity is first created. */
 	private ActionBar actionBar;
+	private TabHost tabHost;
 	private final static String TAB_HOME = "home";
 	private final static String TAB_STORE = "store";
 	private final static String TAB_PERSONAL = "personal";
@@ -27,25 +28,28 @@ public class TabHostActivity extends TabActivity {
 		setContentView(R.layout.activity_tab_host);
 		actionBar = getActionBar();
 		actionBar.setTitle("主页");
-		actionBar.setDisplayShowHomeEnabled(false);
+		actionBar.setBackgroundDrawable(getResources().getDrawable(R.drawable.actionbar_background));
+		//actionBar.setDisplayShowHomeEnabled(false);
+		
 		Resources res = getResources(); // Resource object to get Drawables
-		TabHost tabHost = getTabHost(); // The activity TabHost
+		tabHost = getTabHost(); // The activity TabHost
+		tabHost.setAlpha((float) 0.85);
 		TabHost.TabSpec spec; // Reusable TabSpec for each tab
 		Intent intent; // Reusable Intent for each tab
 
 		// Create an Intent to launch an Activity for the tab (to be reused)
 		intent = new Intent().setClass(this, TabHomeActivity.class);
-		spec = tabHost.newTabSpec(TAB_HOME).setIndicator("主页", res.getDrawable(R.drawable.ic_tab_home)).setContent(intent);
+		spec = tabHost.newTabSpec(TAB_HOME).setIndicator("", res.getDrawable(R.drawable.ic_tab_home)).setContent(intent);
 		tabHost.addTab(spec);
 
 		// Do the same for the other tabs
 
 		intent = new Intent().setClass(this, TabNavigateActivity.class);
-		spec = tabHost.newTabSpec(TAB_STORE).setIndicator("收藏", res.getDrawable(R.drawable.ic_tab_about)).setContent(intent);
+		spec = tabHost.newTabSpec(TAB_STORE).setIndicator("", res.getDrawable(R.drawable.ic_tab_about)).setContent(intent);
 		tabHost.addTab(spec);
 
 		intent = new Intent().setClass(this, TabMyCenterActivity.class);
-		spec = tabHost.newTabSpec(TAB_PERSONAL).setIndicator("个人", res.getDrawable(R.drawable.ic_tab_contact)).setContent(intent);
+		spec = tabHost.newTabSpec(TAB_PERSONAL).setIndicator("", res.getDrawable(R.drawable.ic_tab_contact)).setContent(intent);
 		tabHost.addTab(spec);
 		// set tab which one you want open first time 0 or 1 or 2
 		tabHost.setCurrentTab(0);
@@ -58,6 +62,7 @@ public class TabHostActivity extends TabActivity {
 		public void onTabChanged(String tabId) {
 			if (tabId.equals(TAB_HOME)) {
 				actionBar.setTitle("主页");
+				tabHost.setCurrentTabByTag(tabId);
 			}
 			if (tabId.equals(TAB_STORE)) {
 				actionBar.setTitle("收藏");
