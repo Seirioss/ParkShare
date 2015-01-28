@@ -7,7 +7,7 @@
     <uses-sdk
         android:minSdkVersion="18"
         android:targetSdkVersion="21" />
-
+<!-- this is my test -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
@@ -68,7 +68,10 @@
         <activity android:name=".TabHomeActivity" />
         <activity android:name=".TabMyCenterActivity" />
         <activity android:name=".TabNavigateActivity" />
-        <activity android:name=".TabHostActivity" />
+        <activity 
+            android:name=".TabHostActivity" 
+            android:logo="@drawable/ic_drawer">
+            </activity>>
         <activity android:name=".ParkRentActivity" />
         <activity android:name=".SearchActivity" />
         <activity android:name=".AddParkLockActivity" />
