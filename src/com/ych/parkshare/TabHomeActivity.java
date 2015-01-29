@@ -10,20 +10,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.ych.http.AsyncHttpClient;
-import com.ych.http.PersistentCookieStore;
-import com.ych.http.RequestParams;
-import com.ych.http.SaxAsyncHttpResponseHandler;
-import com.ych.http.SyncHttpClient;
-import com.ych.http.JsonHttpResponseHandler;
-import com.ych.http.TextHttpResponseHandler;
-import com.ych.tool.AppConstants;
-import com.ych.tool.GlobalVariable;
-import com.ych.tool.SpUtils;
-import com.ych.views.RefreshableView;
-import com.ych.views.RefreshableView.PullToRefreshListener;
-
-import android.R.integer;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -33,13 +19,19 @@ import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.ych.http.JsonHttpResponseHandler;
+import com.ych.http.PersistentCookieStore;
+import com.ych.http.SyncHttpClient;
+import com.ych.tool.AppConstants;
+import com.ych.tool.GlobalVariable;
+import com.ych.tool.SpUtils;
+import com.ych.views.RefreshableView;
+import com.ych.views.RefreshableView.PullToRefreshListener;
 //fdfsdf
 //123
 

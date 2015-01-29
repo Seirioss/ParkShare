@@ -30,4 +30,26 @@
 		<nature>com.android.ide.eclipse.adt.AndroidNature</nature>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>res/drawable/ic_register.png</name>
+			<type>1</type>
+			<location>E:/MyGit/parkshare/res/drawable/ic_register.png</location>
+		</link>
+		<link>
+			<name>res/drawable/ic_tabhost.png</name>
+			<type>1</type>
+			<location>E:/MyGit/parkshare/res/drawable/ic_tabhost.png</location>
+		</link>
+		<link>
+			<name>res/drawable/register.9.png</name>
+			<type>1</type>
+			<location>E:/MyGit/parkshare/res/drawable/register.9.png</location>
+		</link>
+		<link>
+			<name>res/drawable/register_background.png</name>
+			<type>1</type>
+			<location>E:/MyGit/parkshare/res/drawable/register_background.png</location>
+		</link>
+	</linkedResources>
 </projectDescription>
