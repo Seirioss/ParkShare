@@ -1,14 +1,6 @@
 package com.ych.parkshare;
 
 import org.apache.http.Header;
-import org.json.JSONException;
-import org.json.JSONObject;
-import com.ych.http.AsyncHttpClient;
-import com.ych.http.JsonHttpResponseHandler;
-import com.ych.http.RequestParams;
-import com.ych.http.TextHttpResponseHandler;
-import com.ych.tool.AppConstants;
-import com.ych.tool.SpUtils;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -16,18 +8,20 @@ import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Canvas;
-import android.graphics.ColorFilter;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.view.Menu;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnFocusChangeListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.ych.http.AsyncHttpClient;
+import com.ych.http.RequestParams;
+import com.ych.http.TextHttpResponseHandler;
+import com.ych.tool.AppConstants;
+import com.ych.tool.SpUtils;
 
 public class RegisterActivity extends Activity {
 
@@ -43,9 +37,15 @@ public class RegisterActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_register);
 		ActionBar actionBar = getActionBar();
-		actionBar.setTitle("返回");
-		actionBar.setDisplayShowHomeEnabled(false);
-		actionBar.setDisplayHomeAsUpEnabled(true);
+		actionBar.setTitle("注册");
+		actionBar.setDisplayShowHomeEnabled(true);
+		actionBar.setHomeButtonEnabled(true);
+		actionBar.setDisplayShowTitleEnabled(false);
+		actionBar.setBackgroundDrawable(getResources().getDrawable(R.drawable.title_register));
+		//actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+	   // actionBar.setDisplayShowCustomEnabled(true);
+		//ActionBar.LayoutParams lp = new ActionBar.LayoutParams(ActionBar.LayoutParams.WRAP_CONTENT,ActionBar.LayoutParams.MATCH_PARENT,Gravity.LEFT);
+		//actionBar.setCustomView(getLayoutInflater().inflate(R.layout.title_register, null),lp);
 		
 		nameEditText = (EditText) findViewById(R.id.edittextregistername);
 		pass1EditText = (EditText) findViewById(R.id.edittextregisterpassone);
@@ -128,7 +128,13 @@ public class RegisterActivity extends Activity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		finish();
-		return super.onOptionsItemSelected(item);
+		if (item.getItemId() == android.R.id.home) {
+			Intent intent = new Intent(this, LogInActivity.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(intent);
+			return true;
+		}else {
+			return super.onOptionsItemSelected(item);
+		}
 	}
 }

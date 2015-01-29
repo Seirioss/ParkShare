@@ -59,14 +59,17 @@
 
         <activity android:name=".StartupActivity" />
         <activity android:name=".LogInActivity" />
-        <activity android:name=".RegisterActivity" />
+        <activity 
+            android:name=".RegisterActivity" 
+            android:hardwareAccelerated="false"
+            android:logo="@drawable/ic_register"/>
         <activity android:name=".GuideActivity" />
         <activity android:name=".TabHomeActivity" />
         <activity android:name=".TabMyCenterActivity" />
         <activity android:name=".TabNavigateActivity" />
         <activity 
             android:name=".TabHostActivity" 
-            android:logo="@drawable/ic_launcher">
+            android:logo="@drawable/ic_tabhost">
             </activity>>
         <activity android:name=".ParkRentActivity" />
         <activity android:name=".SearchActivity" />

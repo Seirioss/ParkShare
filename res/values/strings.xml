@@ -13,7 +13,7 @@
     <string name="Signupforportshare">Sign up for Parkshare</string>
     <string name="contentDescription">icon</string>
     <string name="forgetpassword"><u>忘记密码?</u></string>
-    <string name="title_activity_register">RegisterActivity</string>
+    <string name="title_activity_register">注册</string>
     <string name="registerpassword">密码</string>
     <string name="registername">用户名</string>
     <string name="registerconfirmpass">重复密码</string>
