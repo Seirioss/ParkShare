@@ -1,5 +1,6 @@
 package com.ych.tool;
 
+import com.baidu.frontia.FrontiaApplication;
 import com.ych.http.PersistentCookieStore;
 
 import android.app.Application;
@@ -10,6 +11,7 @@ public class GlobalVariable extends Application {
 	@Override
 	public void onCreate() {
 		persistentCookieStore=new PersistentCookieStore(getApplicationContext());
+		FrontiaApplication.initFrontiaApplication(getApplicationContext());
 		super.onCreate();
 	}
 

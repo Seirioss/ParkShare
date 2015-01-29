@@ -4,6 +4,8 @@ import java.net.URI;
 
 import org.apache.http.Header;
 
+import com.baidu.android.pushservice.PushConstants;
+import com.baidu.android.pushservice.PushManager;
 import com.baidu.lbsapi.auth.LBSAuthManagerListener;
 import com.baidu.navisdk.BNaviEngineManager.NaviEngineInitListener;
 import com.baidu.navisdk.BaiduNaviManager;
@@ -12,6 +14,7 @@ import com.ych.http.TextHttpResponseHandler;
 import com.ych.image.SmartImage;
 import com.ych.image.SmartImageView;
 import com.ych.tool.AppConstants;
+import com.ych.tool.BaiduUtils;
 import com.ych.tool.SpUtils;
 
 import android.R.integer;
@@ -32,6 +35,8 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		PushManager.startWork(getApplicationContext(), PushConstants.LOGIN_TYPE_API_KEY, BaiduUtils.getMetaValue(MainActivity.this, "api_key"));
+		
 		setContentView(R.layout.activity_main);
 		int runtime = (Integer) SpUtils.get(getApplicationContext(), AppConstants.RUN_TIME, 0);
 		if (runtime == 0) {
