@@ -8,6 +8,7 @@ import com.ych.http.AsyncHttpClient;
 import com.ych.http.JsonHttpResponseHandler;
 import com.ych.http.PersistentCookieStore;
 import com.ych.http.RequestParams;
+import com.ych.http.SyncHttpClient;
 import com.ych.http.TextHttpResponseHandler;
 import com.ych.tool.AppConstants;
 import com.ych.tool.GlobalVariable;
@@ -36,7 +37,9 @@ public class LogInActivity extends Activity {
 	private EditText editTextname;
 	private EditText editTextpassword;
 	private static LogInActivity logInActivity;
-
+	private SyncHttpClient syncHttpClient;
+	private String username;
+	private String password;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -57,6 +60,7 @@ public class LogInActivity extends Activity {
 			editTextpassword.setText(password);
 		};
 		logInActivity=this;
+		syncHttpClient=new SyncHttpClient();
 	}
 	public static LogInActivity getInstance(){
 		return (LogInActivity) logInActivity;
@@ -66,7 +70,15 @@ public class LogInActivity extends Activity {
 		public void onClick(View v) {
 			switch (v.getId()) {
 			case R.id.buttonlogin:
-				login(editTextname.getText().toString(), editTextpassword.getText().toString());
+				username =editTextname.getText().toString();
+				password=editTextpassword.getText().toString();
+				RequestParams params = new RequestParams();
+				params.add("username", username);
+				params.add("password", password);
+				PersistentCookieStore persistentCookieStore=((GlobalVariable)getApplication()).getPersistentCookieStore();
+				persistentCookieStore.clear();
+				syncHttpClient.setCookieStore(persistentCookieStore);
+				syncHttpClient.post(AppConstants.BASE_URL+AppConstants.URL_LOGIN,params, loginTextHttpResponseHandler);
 				break;
 			case R.id.buttonsignup:
 				Intent intent = new Intent(LogInActivity.this, RegisterActivity.class);
@@ -82,48 +94,38 @@ public class LogInActivity extends Activity {
 			}
 		}
 	};
-
-	private void login(final String name, final String password) {
-		AsyncHttpClient client = new AsyncHttpClient();
-		RequestParams params = new RequestParams();
-		params.add("username", name);
-		params.add("password", password);
-		PersistentCookieStore persistentCookieStore=((GlobalVariable)getApplication()).getPersistentCookieStore();
-		persistentCookieStore.clear();
-		client.setCookieStore(persistentCookieStore);
-		//测试账户:name:test   password:test
-		client.post("http://121.40.61.76:8080/parkManagementSystem/login/", params, new TextHttpResponseHandler("utf-8") {
-
-			@Override
-			public void onSuccess(int statusCode, Header[] headers, String responseString) {
-				if(statusCode==200){
-					if(responseString.endsWith("0")||responseString.endsWith("1")){
-						SpUtils.put(getApplicationContext(), AppConstants.USER_LOGIN,true);
-						SpUtils.put(getApplicationContext(), AppConstants.USER_REMEMBER,true);
-						SpUtils.put(getApplicationContext(), AppConstants.USER_NAME, name);
-						SpUtils.put(getApplicationContext(), AppConstants.USER_PASSWORD,password);
-						Intent intent =new Intent(LogInActivity.this,TabHostActivity.class);
-						startActivity(intent);
-						LogInActivity.this.finish();
-					}else {
-						SpUtils.put(getApplicationContext(), AppConstants.USER_LOGIN,false);
-						SpUtils.put(getApplicationContext(), AppConstants.USER_REMEMBER,false);
-						SpUtils.put(getApplicationContext(), AppConstants.USER_NAME, "");
-						SpUtils.put(getApplicationContext(), AppConstants.USER_PASSWORD,"");
-						Toast.makeText(LogInActivity.this, "账户名或密码错误", Toast.LENGTH_SHORT).show();
-						editTextname.getText().clear();
-						editTextpassword.getText().clear();
-					}
+	private TextHttpResponseHandler loginTextHttpResponseHandler=new TextHttpResponseHandler("utf-8") {
+		
+		@Override
+		public void onSuccess(int statusCode, Header[] headers, String responseString) {
+			// TODO Auto-generated method stub
+			if(statusCode==200){
+				if(responseString.endsWith("0")){
+					SpUtils.put(getApplicationContext(), AppConstants.USER_LOGIN,true);
+					SpUtils.put(getApplicationContext(), AppConstants.USER_REMEMBER,true);
+					SpUtils.put(getApplicationContext(), AppConstants.USER_NAME, username);
+					SpUtils.put(getApplicationContext(), AppConstants.USER_PASSWORD,password);
+					Intent intent =new Intent(LogInActivity.this,TabHostActivity.class);
+					startActivity(intent);
+					LogInActivity.this.finish();
+				}else {
+					SpUtils.put(getApplicationContext(), AppConstants.USER_LOGIN,false);
+					SpUtils.put(getApplicationContext(), AppConstants.USER_REMEMBER,false);
+					SpUtils.put(getApplicationContext(), AppConstants.USER_NAME, "");
+					SpUtils.put(getApplicationContext(), AppConstants.USER_PASSWORD,"");
+					Toast.makeText(LogInActivity.this, responseString, Toast.LENGTH_SHORT).show();
+					editTextname.getText().clear();
+					editTextpassword.getText().clear();
 				}
 			}
-			@Override
-			public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-				Toast.makeText(LogInActivity.this, "网络错误", Toast.LENGTH_SHORT).show();
-				Intent intent =new Intent(LogInActivity.this,TabHostActivity.class);
-				startActivity(intent);
-				LogInActivity.this.finish();
-			}
-			
-		});
-	}
+		}
+		
+		@Override
+		public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+			// TODO Auto-generated method stub
+			Toast.makeText(LogInActivity.this,"错误代码："+statusCode+"  "+ responseString, Toast.LENGTH_SHORT).show();
+			editTextname.getText().clear();
+			editTextpassword.getText().clear();
+		}
+	};
 }
