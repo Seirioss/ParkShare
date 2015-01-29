@@ -42,6 +42,21 @@
 			<location>E:/MyGit/parkshare/res/drawable/ic_tabhost.png</location>
 		</link>
 		<link>
+			<name>res/drawable/login_background.png</name>
+			<type>1</type>
+			<location>E:/MyGit/parkshare/res/drawable/login_background.png</location>
+		</link>
+		<link>
+			<name>res/drawable/login_lock.png</name>
+			<type>1</type>
+			<location>E:/MyGit/parkshare/res/drawable/login_lock.png</location>
+		</link>
+		<link>
+			<name>res/drawable/login_user.png</name>
+			<type>1</type>
+			<location>E:/MyGit/parkshare/res/drawable/login_user.png</location>
+		</link>
+		<link>
 			<name>res/drawable/register.9.png</name>
 			<type>1</type>
 			<location>E:/MyGit/parkshare/res/drawable/register.9.png</location>

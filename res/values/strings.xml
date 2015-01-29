@@ -7,10 +7,10 @@
     <string name="title_activity_startup">StartupActivity</string>
     <string name="startupinfo">启动界面</string>
     <string name="title_activity_log_in">LogInActivity</string>
-    <string name="username">username</string>
-    <string name="password">password</string>
-    <string name="LogIntoPortshare">Log In to Parkshare</string>
-    <string name="Signupforportshare">Sign up for Parkshare</string>
+    <string name="username">Name</string>
+    <string name="password">Password</string>
+    <string name="LogIntoPortshare">登陆</string>
+    <string name="Signupforportshare">注册</string>
     <string name="contentDescription">icon</string>
     <string name="forgetpassword"><u>忘记密码?</u></string>
     <string name="title_activity_register">注册</string>

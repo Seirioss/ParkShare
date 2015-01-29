@@ -35,6 +35,7 @@ public class LogInActivity extends Activity {
 	private Button buttonLogin;
 	private EditText editTextname;
 	private EditText editTextpassword;
+	private View backgroud;
 	private static LogInActivity logInActivity;
 
 	@Override
@@ -42,11 +43,12 @@ public class LogInActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_log_in);
+		
 		linkClickTextView = (LinkClickTextView) findViewById(R.id.forgetpassword);
 		buttonLogin = (Button) findViewById(R.id.buttonlogin);
 		buttonSignup = (Button) findViewById(R.id.buttonsignup);
-		editTextname = (EditText) findViewById(R.id.editTextname);
-		editTextpassword = (EditText) findViewById(R.id.editTextpassword);
+		editTextname = (EditText) findViewById(R.id.loginEdit);
+		editTextpassword = (EditText) findViewById(R.id.login_password);
 		linkClickTextView.setOnClickListener(onClickListener);
 		buttonSignup.setOnClickListener(onClickListener);
 		buttonLogin.setOnClickListener(onClickListener);
