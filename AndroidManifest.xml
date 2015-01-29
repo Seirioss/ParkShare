@@ -80,7 +80,9 @@
         <service android:name="com.ych.serves.BLEservice" />
 
         <activity android:name=".StartupActivity" />
-        <activity android:name=".LogInActivity" />
+        <activity 
+            android:name=".LogInActivity" 
+            android:hardwareAccelerated="false"/>
         <activity 
             android:name=".RegisterActivity" 
             android:hardwareAccelerated="false"
