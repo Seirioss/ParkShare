@@ -47,11 +47,11 @@ public class RegisterActivity extends Activity {
 		//ActionBar.LayoutParams lp = new ActionBar.LayoutParams(ActionBar.LayoutParams.WRAP_CONTENT,ActionBar.LayoutParams.MATCH_PARENT,Gravity.LEFT);
 		//actionBar.setCustomView(getLayoutInflater().inflate(R.layout.title_register, null),lp);
 		
-		nameEditText = (EditText) findViewById(R.id.edittextregistername);
-		pass1EditText = (EditText) findViewById(R.id.edittextregisterpassone);
-		pass2EditText = (EditText) findViewById(R.id.edittextregisterpasstwo);
-		phoneEditText = (EditText) findViewById(R.id.edittextregisterphone);
-		emailEditText = (EditText) findViewById(R.id.edittextregisteremail);
+		nameEditText = (EditText) findViewById(R.id.register_userEdit);
+		pass1EditText = (EditText) findViewById(R.id.passwordEdit);
+		pass2EditText = (EditText) findViewById(R.id.passconfirmEdit);
+		phoneEditText = (EditText) findViewById(R.id.mailEdit);
+		emailEditText = (EditText) findViewById(R.id.phoneEdit);
 		buttonRegister = (Button) findViewById(R.id.buttonregister);
 		buttonRegister.setOnClickListener(onClickListener);
 	}

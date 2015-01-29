@@ -51,5 +51,10 @@
 			<type>1</type>
 			<location>E:/MyGit/parkshare/res/drawable/register_background.png</location>
 		</link>
+		<link>
+			<name>res/drawable/register_key.png</name>
+			<type>1</type>
+			<location>E:/MyGit/parkshare/res/drawable/register_key.png</location>
+		</link>
 	</linkedResources>
 </projectDescription>
