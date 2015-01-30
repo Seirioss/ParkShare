@@ -45,7 +45,6 @@ import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
 import android.provider.DocumentsContract.Root;
-import android.util.Range;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;

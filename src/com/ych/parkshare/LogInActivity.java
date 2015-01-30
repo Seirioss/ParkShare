@@ -4,6 +4,8 @@ import org.apache.http.Header;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.baidu.android.pushservice.PushConstants;
+import com.baidu.android.pushservice.PushManager;
 import com.ych.http.AsyncHttpClient;
 import com.ych.http.JsonHttpResponseHandler;
 import com.ych.http.PersistentCookieStore;
@@ -11,6 +13,7 @@ import com.ych.http.RequestParams;
 import com.ych.http.SyncHttpClient;
 import com.ych.http.TextHttpResponseHandler;
 import com.ych.tool.AppConstants;
+import com.ych.tool.BaiduUtils;
 import com.ych.tool.GlobalVariable;
 import com.ych.tool.SpUtils;
 import com.ych.views.LinkClickTextView;
@@ -110,6 +113,7 @@ public class LogInActivity extends Activity {
 					SpUtils.put(getApplicationContext(), AppConstants.USER_REMEMBER, true);
 					SpUtils.put(getApplicationContext(), AppConstants.USER_NAME, username);
 					SpUtils.put(getApplicationContext(), AppConstants.USER_PASSWORD, password);
+					PushManager.startWork(getApplicationContext(), PushConstants.LOGIN_TYPE_API_KEY,BaiduUtils.getMetaValue(LogInActivity.this, "api_key"));
 					Intent intent = new Intent(LogInActivity.this, TabHostActivity.class);
 					startActivity(intent);
 					LogInActivity.this.finish();

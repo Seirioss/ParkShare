@@ -2,20 +2,32 @@ package com.ych.receivers;
 
 import java.util.List;
 
+import org.apache.http.Header;
+
 import com.baidu.frontia.api.FrontiaPushMessageReceiver;
+import com.ych.http.AsyncHttpClient;
+import com.ych.http.PersistentCookieStore;
+import com.ych.http.RequestParams;
+import com.ych.http.TextHttpResponseHandler;
+import com.ych.tool.AppConstants;
+import com.ych.tool.GlobalVariable;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-public class BaiduPushMessageReceiver extends FrontiaPushMessageReceiver {
-
+public class BaiduPushMessageReceiver extends FrontiaPushMessageReceiver{
+	
 	@Override
 	public void onBind(Context arg0, int arg1, String arg2, String arg3, String arg4, String arg5) {
 		// TODO Auto-generated method stub
-		System.out.println(arg2);
-		System.out.println(arg3);
-		System.out.println(arg4);
+		AsyncHttpClient asyncHttpClient=new AsyncHttpClient();
+		RequestParams params = new RequestParams();
+		params.add("pushuserid", arg3);
+		params.add("pushchannelid", arg4);
+		PersistentCookieStore persistentCookieStore=((GlobalVariable)arg0.getApplicationContext()).getPersistentCookieStore();
+		asyncHttpClient.setCookieStore(persistentCookieStore);
+		asyncHttpClient.post(AppConstants.BASE_URL+AppConstants.URL_UPDATEPUSHINFO, params,updatepushinfoHttpResponseHandler);
 	}
 
 	@Override
@@ -55,5 +67,18 @@ public class BaiduPushMessageReceiver extends FrontiaPushMessageReceiver {
 	}
 
 	
-
+	private TextHttpResponseHandler updatepushinfoHttpResponseHandler=new TextHttpResponseHandler("utf-8") {
+		
+		@Override
+		public void onSuccess(int statusCode, Header[] headers, String responseString) {
+			// TODO Auto-generated method stub
+			System.out.println(responseString);
+		}
+		
+		@Override
+		public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+			// TODO Auto-generated method stub
+			
+		}
+	};
 }
