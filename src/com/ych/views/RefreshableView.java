@@ -19,12 +19,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-/**
- * 可进行下拉刷新的自定义控件。
- * 
- * @author guolin
- * 
- */
+
 public class RefreshableView extends LinearLayout implements OnTouchListener {
 
 	/**
