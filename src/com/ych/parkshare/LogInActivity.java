@@ -100,6 +100,7 @@ public class LogInActivity extends Activity {
 			public void onSuccess(int statusCode, Header[] headers, String responseString) {
 				if(statusCode==200){
 					if(responseString.endsWith("0")||responseString.endsWith("1")){
+						buttonLogin.setBackground(getResources().getDrawable(R.drawable.login_button_successful));
 						SpUtils.put(getApplicationContext(), AppConstants.USER_LOGIN,true);
 						SpUtils.put(getApplicationContext(), AppConstants.USER_REMEMBER,true);
 						SpUtils.put(getApplicationContext(), AppConstants.USER_NAME, name);
