@@ -17,4 +17,5 @@ public class AppConstants {
 	public final static String URL_SHARECANCEL="user/cancelshare/";
 	public final static String URL_SHARE="user/share/";
 	public final static String URL_ADDPARK="park/add/";
+	public final static String URL_LOGIN="login/";
 }
