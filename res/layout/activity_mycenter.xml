@@ -28,14 +28,20 @@
             android:gravity="center" />
 
     </LinearLayout>
+    
+    <View 
+        android:id="@+id/line1"
+        android:layout_width="fill_parent"
+        android:layout_height="0.5dp"
+        android:layout_below="@+id/linearLayout1"
+        android:background="@color/darkslategray"/>
 
     <LinearLayout
         android:id="@+id/linearLayout2"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/linearLayout1"
-        android:layout_below="@+id/linearLayout1"
-        android:layout_marginTop="1dp" 
+        android:layout_below="@+id/line1"
         android:orientation="horizontal"
         android:background="@android:color/transparent">
 
@@ -59,13 +65,19 @@
         
     </LinearLayout>
     
+    <View 
+        android:id="@+id/line2"
+        android:layout_width="fill_parent"
+        android:layout_height="0.5dp"
+        android:layout_below="@+id/linearLayout2"
+        android:background="@color/darkslategray"/>
+    
     <LinearLayout
         android:id="@+id/linearLayout3"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/linearLayout2"
-        android:layout_below="@+id/linearLayout2"
-        android:layout_marginTop="2dp" 
+        android:layout_below="@+id/line2"
         android:orientation="horizontal"
         android:background="@android:color/transparent">
 
@@ -88,6 +100,12 @@
             android:text="@string/logout" />
         
     </LinearLayout>
+    <View 
+        android:id="@+id/line3"
+        android:layout_width="fill_parent"
+        android:layout_height="0.5dp"
+        android:layout_below="@+id/linearLayout3"
+        android:background="@color/darkslategray"/>
     
 
 </RelativeLayout>
