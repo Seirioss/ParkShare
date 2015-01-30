@@ -59,7 +59,7 @@
         <meta-data
             android:name="api_key"
             android:value="hGvOmP8qNLNgH7sxWFID0upG" />
-        <!--百度地图apikey  -->
+        <!-- 百度地图apikey -->
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="buiszDnXAPUNv6hBMobM0jGo" />
@@ -80,12 +80,13 @@
         <service android:name="com.ych.serves.BLEservice" />
 
         <activity android:name=".StartupActivity" />
-        <activity android:name=".LogInActivity" 
-            android:hardwareAccelerated="false"/>
-        <activity 
-            android:name=".RegisterActivity" 
+        <activity
+            android:name=".LogInActivity"
+            android:hardwareAccelerated="false" />
+        <activity
+            android:name=".RegisterActivity"
             android:hardwareAccelerated="false"
-            android:logo="@drawable/ic_register"/>
+            android:logo="@drawable/ic_register" />
         <activity android:name=".GuideActivity" />
         <activity android:name=".TabHomeActivity" />
         <activity android:name=".TabMyCenterActivity" />
@@ -157,6 +158,7 @@
                 <data android:scheme="package" />
             </intent-filter>
         </receiver>
+
         <service
             android:name="com.baidu.android.pushservice.PushService"
             android:exported="true"
@@ -164,7 +166,6 @@
             <intent-filter>
                 <action android:name="com.baidu.android.pushservice.action.PUSH_SERVICE" />
             </intent-filter>
-           
         </service>
         <!-- push结束 -->
 
