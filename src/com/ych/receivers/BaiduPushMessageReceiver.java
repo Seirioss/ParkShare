@@ -13,6 +13,9 @@ public class BaiduPushMessageReceiver extends FrontiaPushMessageReceiver {
 	@Override
 	public void onBind(Context arg0, int arg1, String arg2, String arg3, String arg4, String arg5) {
 		// TODO Auto-generated method stub
+		System.out.println(arg2);
+		System.out.println(arg3);
+		System.out.println(arg4);
 	}
 
 	@Override

@@ -38,7 +38,7 @@ public class LogInActivity extends Activity {
 	private EditText editTextpassword;
 	private View backgroud;
 	private static LogInActivity logInActivity;
-	private SyncHttpClient syncHttpClient;
+	private AsyncHttpClient asyncHttpClient;
 	private String username;
 	private String password;
 	@Override
@@ -62,7 +62,7 @@ public class LogInActivity extends Activity {
 			editTextpassword.setText(password);
 		};
 		logInActivity=this;
-		syncHttpClient=new SyncHttpClient();
+		asyncHttpClient=new AsyncHttpClient();
 	}
 	public static LogInActivity getInstance(){
 		return (LogInActivity) logInActivity;
@@ -79,8 +79,9 @@ public class LogInActivity extends Activity {
 				params.add("password", password);
 				PersistentCookieStore persistentCookieStore=((GlobalVariable)getApplication()).getPersistentCookieStore();
 				persistentCookieStore.clear();
-				syncHttpClient.setCookieStore(persistentCookieStore);
-				syncHttpClient.post(AppConstants.BASE_URL+AppConstants.URL_LOGIN,params, loginTextHttpResponseHandler);
+				asyncHttpClient.setCookieStore(persistentCookieStore);
+				asyncHttpClient.post(AppConstants.BASE_URL+AppConstants.URL_LOGIN,params, loginTextHttpResponseHandler);
+
 				break;
 			case R.id.buttonsignup:
 				Intent intent = new Intent(LogInActivity.this, RegisterActivity.class);
