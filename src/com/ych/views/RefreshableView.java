@@ -187,10 +187,10 @@ public class RefreshableView extends LinearLayout implements OnTouchListener {
 		addView(header, 0);
 	}
 
-	public RefreshableView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+/*	public RefreshableView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
 		super(context, attrs, defStyleAttr, defStyleRes);
 		// TODO Auto-generated constructor stub
-	}
+	}*/
 
 	public RefreshableView(Context context, AttributeSet attrs, int defStyleAttr) {
 		super(context, attrs, defStyleAttr);

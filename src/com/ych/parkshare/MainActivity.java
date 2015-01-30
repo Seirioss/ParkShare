@@ -35,10 +35,8 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		PushManager.startWork(getApplicationContext(), PushConstants.LOGIN_TYPE_API_KEY,BaiduUtils.getMetaValue(MainActivity.this, "api_key"));
-
 		setContentView(R.layout.activity_main);
+		PushManager.startWork(getApplicationContext(), PushConstants.LOGIN_TYPE_API_KEY,BaiduUtils.getMetaValue(MainActivity.this, "api_key"));
 		int runtime = (Integer) SpUtils.get(getApplicationContext(), AppConstants.RUN_TIME, 0);
 		if (runtime == 0) {
 			SpUtils.put(getApplicationContext(), AppConstants.RUN_TIME, runtime + 1);

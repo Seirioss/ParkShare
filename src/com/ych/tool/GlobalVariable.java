@@ -10,9 +10,9 @@ public class GlobalVariable extends Application {
 
 	@Override
 	public void onCreate() {
+		//super.onCreate();
 		persistentCookieStore=new PersistentCookieStore(getApplicationContext());
 		FrontiaApplication.initFrontiaApplication(getApplicationContext());
-		super.onCreate();
 	}
 
 	public PersistentCookieStore getPersistentCookieStore() {
