@@ -57,7 +57,6 @@ public class SearchActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_search);
 		actionBar = getActionBar();
-		actionBar.setTitle("返回");
 		actionBar.setDisplayShowHomeEnabled(false);
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		listViewsearch = (ListView) findViewById(R.id.searchresult);
@@ -100,8 +99,11 @@ public class SearchActivity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
+		
 		getMenuInflater().inflate(R.menu.item_actionbar_searchactivity, menu);
-		searchView = (SearchView) menu.findItem(R.id.action_item_search).getActionView();
+		MenuItem menuItem=menu.findItem(R.id.action_item_search);
+		searchView = (SearchView)menuItem.getActionView();
+		searchView.setIconifiedByDefault(false);
 		searchView.setOnQueryTextListener(new OnQueryTextListener() {
 
 			@Override
