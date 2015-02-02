@@ -436,5 +436,8 @@
 
     <color name="black">#000000</color>
     <!-- 黑色 -->
-
+	<color name="blacklight">#1a1a1a</color>
+	<!-- 浅黑色 -->
+	<color name="redlight">#df575b</color>
+	<!-- 浅红色 -->
 </resources>

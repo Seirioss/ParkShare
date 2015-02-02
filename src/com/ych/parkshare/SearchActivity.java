@@ -140,8 +140,8 @@ public class SearchActivity extends Activity {
 						String comment=jsonObject.getString("comment");
 						String longitude=jsonObject.getString("longitude");
 						String latitude=jsonObject.getString("latitude");
-						String start_time=jsonObject.getJSONObject("shareinfo").getString("start_time");
-						String end_time=jsonObject.getJSONObject("shareinfo").getString("end_time");
+						String start_time=jsonObject.getJSONObject("shareinfo").getString("start_time").substring(11, 19);
+						String end_time=jsonObject.getJSONObject("shareinfo").getString("end_time").substring(11, 19);
 						map.put("pk", pk);
 						map.put("username", username);
 						map.put("describe", describe);
