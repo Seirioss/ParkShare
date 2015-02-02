@@ -83,6 +83,7 @@
     <string name="helpabout">帮助与关于</string>
     <string name="checkupdate">检查更新</string>
     <string name="settings">设置</string>
+    <string name="sharename">用户</string>
 	
     <string name="title_activity_bnavigator">BNavigatorActivity</string>
 

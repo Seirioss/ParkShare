@@ -53,7 +53,8 @@ public class ParkOwnActivity extends Activity {
 	protected Messenger serviceMessenger;
 	private Switch switchpark;
 	private final static String MENU_REFRESH = "刷新";
-	private final static String MENU_SHARE = "分享";
+	private final static String MENU_SHARE = "普通分享";
+	private final static String MENU_SHAREVIP = "分享给指定用户";
 	private final static String MENU_SHARE_CANLCER = "取消分享";
 	private AsyncHttpClient asyncHttpClient;
 	private TextView textdescription;
@@ -153,6 +154,7 @@ public class ParkOwnActivity extends Activity {
 		menu.add(MENU_REFRESH);
 		if (is_shared == false) {
 			menu.add(MENU_SHARE);
+			menu.add(MENU_SHAREVIP);
 		}
 		if (is_shared == true && is_borrowed == false) {
 			menu.add(MENU_SHARE_CANLCER);
@@ -178,7 +180,42 @@ public class ParkOwnActivity extends Activity {
 		if (title.equals(MENU_SHARE_CANLCER)) {
 			asyncHttpClient.post(AppConstants.BASE_URL + AppConstants.URL_SHARECANCEL, new RequestParams("parkid", parkpk), sharecancelTextHttpResponseHandler);
 		}
+		if(title.equals(MENU_SHAREVIP)){
+			shareparkvip();
+		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	private void shareparkvip() {
+		LayoutInflater inflater = getLayoutInflater();
+		final View layout = inflater.inflate(R.layout.dialog_vpisharetime, (ViewGroup) findViewById(R.id.sharetime));
+		AlertDialog.Builder builder = new Builder(ParkOwnActivity.this);
+		builder.setTitle("分享时间");
+		builder.setView(layout);
+		builder.setNegativeButton("取消", null);
+		builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				EditText editTextstart = (EditText) layout.findViewById(R.id.dialog_edit_starttime);
+				EditText editTextend = (EditText) layout.findViewById(R.id.dialog_edit_endtime);
+				EditText editTextname=(EditText)layout.findViewById(R.id.et_sharedialog_name);
+				String timeStart = editTextstart.getEditableText().toString();
+				String timeend = editTextend.getEditableText().toString();
+				String name = editTextname.getEditableText().toString();
+				AsyncHttpClient client = new AsyncHttpClient();
+				PersistentCookieStore persistentCookieStore = ((GlobalVariable) getApplication()).getPersistentCookieStore();
+				client.setCookieStore(persistentCookieStore);
+				RequestParams requestParams = new RequestParams();
+				requestParams.put("parkid", parkpk);
+				requestParams.put("starttime", timeStart);
+				requestParams.put("endtime", timeend);
+				requestParams.put("price", 100);
+				requestParams.put("to_user", name);
+				asyncHttpClient.post(AppConstants.BASE_URL + AppConstants.URL_SHARE, requestParams, sharevipTextHttpResponseHandler);
+			}
+		});
+		builder.create().show();
 	}
 
 	private void sharepark() {
@@ -277,6 +314,27 @@ public class ParkOwnActivity extends Activity {
 
 		@Override
 		public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+		}
+	};
+	private TextHttpResponseHandler sharevipTextHttpResponseHandler=new TextHttpResponseHandler("utf-8") {
+		
+		@Override
+		public void onSuccess(int statusCode, Header[] headers, String responseString) {
+			// TODO Auto-generated method stub
+			if (statusCode == 200) {
+				if (responseString.equals("0")) {
+					textremark.setText(responseString);
+					asyncHttpClient.post(AppConstants.BASE_URL + AppConstants.URL_PARKINFO, new RequestParams("parkid", parkpk), refreshJsonHttpResponseHandler);
+				} else {
+					textremark.setText(responseString);
+				}
+			}
+		}
+		
+		@Override
+		public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+			// TODO Auto-generated method stub
+			
 		}
 	};
 	private TextHttpResponseHandler sharecancelTextHttpResponseHandler=new TextHttpResponseHandler("utf-8") {
