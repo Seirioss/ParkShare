@@ -19,4 +19,5 @@ public class AppConstants {
 	public final static String URL_ADDPARK="park/add/";
 	public final static String URL_LOGIN="login/";
 	public final static String URL_UPDATEPUSHINFO="user/addpushinfo/";
+	public final static String URL_CHECHAPPVERSION="update/";
 }
