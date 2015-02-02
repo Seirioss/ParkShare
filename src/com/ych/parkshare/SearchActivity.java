@@ -69,7 +69,7 @@ public class SearchActivity extends Activity {
 		listViewsearch.setOnItemClickListener(onItemClickListener);
 		
 	}
-
+//
 	@Override
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
 		// TODO Auto-generated method stub
