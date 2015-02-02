@@ -51,7 +51,7 @@ public class BaiduPushMessageReceiver extends FrontiaPushMessageReceiver{
 	@Override
 	public void onNotificationClicked(Context arg0, String arg1, String arg2, String arg3) {
 		// TODO Auto-generated method stub
-		
+		System.out.println("message:"+arg2);
 	}
 
 	@Override

@@ -33,9 +33,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnKeyListener;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
@@ -57,7 +59,6 @@ public class SearchActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_search);
 		actionBar = getActionBar();
-		actionBar.setTitle("返回");
 		actionBar.setDisplayShowHomeEnabled(false);
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		listViewsearch = (ListView) findViewById(R.id.searchresult);
@@ -65,8 +66,8 @@ public class SearchActivity extends Activity {
 		PersistentCookieStore persistentCookieStore = ((GlobalVariable) getApplication()).getPersistentCookieStore();
 		client.setCookieStore(persistentCookieStore);
 		// searchresult.setAdapter(ListAdapter);
-
 		listViewsearch.setOnItemClickListener(onItemClickListener);
+		
 	}
 
 	@Override
@@ -100,8 +101,11 @@ public class SearchActivity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
+		
 		getMenuInflater().inflate(R.menu.item_actionbar_searchactivity, menu);
-		searchView = (SearchView) menu.findItem(R.id.action_item_search).getActionView();
+		MenuItem menuItem=menu.findItem(R.id.action_item_search);
+		searchView = (SearchView)menuItem.getActionView();
+		searchView.setIconifiedByDefault(false);
 		searchView.setOnQueryTextListener(new OnQueryTextListener() {
 
 			@Override
@@ -130,16 +134,33 @@ public class SearchActivity extends Activity {
 						Map<String, String> map = new HashMap<String, String>();
 						JSONObject jsonObject = response.getJSONObject(i);
 						String pk = jsonObject.getString("pk");
-						String address = jsonObject.getString("address");
+						String username=jsonObject.getString("username");
+						String describe=jsonObject.getString("username");
+						String address=jsonObject.getString("address");
+						String comment=jsonObject.getString("comment");
+						String longitude=jsonObject.getString("longitude");
+						String latitude=jsonObject.getString("latitude");
+						String start_time=jsonObject.getJSONObject("shareinfo").getString("start_time");
+						String end_time=jsonObject.getJSONObject("shareinfo").getString("end_time");
 						map.put("pk", pk);
+						map.put("username", username);
+						map.put("describe", describe);
 						map.put("address", address);
+						map.put("comment", comment);
+						map.put("longitude", longitude);
+						map.put("latitude", latitude);
+						map.put("start_time", start_time);
+						map.put("end_time", end_time);
 						data.add(map);
 					}
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				SimpleAdapter simpleAdapter = new SimpleAdapter(SearchActivity.this, data, android.R.layout.simple_list_item_2, new String[] { "pk", "address" }, new int[] { android.R.id.text1, android.R.id.text2 });
+				
+				String[] from=new String[]{"start_time","end_time","address"};
+				int[] to=new int[]{R.id.tv_search_starttime,R.id.tv_search_endtime,R.id.tv_search_address};
+				SimpleAdapter simpleAdapter = new SimpleAdapter(SearchActivity.this, data,R.layout.listitem_search,from,to);
 				listViewsearch.setAdapter(simpleAdapter);
 			}
 			super.onSuccess(statusCode, headers, response);
