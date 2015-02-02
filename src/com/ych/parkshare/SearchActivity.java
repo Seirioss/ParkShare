@@ -91,7 +91,7 @@ public class SearchActivity extends Activity {
 			// TODO Auto-generated method stub
 			TextView textView = (TextView) view.findViewById(android.R.id.text1);
 			Intent intent = new Intent(SearchActivity.this, RentableParkInfoActivity.class);
-			intent.putExtra("pk", textView.getText());
+			String pk=data.get(position).get("pk").toString();
 			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
 
