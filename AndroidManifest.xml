@@ -7,6 +7,9 @@
     <uses-sdk
         android:minSdkVersion="18"
         android:targetSdkVersion="19" />
+    <!-- 安装应用权限 -->
+    <uses-permission android:name="android.permission.INSTALL_PACKAGES" />
+
     <!-- 开锁权限 -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
