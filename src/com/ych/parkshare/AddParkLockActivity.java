@@ -32,6 +32,7 @@ public class AddParkLockActivity extends Activity {
 	private EditText editTextserialnumber;
 	private EditText editTextdescribe;
 	private EditText editTextaddress;
+	private EditText editTextremake;
 
 	private AsyncHttpClient asyncHttpClient;
 
@@ -45,10 +46,10 @@ public class AddParkLockActivity extends Activity {
 		actionBar.setDisplayShowHomeEnabled(false);
 		actionBar.setDisplayHomeAsUpEnabled(true);
 
-		editTextaddress = (EditText) findViewById(R.id.editparkaddress);
-		editTextserialnumber = (EditText) findViewById(R.id.editlocknumber);
-		editTextdescribe = (EditText) findViewById(R.id.editdescribe);
-		editTextaddress = (EditText) findViewById(R.id.editparkaddress);
+		editTextaddress = (EditText) findViewById(R.id.et_addpark_address);
+		editTextserialnumber = (EditText) findViewById(R.id.et_addpark_serialr);
+		editTextdescribe = (EditText) findViewById(R.id.et_addpark_describe);
+		editTextremake = (EditText) findViewById(R.id.et_addpark_remark);
 		addlockbutton = (Button) findViewById(R.id.addlockbutton);
 
 		asyncHttpClient = new AsyncHttpClient();
@@ -68,6 +69,7 @@ public class AddParkLockActivity extends Activity {
 				String describe = editTextdescribe.getText().toString();
 				String address = editTextaddress.getText().toString();
 				String comment = "haha";
+				String remake = editTextremake.getText().toString();
 				RequestParams requestParams = new RequestParams();
 				requestParams.put("longitude", longitude);
 				requestParams.put("latitude", latitude);
@@ -78,6 +80,7 @@ public class AddParkLockActivity extends Activity {
 				requestParams.put("comment", comment);
 				requestParams.put("longitude", latitude);
 				requestParams.put("latitude", longitude);
+				requestParams.put("remake", remake);
 				asyncHttpClient.post(AppConstants.BASE_URL + AppConstants.URL_ADDPARK, requestParams, addparkTextHttpResponseHandler);
 			}
 		});
