@@ -94,6 +94,7 @@ public class SearchActivity extends Activity {
 			String pk=data.get(position).get("pk").toString();
 			intent.putExtra("pk", pk);
 			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			intent.putExtra("pk", pk);
 			startActivity(intent);
 
 		}
