@@ -43,7 +43,7 @@
         android:layout_alignLeft="@+id/linearLayout1"
         android:layout_below="@+id/line1"
         android:orientation="horizontal"
-        android:background="@android:color/transparent">
+        android:background="@drawable/selector_gainsboro_white">
 
         <ImageView
             android:id="@+id/imageView2"
@@ -61,6 +61,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="80dp"
             android:gravity="center_vertical"
+            android:background="@drawable/selector_gainsboro_white"
             android:text="@string/parkmanagment" />
         
     </LinearLayout>
