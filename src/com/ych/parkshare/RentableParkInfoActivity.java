@@ -60,13 +60,13 @@ public class RentableParkInfoActivity extends Activity {
 
 		makeorderbutton = (Button) findViewById(R.id.makeorderbutton);
 		editparkdescription = (EditText) findViewById(R.id.editparkdescription);
-		editvalidity = (EditText) findViewById(R.id.editvalidity);
+//		editvalidity = (EditText) findViewById(R.id.editvalidity);
 		editparkaddress = (EditText) findViewById(R.id.editparkaddress);
 		editownertelephone = (EditText) findViewById(R.id.editownertelephone);
 		editstarttime = (EditText) findViewById(R.id.editstarttime);
 		editendtime = (EditText) findViewById(R.id.editendtime);
 		editofeescale = (EditText) findViewById(R.id.editofeescale);
-		editremark = (EditText) findViewById(R.id.editremark);
+//		editremark = (EditText) findViewById(R.id.editremark);
 		makeorderbutton.setOnClickListener(OnClickListener);
 		pk = getIntent().getStringExtra("pk");
 

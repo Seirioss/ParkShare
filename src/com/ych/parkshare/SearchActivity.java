@@ -93,6 +93,7 @@ public class SearchActivity extends Activity {
 			Intent intent = new Intent(SearchActivity.this, RentableParkInfoActivity.class);
 			String pk=data.get(position).get("pk").toString();
 			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			intent.putExtra("pk", pk);
 			startActivity(intent);
 
 		}
