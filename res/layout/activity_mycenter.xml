@@ -43,6 +43,7 @@
         android:layout_alignLeft="@+id/linearLayout1"
         android:layout_below="@+id/line1"
         android:orientation="horizontal"
+        android:clickable="true"
         android:background="@drawable/selector_gainsboro_white">
 
         <ImageView
@@ -61,7 +62,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="80dp"
             android:gravity="center_vertical"
-            android:background="@drawable/selector_gainsboro_white"
+            android:background="@android:color/transparent"
             android:text="@string/parkmanagment" />
         
     </LinearLayout>
@@ -80,7 +81,8 @@
         android:layout_alignLeft="@+id/linearLayout2"
         android:layout_below="@+id/line2"
         android:orientation="horizontal"
-        android:background="@android:color/transparent">
+        android:clickable="true"
+        android:background="@drawable/selector_gainsboro_white">
 
         <ImageView
             android:id="@+id/imageView3"
@@ -114,7 +116,8 @@
         android:layout_alignLeft="@+id/linearLayout2"
         android:layout_below="@+id/line3"
         android:orientation="horizontal"
-        android:background="@android:color/transparent">
+        android:clickable="true"
+        android:background="@drawable/selector_gainsboro_white">
 
         <ImageView
             android:id="@+id/imageView4"
@@ -148,7 +151,8 @@
         android:layout_alignLeft="@+id/linearLayout4"
         android:layout_below="@+id/line4"
         android:orientation="horizontal"
-        android:background="@android:color/transparent">
+        android:clickable="true"
+        android:background="@drawable/selector_gainsboro_white">
 
         <ImageView
             android:id="@+id/imageView5"
@@ -182,7 +186,8 @@
         android:layout_alignLeft="@+id/linearLayout5"
         android:layout_below="@+id/line5"
         android:orientation="horizontal"
-        android:background="@android:color/transparent">
+        android:clickable="true"
+        android:background="@drawable/selector_gainsboro_white">
 
         <ImageView
             android:id="@+id/imageView6"
