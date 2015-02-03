@@ -14,7 +14,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:src="@drawable/userpicinorder" />
-    
+     
     <TextView
         android:id="@+id/ownername"
         android:layout_width="wrap_content"
