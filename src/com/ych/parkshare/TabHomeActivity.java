@@ -24,6 +24,7 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
+import com.ych.http.AsyncHttpClient;
 import com.ych.http.JsonHttpResponseHandler;
 import com.ych.http.PersistentCookieStore;
 import com.ych.http.SyncHttpClient;
@@ -41,25 +42,37 @@ public class TabHomeActivity extends Activity {
 	private ListAdapter listAdapter;
 	private final static int UPDATE = 1;
 	private List<Map<String, String>> listparks;
-	private SyncHttpClient client;
+	private SyncHttpClient syncHttpClient;
+	private AsyncHttpClient asyncHttpClient;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_home);
-		client = new SyncHttpClient();
+		asyncHttpClient=new AsyncHttpClient();
+		syncHttpClient = new SyncHttpClient();
 		PersistentCookieStore persistentCookieStore = ((GlobalVariable) getApplication()).getPersistentCookieStore();
-		client.setCookieStore(persistentCookieStore);
+		syncHttpClient.setCookieStore(persistentCookieStore);
+		asyncHttpClient.setCookieStore(persistentCookieStore);
 		refreshableView = (RefreshableView) findViewById(R.id.refreshable_view);
 		listView = (ListView) findViewById(R.id.list_view);
 		listView.setOnItemClickListener(onItemClickListener);
 		refreshableView.setOnRefreshListener(pullToRefreshListener, 0);
+		
 	}
+
+	@Override
+	protected void onStart() {
+		// TODO Auto-generated method stub
+		asyncHttpClient.post(AppConstants.BASE_URL + AppConstants.URL_USERPARKS, refreshjsonHttpResponseHandler);
+		super.onStart();
+	}
+
 	private PullToRefreshListener pullToRefreshListener=new PullToRefreshListener() {
 		@Override
 		public void onRefresh() {
-			client.post(AppConstants.BASE_URL + AppConstants.URL_USERPARKS, refreshjsonHttpResponseHandler);
+			syncHttpClient.post(AppConstants.BASE_URL + AppConstants.URL_USERPARKS, refreshjsonHttpResponseHandler);
 			refreshableView.finishRefreshing();
 		}
 	};
@@ -85,15 +98,14 @@ public class TabHomeActivity extends Activity {
 						map.put("describe", describe);
 						map.put("username", username);
 						map.put("pk", pk);
-						if (is_borrowed) {
-							map.put("is_borrowed", "被租用");
-						} else {
-							map.put("is_borrowed", "未背租用");
-						}
-						if (is_shared) {
-							map.put("is_shared", "已分享");
-						} else {
-							map.put("is_shared", "未分享");
+						if(!is_shared){
+							map.put("status", "未分享");
+						}else {
+							if(is_borrowed){
+								map.put("status", "被租用");
+							}else {
+								map.put("status", "无人租用");
+							}
 						}
 						listparks.add(map);
 
@@ -147,7 +159,7 @@ public class TabHomeActivity extends Activity {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case UPDATE:
-				String[] from = new String[] { "username","address","is_shared"};
+				String[] from = new String[] { "username","address","status"};
 				int[] to = new int[] { R.id.parkinfo_user, R.id.parkinfo_address, R.id.parkinfo_status };
 				listAdapter = new SimpleAdapter(TabHomeActivity.this, listparks, R.layout.item_parkinfo, from, to);
 				listView.setAdapter(listAdapter);
