@@ -88,7 +88,7 @@
             android:layout_marginTop="35dp"
             android:layout_marginLeft="130dp"
             android:layout_marginRight="30dp"
-            android:background="@drawable/login_button_background"
+            android:background="@drawable/confirmbuttonbackground"
             android:text="@string/LogIntoPortshare"
             android:textColor="@color/white" />
     </LinearLayout>
