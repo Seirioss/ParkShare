@@ -28,9 +28,7 @@ import android.widget.Toast;
 public class AddParkLockActivity extends Activity {
 
 	private Button addlockbutton;
-	private EditText editlatitude;
-	private EditText editlongitude;
-	private EditText editTextmacaddress;
+
 	private EditText editTextserialnumber;
 	private EditText editTextdescribe;
 	private EditText editTextaddress;
@@ -47,10 +45,7 @@ public class AddParkLockActivity extends Activity {
 		actionBar.setDisplayShowHomeEnabled(false);
 		actionBar.setDisplayHomeAsUpEnabled(true);
 
-		editlatitude = (EditText) findViewById(R.id.editlatitude);
-		editlongitude = (EditText) findViewById(R.id.editlongitude);
 		editTextaddress = (EditText) findViewById(R.id.editparkaddress);
-		editTextmacaddress = (EditText) findViewById(R.id.editmac);
 		editTextserialnumber = (EditText) findViewById(R.id.editlocknumber);
 		editTextdescribe = (EditText) findViewById(R.id.editdescribe);
 		editTextaddress = (EditText) findViewById(R.id.editparkaddress);
@@ -66,9 +61,9 @@ public class AddParkLockActivity extends Activity {
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				String latitude = editlatitude.getText().toString();
-				String longitude = editlongitude.getText().toString();
-				String macaddress = editTextmacaddress.getText().toString();
+				String latitude = "0";
+				String longitude = "0";
+				String macaddress ="0";
 				String serialnumber = editTextserialnumber.getText().toString();
 				String describe = editTextdescribe.getText().toString();
 				String address = editTextaddress.getText().toString();
