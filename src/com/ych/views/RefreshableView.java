@@ -22,9 +22,6 @@ import android.widget.TextView;
 
 public class RefreshableView extends LinearLayout implements OnTouchListener {
 
-	/**
-	 * 下拉状态
-	 */
 	public static final int STATUS_PULL_TO_REFRESH = 0;
 
 	/**
