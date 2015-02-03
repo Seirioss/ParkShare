@@ -35,6 +35,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class StartupActivity extends Activity {
@@ -44,6 +45,7 @@ public class StartupActivity extends Activity {
 	private String version_current;
 	private String appdownurl;
 	private AsyncHttpClient asyncHttpClient;
+	private TextView tv_version;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -51,21 +53,23 @@ public class StartupActivity extends Activity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_startup);
 		asyncHttpClient = new AsyncHttpClient();
-
+		tv_version = (TextView) findViewById(R.id.tv_startup_version);
+		PackageManager packageManager = getPackageManager();
+		PackageInfo packageInfo = null;
+		try {
+			packageInfo = packageManager.getPackageInfo(getPackageName(), 0);
+		} catch (NameNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		version_current = packageInfo.versionName;
+		tv_version.setText("版本:"+version_current);
 		boolean state = NetworkConnections.isNetworkAvailable(getApplicationContext());
 		if (!state) {
 			Toast.makeText(StartupActivity.this, "网络不可用", Toast.LENGTH_SHORT).show();
 			new Thread(timerRunnable).start();
 		} else {
-			try {
-				PackageManager packageManager = getPackageManager();
-				PackageInfo packageInfo = packageManager.getPackageInfo(getPackageName(), 0);
-				version_current = packageInfo.versionName;
-				asyncHttpClient.post(AppConstants.BASE_URL + AppConstants.URL_CHECHAPPVERSION, versionjsonHttpResponseHandler);
-			} catch (NameNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			asyncHttpClient.post(AppConstants.BASE_URL + AppConstants.URL_CHECHAPPVERSION, versionjsonHttpResponseHandler);
 		}
 
 	}
@@ -110,15 +114,15 @@ public class StartupActivity extends Activity {
 		@Override
 		public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
 			// TODO Auto-generated method stub
-			
+
 			if (statusCode == 200) {
 				try {
 					version_newest = response.getString("version");
 					appdownurl = response.getString("url");
-					
+
 					if (!version_newest.equals(version_current)) {
 						AlertDialog.Builder builder = new Builder(StartupActivity.this);
-						
+
 						builder.setMessage("检测到有新版本,是否更新");
 						builder.setNegativeButton("稍后再说", new DialogInterface.OnClickListener() {
 							@Override
@@ -158,14 +162,13 @@ public class StartupActivity extends Activity {
 									@Override
 									public void onSuccess(int statusCode, Header[] headers, File file) {
 										// TODO Auto-generated method stub
-										
 
 									}
 
 									@Override
 									public void onFailure(int statusCode, Header[] headers, Throwable throwable, File file) {
 										// TODO Auto-generated method stub
-										
+
 									}
 
 									@Override
@@ -187,17 +190,17 @@ public class StartupActivity extends Activity {
 								});
 							}
 						});
-						AlertDialog alertDialog=builder.create();
+						AlertDialog alertDialog = builder.create();
 						alertDialog.setCancelable(false);
 						alertDialog.show();
-					}else {
+					} else {
 						new Thread(timerRunnable).start();
 					}
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-			}else {
+			} else {
 				new Thread(timerRunnable).start();
 			}
 			super.onSuccess(statusCode, headers, response);

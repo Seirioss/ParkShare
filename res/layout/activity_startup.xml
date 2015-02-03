@@ -11,12 +11,21 @@
         android:src="@drawable/ic_launcher" />
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/tv_startup_version"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="@string/startupinfo"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="50dp"
+        android:text="版本" />
+
+    <TextView
+        android:id="@+id/tv_startup_company"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
+		android:layout_centerHorizontal="true"
+		android:layout_marginBottom="3dp"
+        android:text="上海永畅信息科技有限公司" />
 
 </RelativeLayout>
