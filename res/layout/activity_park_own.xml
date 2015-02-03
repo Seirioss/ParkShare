@@ -31,7 +31,7 @@
         android:textSize="18dp" />
 
     <TextView
-        android:id="@+id/description"
+        android:id="@+id/address"
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:layout_below="@id/textView1"
@@ -90,14 +90,14 @@
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/activity_park_rent_text_endtime"
+        android:layout_below="@+id/address"
         android:layout_marginTop="5dp"
         android:text="@string/parkdescription" 
         android:textColor="@color/white"
         android:textSize="18dp"/>
 
     <TextView
-        android:id="@+id/address"
+        android:id="@+id/description"
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:layout_below="@id/textView3"
@@ -112,7 +112,7 @@
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/address"
+        android:layout_below="@+id/activity_park_rent_text_endtime"
         android:layout_marginTop="5dp"
         android:text="@string/rentstate" 
         android:textColor="@color/white"
