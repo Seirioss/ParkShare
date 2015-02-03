@@ -4,8 +4,12 @@ import org.apache.http.Header;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.baidu.android.pushservice.BasicPushNotificationBuilder;
+import com.baidu.android.pushservice.CustomPushNotificationBuilder;
 import com.baidu.android.pushservice.PushConstants;
 import com.baidu.android.pushservice.PushManager;
+import com.baidu.android.pushservice.PushNotificationBuilder;
+import com.baidu.android.pushservice.PushSettings;
 import com.ych.http.AsyncHttpClient;
 import com.ych.http.JsonHttpResponseHandler;
 import com.ych.http.PersistentCookieStore;
@@ -19,6 +23,8 @@ import com.ych.tool.SpUtils;
 import com.ych.views.LinkClickTextView;
 
 import android.app.Activity;
+import android.app.Notification;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;

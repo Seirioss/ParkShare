@@ -110,10 +110,12 @@ public class StartupActivity extends Activity {
 		@Override
 		public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
 			// TODO Auto-generated method stub
+			
 			if (statusCode == 200) {
 				try {
 					version_newest = response.getString("version");
 					appdownurl = response.getString("url");
+					
 					if (!version_newest.equals(version_current)) {
 						AlertDialog.Builder builder = new Builder(StartupActivity.this);
 						
@@ -156,7 +158,7 @@ public class StartupActivity extends Activity {
 									@Override
 									public void onSuccess(int statusCode, Header[] headers, File file) {
 										// TODO Auto-generated method stub
-										System.out.println(statusCode);
+										
 
 									}
 
@@ -188,12 +190,15 @@ public class StartupActivity extends Activity {
 						AlertDialog alertDialog=builder.create();
 						alertDialog.setCancelable(false);
 						alertDialog.show();
+					}else {
+						new Thread(timerRunnable).start();
 					}
-					;
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+			}else {
+				new Thread(timerRunnable).start();
 			}
 			super.onSuccess(statusCode, headers, response);
 		}
@@ -201,7 +206,7 @@ public class StartupActivity extends Activity {
 		@Override
 		public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
 			// TODO Auto-generated method stub
-			System.out.println(responseString);
+			new Thread(timerRunnable).start();
 			super.onFailure(statusCode, headers, responseString, throwable);
 		}
 

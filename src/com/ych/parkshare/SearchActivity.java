@@ -92,6 +92,7 @@ public class SearchActivity extends Activity {
 			TextView textView = (TextView) view.findViewById(android.R.id.text1);
 			Intent intent = new Intent(SearchActivity.this, RentableParkInfoActivity.class);
 			String pk=data.get(position).get("pk").toString();
+			intent.putExtra("pk", pk);
 			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
 

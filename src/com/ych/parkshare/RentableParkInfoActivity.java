@@ -69,7 +69,7 @@ public class RentableParkInfoActivity extends Activity {
 		editremark = (EditText) findViewById(R.id.editremark);
 		makeorderbutton.setOnClickListener(OnClickListener);
 		pk = getIntent().getStringExtra("pk");
-
+		System.out.println();
 		makeorderbutton.setOnClickListener(OnClickListener);
 
 		asyncHttpClient = new AsyncHttpClient();
