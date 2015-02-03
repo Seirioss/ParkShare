@@ -116,6 +116,7 @@ public class StartupActivity extends Activity {
 					appdownurl = response.getString("url");
 					if (!version_newest.equals(version_current)) {
 						AlertDialog.Builder builder = new Builder(StartupActivity.this);
+						
 						builder.setMessage("检测到有新版本,是否更新");
 						builder.setNegativeButton("稍后再说", new DialogInterface.OnClickListener() {
 							@Override
@@ -184,7 +185,9 @@ public class StartupActivity extends Activity {
 								});
 							}
 						});
-						builder.create().show();
+						AlertDialog alertDialog=builder.create();
+						alertDialog.setCancelable(false);
+						alertDialog.show();
 					}
 					;
 				} catch (JSONException e) {
