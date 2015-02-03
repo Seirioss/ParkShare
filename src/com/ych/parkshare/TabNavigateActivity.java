@@ -15,22 +15,22 @@ import android.widget.Button;
 
 public class TabNavigateActivity extends Activity{
 	
-	private Button navigatorbutton;
+//	private Button navigatorbutton;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_navigate);
 		
-		navigatorbutton=(Button)findViewById(R.id.navigatorbutton);
-		navigatorbutton.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Log.i("launchnavi", "111");
-				launchNavigator2();
-			}
-		});
+//		navigatorbutton=(Button)findViewById(R.id.navigatorbutton);
+//		navigatorbutton.setOnClickListener(new OnClickListener() {
+//			
+//			@Override
+//			public void onClick(View v) {
+//				// TODO Auto-generated method stub
+//				Log.i("launchnavi", "111");
+//				launchNavigator2();
+//			}
+//		});
 	}
 	
 	/**
