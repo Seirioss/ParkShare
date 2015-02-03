@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/tabhome_background"
     tools:context="com.ych.parkshare.TabHomeActivity" >
 
     <com.ych.views.RefreshableView

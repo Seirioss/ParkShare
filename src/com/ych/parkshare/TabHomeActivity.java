@@ -120,7 +120,7 @@ public class TabHomeActivity extends Activity {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-			String name = ((TextView) view.findViewById(R.id.textviewusername)).getText().toString();
+			String name = ((TextView) view.findViewById(R.id.parkinfo_user)).getText().toString();
 			String pk= listparks.get(position).get("pk");
 			
 			
@@ -147,8 +147,8 @@ public class TabHomeActivity extends Activity {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case UPDATE:
-				String[] from = new String[] { "username", "describe", "is_borrowed","is_shared" ,"address","comment"};
-				int[] to = new int[] { R.id.textviewusername, R.id.textviewdescribe, R.id.textviewrentstate, R.id.textviewsharestate, R.id.textviewaddress, R.id.textviewcomment };
+				String[] from = new String[] { "username","address","is_shared"};
+				int[] to = new int[] { R.id.parkinfo_user, R.id.parkinfo_address, R.id.parkinfo_status };
 				listAdapter = new SimpleAdapter(TabHomeActivity.this, listparks, R.layout.item_parkinfo, from, to);
 				listView.setAdapter(listAdapter);
 				break;

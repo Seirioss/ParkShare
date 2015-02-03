@@ -91,12 +91,15 @@
             android:hardwareAccelerated="false"
             android:logo="@drawable/ic_register" />
         <activity android:name=".GuideActivity" />
-        <activity android:name=".TabHomeActivity" />
+        <activity 
+            android:name=".TabHomeActivity"
+            android:hardwareAccelerated="false" />
         <activity android:name=".TabMyCenterActivity" />
         <activity android:name=".TabNavigateActivity" />
         <activity
             android:name=".TabHostActivity"
-            android:logo="@drawable/ic_launcher" >
+            android:logo="@drawable/ic_register"
+            android:hardwareAccelerated="false" >
         </activity>
         <activity android:name=".ParkRentActivity" />
         <activity android:name=".SearchActivity" />

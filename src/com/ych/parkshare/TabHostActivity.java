@@ -31,7 +31,7 @@ public class TabHostActivity extends TabActivity {
      	actionBar.setBackgroundDrawable(getResources().getDrawable(R.drawable.actionbar_background));
 
 		actionBar.setDisplayShowHomeEnabled(false);
-		
+        	
 		Resources res = getResources(); // Resource object to get Drawables
 		tabHost = getTabHost(); // The activity TabHost
 		tabHost.setAlpha((float) 0.85);
