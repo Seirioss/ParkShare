@@ -50,12 +50,13 @@ public class LogInActivity extends Activity {
 	private AsyncHttpClient asyncHttpClient;
 	private String username;
 	private String password;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_log_in);
-		
+
 		linkClickTextView = (LinkClickTextView) findViewById(R.id.forgetpassword);
 		buttonLogin = (Button) findViewById(R.id.buttonlogin);
 		buttonSignup = (Button) findViewById(R.id.buttonsignup);
@@ -64,32 +65,35 @@ public class LogInActivity extends Activity {
 		linkClickTextView.setOnClickListener(onClickListener);
 		buttonSignup.setOnClickListener(onClickListener);
 		buttonLogin.setOnClickListener(onClickListener);
-		if((Boolean) SpUtils.get(getApplicationContext(), AppConstants.USER_REMEMBER, false)){
-			String name=(String) SpUtils.get(getApplicationContext(), AppConstants.USER_NAME, "");
-			String password=(String) SpUtils.get(getApplicationContext(), AppConstants.USER_PASSWORD, "");
+		if ((Boolean) SpUtils.get(getApplicationContext(), AppConstants.USER_REMEMBER, false)) {
+			String name = (String) SpUtils.get(getApplicationContext(), AppConstants.USER_NAME, "");
+			String password = (String) SpUtils.get(getApplicationContext(), AppConstants.USER_PASSWORD, "");
 			editTextname.setText(name);
 			editTextpassword.setText(password);
-		};
-		logInActivity=this;
-		asyncHttpClient=new AsyncHttpClient();
+		}
+		;
+		logInActivity = this;
+		asyncHttpClient = new AsyncHttpClient();
 	}
-	public static LogInActivity getInstance(){
+
+	public static LogInActivity getInstance() {
 		return (LogInActivity) logInActivity;
 	}
+
 	private View.OnClickListener onClickListener = new OnClickListener() {
 		@Override
 		public void onClick(View v) {
 			switch (v.getId()) {
 			case R.id.buttonlogin:
-				username =editTextname.getText().toString();
-				password=editTextpassword.getText().toString();
+				username = editTextname.getText().toString();
+				password = editTextpassword.getText().toString();
 				RequestParams params = new RequestParams();
 				params.add("username", username);
 				params.add("password", password);
-				PersistentCookieStore persistentCookieStore=((GlobalVariable)getApplication()).getPersistentCookieStore();
+				PersistentCookieStore persistentCookieStore = ((GlobalVariable) getApplication()).getPersistentCookieStore();
 				persistentCookieStore.clear();
 				asyncHttpClient.setCookieStore(persistentCookieStore);
-				asyncHttpClient.post(AppConstants.BASE_URL+AppConstants.URL_LOGIN,params, loginTextHttpResponseHandler);
+				asyncHttpClient.post(AppConstants.BASE_URL + AppConstants.URL_LOGIN, params, loginTextHttpResponseHandler);
 
 				break;
 			case R.id.buttonsignup:
@@ -107,7 +111,6 @@ public class LogInActivity extends Activity {
 		}
 	};
 
-	
 	private TextHttpResponseHandler loginTextHttpResponseHandler = new TextHttpResponseHandler("utf-8") {
 
 		@Override
@@ -119,7 +122,7 @@ public class LogInActivity extends Activity {
 					SpUtils.put(getApplicationContext(), AppConstants.USER_REMEMBER, true);
 					SpUtils.put(getApplicationContext(), AppConstants.USER_NAME, username);
 					SpUtils.put(getApplicationContext(), AppConstants.USER_PASSWORD, password);
-					PushManager.startWork(getApplicationContext(), PushConstants.LOGIN_TYPE_API_KEY,BaiduUtils.getMetaValue(LogInActivity.this, "api_key"));
+					PushManager.startWork(getApplicationContext(), PushConstants.LOGIN_TYPE_API_KEY, BaiduUtils.getMetaValue(LogInActivity.this, "api_key"));
 					Intent intent = new Intent(LogInActivity.this, TabHostActivity.class);
 					startActivity(intent);
 					LogInActivity.this.finish();

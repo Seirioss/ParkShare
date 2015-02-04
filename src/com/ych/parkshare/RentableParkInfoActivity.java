@@ -60,13 +60,13 @@ public class RentableParkInfoActivity extends Activity {
 
 		makeorderbutton = (Button) findViewById(R.id.makeorderbutton);
 		editparkdescription = (EditText) findViewById(R.id.editparkdescription);
-//		editvalidity = (EditText) findViewById(R.id.editvalidity);
+		// editvalidity = (EditText) findViewById(R.id.editvalidity);
 		editparkaddress = (EditText) findViewById(R.id.editparkaddress);
 		editownertelephone = (EditText) findViewById(R.id.editownertelephone);
 		editstarttime = (EditText) findViewById(R.id.editstarttime);
 		editendtime = (EditText) findViewById(R.id.editendtime);
 		editofeescale = (EditText) findViewById(R.id.editofeescale);
-//		editremark = (EditText) findViewById(R.id.editremark);
+		// editremark = (EditText) findViewById(R.id.editremark);
 		makeorderbutton.setOnClickListener(OnClickListener);
 		pk = getIntent().getStringExtra("pk");
 		System.out.println();
@@ -113,7 +113,7 @@ public class RentableParkInfoActivity extends Activity {
 			if (responseString.equals(responseString)) {
 				Toast.makeText(RentableParkInfoActivity.this, "预约成功", Toast.LENGTH_SHORT).show();
 				makeorderbutton.setEnabled(false);
-			}else {
+			} else {
 				Toast.makeText(RentableParkInfoActivity.this, responseString, Toast.LENGTH_LONG).show();
 			}
 		}

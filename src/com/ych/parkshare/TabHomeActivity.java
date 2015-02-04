@@ -50,7 +50,7 @@ public class TabHomeActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_home);
-		asyncHttpClient=new AsyncHttpClient();
+		asyncHttpClient = new AsyncHttpClient();
 		syncHttpClient = new SyncHttpClient();
 		PersistentCookieStore persistentCookieStore = ((GlobalVariable) getApplication()).getPersistentCookieStore();
 		syncHttpClient.setCookieStore(persistentCookieStore);
@@ -59,7 +59,7 @@ public class TabHomeActivity extends Activity {
 		listView = (ListView) findViewById(R.id.list_view);
 		listView.setOnItemClickListener(onItemClickListener);
 		refreshableView.setOnRefreshListener(pullToRefreshListener, 0);
-		
+
 	}
 
 	@Override
@@ -69,7 +69,7 @@ public class TabHomeActivity extends Activity {
 		super.onStart();
 	}
 
-	private PullToRefreshListener pullToRefreshListener=new PullToRefreshListener() {
+	private PullToRefreshListener pullToRefreshListener = new PullToRefreshListener() {
 		@Override
 		public void onRefresh() {
 			syncHttpClient.post(AppConstants.BASE_URL + AppConstants.URL_USERPARKS, refreshjsonHttpResponseHandler);
@@ -98,12 +98,12 @@ public class TabHomeActivity extends Activity {
 						map.put("describe", describe);
 						map.put("username", username);
 						map.put("pk", pk);
-						if(!is_shared){
+						if (!is_shared) {
 							map.put("status", "未分享");
-						}else {
-							if(is_borrowed){
+						} else {
+							if (is_borrowed) {
 								map.put("status", "被租用");
-							}else {
+							} else {
 								map.put("status", "无人租用");
 							}
 						}
@@ -133,12 +133,11 @@ public class TabHomeActivity extends Activity {
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
 			String name = ((TextView) view.findViewById(R.id.parkinfo_user)).getText().toString();
-			String pk= listparks.get(position).get("pk");
-			
-			
+			String pk = listparks.get(position).get("pk");
+
 			String currentusername = (String) SpUtils.get(getApplicationContext(), AppConstants.USER_NAME, "");
-			name=name.trim();
-			currentusername=currentusername.trim();
+			name = name.trim();
+			currentusername = currentusername.trim();
 			if (name.equals(currentusername)) {
 				Intent intent = new Intent(TabHomeActivity.this, ParkOwnActivity.class);
 				intent.putExtra("pk", pk);
@@ -161,7 +160,7 @@ public class TabHomeActivity extends Activity {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case UPDATE:
-				String[] from = new String[] { "username","address","status"};
+				String[] from = new String[] { "username", "address", "status" };
 				int[] to = new int[] { R.id.parkinfo_user, R.id.parkinfo_address, R.id.parkinfo_status };
 				listAdapter = new SimpleAdapter(TabHomeActivity.this, listparks, R.layout.item_parkinfo, from, to);
 				listView.setAdapter(listAdapter);

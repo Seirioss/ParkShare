@@ -28,12 +28,12 @@ public class TabHostActivity extends TabActivity {
 		setContentView(R.layout.activity_tab_host);
 		actionBar = getActionBar();
 		actionBar.setTitle("主页");
-     	actionBar.setBackgroundDrawable(getResources().getDrawable(R.drawable.actionbar_background));
+		actionBar.setBackgroundDrawable(getResources().getDrawable(R.drawable.actionbar_background));
 		actionBar.setDisplayShowHomeEnabled(false);
-        	
+
 		Resources res = getResources(); // Resource object to get Drawables
 		tabHost = getTabHost(); // The activity TabHost
-		//tabHost.setAlpha((float) 0.85);
+		// tabHost.setAlpha((float) 0.85);
 		TabHost.TabSpec spec; // Reusable TabSpec for each tab
 		Intent intent; // Reusable Intent for each tab
 

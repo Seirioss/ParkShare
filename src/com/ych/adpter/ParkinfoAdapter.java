@@ -12,5 +12,5 @@ public class ParkinfoAdapter extends SimpleAdapter {
 		super(context, data, resource, from, to);
 		// TODO Auto-generated constructor stub
 	}
-	
+
 }

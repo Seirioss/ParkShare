@@ -14,7 +14,7 @@
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
-*/
+ */
 
 package com.ych.http;
 
@@ -36,8 +36,8 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 /**
- * Provides interface to deserialize SAX responses, using AsyncHttpResponseHandler. Can be used like
- * this
+ * Provides interface to deserialize SAX responses, using
+ * AsyncHttpResponseHandler. Can be used like this
  *
  * <pre>
  *     AsyncHttpClient ahc = new AsyncHttpClient();
@@ -51,7 +51,8 @@ import javax.xml.parsers.SAXParserFactory;
  *         public void onFailure(int statusCode, Header[] headers, FontHandler t){
  *              // Request got HTTP fail statusCode
  *         }
- *     });
+ * });
+ * 
  * <pre/>
  *
  * @param <T> Handler extending {@link org.xml.sax.helpers.DefaultHandler}
@@ -60,90 +61,98 @@ import javax.xml.parsers.SAXParserFactory;
  */
 public abstract class SaxAsyncHttpResponseHandler<T extends DefaultHandler> extends AsyncHttpResponseHandler {
 
-    /**
-     * Generic Type of handler
-     */
-    private T handler = null;
-    private final static String LOG_TAG = "SaxAsyncHttpResponseHandler";
+	/**
+	 * Generic Type of handler
+	 */
+	private T handler = null;
+	private final static String LOG_TAG = "SaxAsyncHttpResponseHandler";
 
-    /**
-     * Constructs new SaxAsyncHttpResponseHandler with given handler instance
-     *
-     * @param t instance of Handler extending DefaultHandler
-     * @see org.xml.sax.helpers.DefaultHandler
-     */
-    public SaxAsyncHttpResponseHandler(T t) {
-        super();
-        if (t == null) {
-            throw new Error("null instance of <T extends DefaultHandler> passed to constructor");
-        }
-        this.handler = t;
-    }
+	/**
+	 * Constructs new SaxAsyncHttpResponseHandler with given handler instance
+	 *
+	 * @param t
+	 *            instance of Handler extending DefaultHandler
+	 * @see org.xml.sax.helpers.DefaultHandler
+	 */
+	public SaxAsyncHttpResponseHandler(T t) {
+		super();
+		if (t == null) {
+			throw new Error("null instance of <T extends DefaultHandler> passed to constructor");
+		}
+		this.handler = t;
+	}
 
-    /**
-     * Deconstructs response into given content handler
-     *
-     * @param entity returned HttpEntity
-     * @return deconstructed response
-     * @throws java.io.IOException
-     * @see org.apache.http.HttpEntity
-     */
-    @Override
-    protected byte[] getResponseData(HttpEntity entity) throws IOException {
-        if (entity != null) {
-            InputStream instream = entity.getContent();
-            InputStreamReader inputStreamReader = null;
-            if (instream != null) {
-                try {
-                    SAXParserFactory sfactory = SAXParserFactory.newInstance();
-                    SAXParser sparser = sfactory.newSAXParser();
-                    XMLReader rssReader = sparser.getXMLReader();
-                    rssReader.setContentHandler(handler);
-                    inputStreamReader = new InputStreamReader(instream, DEFAULT_CHARSET);
-                    rssReader.parse(new InputSource(inputStreamReader));
-                } catch (SAXException e) {
-                    Log.e(LOG_TAG, "getResponseData exception", e);
-                } catch (ParserConfigurationException e) {
-                    Log.e(LOG_TAG, "getResponseData exception", e);
-                } finally {
-                    AsyncHttpClient.silentCloseInputStream(instream);
-                    if (inputStreamReader != null) {
-                        try {
-                            inputStreamReader.close();
-                        } catch (IOException e) { /*ignore*/ }
-                    }
-                }
-            }
-        }
-        return null;
-    }
+	/**
+	 * Deconstructs response into given content handler
+	 *
+	 * @param entity
+	 *            returned HttpEntity
+	 * @return deconstructed response
+	 * @throws java.io.IOException
+	 * @see org.apache.http.HttpEntity
+	 */
+	@Override
+	protected byte[] getResponseData(HttpEntity entity) throws IOException {
+		if (entity != null) {
+			InputStream instream = entity.getContent();
+			InputStreamReader inputStreamReader = null;
+			if (instream != null) {
+				try {
+					SAXParserFactory sfactory = SAXParserFactory.newInstance();
+					SAXParser sparser = sfactory.newSAXParser();
+					XMLReader rssReader = sparser.getXMLReader();
+					rssReader.setContentHandler(handler);
+					inputStreamReader = new InputStreamReader(instream, DEFAULT_CHARSET);
+					rssReader.parse(new InputSource(inputStreamReader));
+				} catch (SAXException e) {
+					Log.e(LOG_TAG, "getResponseData exception", e);
+				} catch (ParserConfigurationException e) {
+					Log.e(LOG_TAG, "getResponseData exception", e);
+				} finally {
+					AsyncHttpClient.silentCloseInputStream(instream);
+					if (inputStreamReader != null) {
+						try {
+							inputStreamReader.close();
+						} catch (IOException e) { /* ignore */
+						}
+					}
+				}
+			}
+		}
+		return null;
+	}
 
-    /**
-     * Default onSuccess method for this AsyncHttpResponseHandler to override
-     *
-     * @param statusCode returned HTTP status code
-     * @param headers    returned HTTP headers
-     * @param t          instance of Handler extending DefaultHandler
-     */
-    public abstract void onSuccess(int statusCode, Header[] headers, T t);
+	/**
+	 * Default onSuccess method for this AsyncHttpResponseHandler to override
+	 *
+	 * @param statusCode
+	 *            returned HTTP status code
+	 * @param headers
+	 *            returned HTTP headers
+	 * @param t
+	 *            instance of Handler extending DefaultHandler
+	 */
+	public abstract void onSuccess(int statusCode, Header[] headers, T t);
 
-    @Override
-    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-        onSuccess(statusCode, headers, handler);
-    }
+	@Override
+	public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+		onSuccess(statusCode, headers, handler);
+	}
 
-    /**
-     * Default onFailure method for this AsyncHttpResponseHandler to override
-     *
-     * @param statusCode returned HTTP status code
-     * @param headers    returned HTTP headers
-     * @param t          instance of Handler extending DefaultHandler
-     */
-    public abstract void onFailure(int statusCode, Header[] headers, T t);
+	/**
+	 * Default onFailure method for this AsyncHttpResponseHandler to override
+	 *
+	 * @param statusCode
+	 *            returned HTTP status code
+	 * @param headers
+	 *            returned HTTP headers
+	 * @param t
+	 *            instance of Handler extending DefaultHandler
+	 */
+	public abstract void onFailure(int statusCode, Header[] headers, T t);
 
-    @Override
-    public void onFailure(int statusCode, Header[] headers,
-                          byte[] responseBody, Throwable error) {
-        onSuccess(statusCode, headers, handler);
-    }
+	@Override
+	public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+		onSuccess(statusCode, headers, handler);
+	}
 }

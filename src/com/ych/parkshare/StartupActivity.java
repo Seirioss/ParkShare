@@ -54,6 +54,7 @@ public class StartupActivity extends Activity {
 		setContentView(R.layout.activity_startup);
 		asyncHttpClient = new AsyncHttpClient();
 		tv_version = (TextView) findViewById(R.id.tv_startup_version);
+
 		PackageManager packageManager = getPackageManager();
 		PackageInfo packageInfo = null;
 		try {
@@ -63,7 +64,7 @@ public class StartupActivity extends Activity {
 			e.printStackTrace();
 		}
 		version_current = packageInfo.versionName;
-		tv_version.setText("版本:"+version_current);
+		tv_version.setText("版本:" + version_current);
 		boolean state = NetworkConnections.isNetworkAvailable(getApplicationContext());
 		if (!state) {
 			Toast.makeText(StartupActivity.this, "网络不可用", Toast.LENGTH_SHORT).show();

@@ -17,12 +17,14 @@ public class CollapseActivity extends Activity {
 	private TextView tv_error;
 	private Button bt_submit;
 	private Button bt_quit;
-	private final static int HANDLER_WHAT_READERRORLOG=1;
+	private final static int HANDLER_WHAT_READERRORLOG = 1;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_collapse);
-		setTitle("错误信息");
+		setTitle("很遗憾app奔溃了!!!!!");
+		getActionBar().setDisplayShowHomeEnabled(false);
 		tv_error = (TextView) findViewById(R.id.tv_collapse_error);
 		bt_submit = (Button) findViewById(R.id.bt_collapse_submit);
 		bt_quit = (Button) findViewById(R.id.bt_collapse_quit);
@@ -30,32 +32,32 @@ public class CollapseActivity extends Activity {
 		bt_submit.setOnClickListener(onClickListener);
 		new Thread(runnablereaderrorlog).start();
 	}
-	private Runnable runnablereaderrorlog=new Runnable() {
-		
+
+	private Runnable runnablereaderrorlog = new Runnable() {
+
 		@Override
 		public void run() {
 			// TODO Auto-generated method stub
-			String info=new String();
-			String path=Environment.getExternalStorageDirectory()+"/"+getPackageName()+"/errorlog.txt";
-			info= FileUtils.readFile(path, "utf-8").toString();
-			Message message=uiHandler.obtainMessage();
-			message.what=HANDLER_WHAT_READERRORLOG;
-			message.obj=info;
+			String info = new String();
+			String path = Environment.getExternalStorageDirectory() + "/" + getPackageName() + "/errorlog.txt";
+			info = FileUtils.readFile(path, "utf-8").toString();
+			Message message = uiHandler.obtainMessage();
+			message.what = HANDLER_WHAT_READERRORLOG;
+			message.obj = info;
 			message.sendToTarget();
 		}
 	};
-	Handler uiHandler=new Handler(){
+	Handler uiHandler = new Handler() {
 
 		@Override
 		public void handleMessage(Message msg) {
 			// TODO Auto-generated method stub
-			int what=msg.what;
-			if(what==HANDLER_WHAT_READERRORLOG){
-				tv_error.setText((String)msg.obj);
+			int what = msg.what;
+			if (what == HANDLER_WHAT_READERRORLOG) {
+				tv_error.setText((String) msg.obj);
 			}
 			super.handleMessage(msg);
 		}
-		
 	};
 	private View.OnClickListener onClickListener = new View.OnClickListener() {
 
@@ -68,6 +70,7 @@ public class CollapseActivity extends Activity {
 				break;
 			case R.id.bt_collapse_quit:
 				finish();
+				android.os.Process.killProcess(android.os.Process.myPid());
 				break;
 			default:
 				break;

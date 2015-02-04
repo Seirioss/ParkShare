@@ -13,6 +13,7 @@ import com.baidu.navisdk.util.common.LogUtil;
 import com.ych.http.PersistentCookieStore;
 import com.ych.parkshare.CollapseActivity;
 
+import android.R.anim;
 import android.app.Application;
 import android.content.Intent;
 import android.os.Environment;
@@ -40,20 +41,20 @@ public class GlobalVariable extends Application {
 
 		@Override
 		public void uncaughtException(Thread thread, Throwable ex) {
-			String path=Environment.getExternalStorageDirectory()+"/"+getPackageName()+"/errorlog.txt";
+			SpUtils.put(getApplicationContext(), AppConstants.ERROR_APP, true);
+			String path = Environment.getExternalStorageDirectory() + "/" + getPackageName() + "/errorlog.txt";
 			if (!FileUtils.isFileExist(path)) {
 				FileUtils.makeDirs(path);
 			}
-			File file=new File(path);
+
+			File file = new File(path);
 			try {
 				ex.printStackTrace(new PrintStream(file));
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			Intent intent = new Intent(getApplicationContext(), CollapseActivity.class);
-			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			startActivity(intent);
 		}
+
 	};
 }

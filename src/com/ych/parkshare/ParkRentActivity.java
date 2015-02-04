@@ -151,8 +151,8 @@ public class ParkRentActivity extends Activity {
 		int id = item.getItemId();
 		if (id == android.R.id.home) {
 			if (!TextUtils.isEmpty(action)) {
-				if(action.equals(AppConstants.ACTION_BaiduPushMessageReceiver)){
-					Intent intent=new Intent(ParkRentActivity.this,TabHostActivity.class);
+				if (action.equals(AppConstants.ACTION_BaiduPushMessageReceiver)) {
+					Intent intent = new Intent(ParkRentActivity.this, TabHostActivity.class);
 					startActivity(intent);
 				}
 			}

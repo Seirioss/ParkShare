@@ -14,7 +14,7 @@
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
-*/
+ */
 
 package com.ych.http;
 
@@ -28,10 +28,10 @@ package com.ych.http;
  */
 public interface JsonValueInterface {
 
-    /**
-     * Returns the escaped, ready-to-be used value of this encapsulated object.
-     *
-     * @return byte array holding the data to be used (as-is) in a JSON object
-     */
-    byte[] getEscapedJsonValue();
+	/**
+	 * Returns the escaped, ready-to-be used value of this encapsulated object.
+	 *
+	 * @return byte array holding the data to be used (as-is) in a JSON object
+	 */
+	byte[] getEscapedJsonValue();
 }

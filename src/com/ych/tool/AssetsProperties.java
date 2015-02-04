@@ -24,6 +24,7 @@ public class AssetsProperties {
 	public static AssetsProperties load(Context context, String assetsfile) {
 		return new AssetsProperties(context, assetsfile);
 	}
+
 	public static AssetsProperties load(Context context) {
 		return new AssetsProperties(context, "propertie");
 	}

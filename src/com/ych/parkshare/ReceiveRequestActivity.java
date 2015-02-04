@@ -10,32 +10,32 @@ import android.widget.EditText;
 
 public class ReceiveRequestActivity extends Activity {
 
-    private ActionBar actionbar;
-    private EditText parkdescriptioneditText;
-    private EditText starttimeeditText;
-    private EditText endtimeEditText;
-    private EditText estimatedfeeEditText;
-    private EditText rentertelephoneEditText;
-    private Button acceptrequestbutton;
-    private Button refuserequestbutton;
-    
+	private ActionBar actionbar;
+	private EditText parkdescriptioneditText;
+	private EditText starttimeeditText;
+	private EditText endtimeEditText;
+	private EditText estimatedfeeEditText;
+	private EditText rentertelephoneEditText;
+	private Button acceptrequestbutton;
+	private Button refuserequestbutton;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_receive);
-		
-		actionbar=getActionBar();
+
+		actionbar = getActionBar();
 		actionbar.setTitle("车位预约申请");
 		actionbar.setDisplayHomeAsUpEnabled(true);
-		
-		parkdescriptioneditText=(EditText)findViewById(R.id.editparkdescription);
-		starttimeeditText=(EditText)findViewById(R.id.editstarttime);
-		endtimeEditText=(EditText)findViewById(R.id.editendtime);
-		estimatedfeeEditText=(EditText)findViewById(R.id.editestimatedfee);
-	    rentertelephoneEditText=(EditText)findViewById(R.id.editrentertelephone);
-	    acceptrequestbutton=(Button)findViewById(R.id.acceptrequestbutton);
-	    refuserequestbutton=(Button)findViewById(R.id.acceptrequestbutton);
-		
+
+		parkdescriptioneditText = (EditText) findViewById(R.id.editparkdescription);
+		starttimeeditText = (EditText) findViewById(R.id.editstarttime);
+		endtimeEditText = (EditText) findViewById(R.id.editendtime);
+		estimatedfeeEditText = (EditText) findViewById(R.id.editestimatedfee);
+		rentertelephoneEditText = (EditText) findViewById(R.id.editrentertelephone);
+		acceptrequestbutton = (Button) findViewById(R.id.acceptrequestbutton);
+		refuserequestbutton = (Button) findViewById(R.id.acceptrequestbutton);
+
 	}
 
 	@Override
