@@ -43,8 +43,7 @@ public class BLEservice extends Service {
 
 	public final static String ADDRESS = "88:33:14:DD:88:92";
 	public final static String ADDRESS_ = "88:33:14:DD:8A:1E";
-	
-	
+
 	private BluetoothManager bluetoothManager;
 	private BluetoothAdapter bluetoothAdapter;
 	private Handler handler = new Handler() {
@@ -57,9 +56,9 @@ public class BLEservice extends Service {
 			case MSG_OPENT_BLE:
 				if (checkBLEstate()) {
 					String mac = (String) msg.obj;
-					
+
 					if (BluetoothAdapter.checkBluetoothAddress(mac)) {
-						System.out.println("MSG_OPENT_BLE"+mac);
+						System.out.println("MSG_OPENT_BLE" + mac);
 						BluetoothDevice bluetoothDevice = bluetoothAdapter.getRemoteDevice(mac);
 						bluetoothDevice.connectGatt(getApplicationContext(), false, new SwitchPark(SwitchPark.OPEN));
 					}
@@ -70,11 +69,11 @@ public class BLEservice extends Service {
 			case MSG_CLOSE_BLE:
 				if (checkBLEstate()) {
 					String mac = (String) msg.obj;
-					
+
 					if (BluetoothAdapter.checkBluetoothAddress(mac)) {
-						System.out.println("MSG_CLOSE_BLE"+mac);
+						System.out.println("MSG_CLOSE_BLE" + mac);
 						BluetoothDevice bluetoothDevice = bluetoothAdapter.getRemoteDevice(mac);
-						bluetoothDevice.connectGatt(getApplicationContext(), false,new SwitchPark(SwitchPark.CLOSE));
+						bluetoothDevice.connectGatt(getApplicationContext(), false, new SwitchPark(SwitchPark.CLOSE));
 					}
 				} else {
 					Toast.makeText(getApplicationContext(), "蓝牙不可用", Toast.LENGTH_SHORT).show();

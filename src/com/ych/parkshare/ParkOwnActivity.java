@@ -97,10 +97,10 @@ public class ParkOwnActivity extends Activity {
 		textremark = (TextView) findViewById(R.id.remarks);
 		textrentstate = (TextView) findViewById(R.id.rentstate);
 		switchpark = (Switch) findViewById(R.id.parkdetail_switch_control);
-		
-		imagenavigation=(ImageView)findViewById(R.id.navigation);
+
+		imagenavigation = (ImageView) findViewById(R.id.navigation);
 		imagenavigation.setOnClickListener(onImageClickListener);
-		
+
 		Intent intent = new Intent(ParkOwnActivity.this, BLEservice.class);
 		bindService(intent, conn, Context.BIND_AUTO_CREATE);
 		switchpark.setOnCheckedChangeListener(onCheckedChangeListener);
@@ -149,15 +149,15 @@ public class ParkOwnActivity extends Activity {
 		public void onServiceDisconnected(ComponentName name) {
 		}
 	};
-	
-	private View.OnClickListener onImageClickListener = new OnClickListener(){
+
+	private View.OnClickListener onImageClickListener = new OnClickListener() {
 
 		@Override
 		public void onClick(View arg0) {
 			// TODO Auto-generated method stub
 			launchNavigator2();
 		}
-		
+
 	};
 
 	@Override
@@ -201,7 +201,7 @@ public class ParkOwnActivity extends Activity {
 		if (title.equals(MENU_SHARE_CANLCER)) {
 			asyncHttpClient.post(AppConstants.BASE_URL + AppConstants.URL_SHARECANCEL, new RequestParams("parkid", parkpk), sharecancelTextHttpResponseHandler);
 		}
-		if(title.equals(MENU_SHAREVIP)){
+		if (title.equals(MENU_SHAREVIP)) {
 			shareparkvip();
 		}
 		return super.onOptionsItemSelected(item);
@@ -220,7 +220,7 @@ public class ParkOwnActivity extends Activity {
 			public void onClick(DialogInterface dialog, int which) {
 				EditText editTextstart = (EditText) layout.findViewById(R.id.dialog_edit_starttime);
 				EditText editTextend = (EditText) layout.findViewById(R.id.dialog_edit_endtime);
-				EditText editTextname=(EditText)layout.findViewById(R.id.et_sharedialog_name);
+				EditText editTextname = (EditText) layout.findViewById(R.id.et_sharedialog_name);
 				String timeStart = editTextstart.getEditableText().toString();
 				String timeend = editTextend.getEditableText().toString();
 				String name = editTextname.getEditableText().toString();
@@ -337,8 +337,8 @@ public class ParkOwnActivity extends Activity {
 		public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
 		}
 	};
-	private TextHttpResponseHandler sharevipTextHttpResponseHandler=new TextHttpResponseHandler("utf-8") {
-		
+	private TextHttpResponseHandler sharevipTextHttpResponseHandler = new TextHttpResponseHandler("utf-8") {
+
 		@Override
 		public void onSuccess(int statusCode, Header[] headers, String responseString) {
 			// TODO Auto-generated method stub
@@ -351,15 +351,15 @@ public class ParkOwnActivity extends Activity {
 				}
 			}
 		}
-		
+
 		@Override
 		public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
 			// TODO Auto-generated method stub
-			
+
 		}
 	};
-	private TextHttpResponseHandler sharecancelTextHttpResponseHandler=new TextHttpResponseHandler("utf-8") {
-		
+	private TextHttpResponseHandler sharecancelTextHttpResponseHandler = new TextHttpResponseHandler("utf-8") {
+
 		@Override
 		public void onSuccess(int statusCode, Header[] headers, String responseString) {
 			if (statusCode == 200) {
@@ -370,35 +370,33 @@ public class ParkOwnActivity extends Activity {
 				}
 			}
 		}
+
 		@Override
 		public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
 		}
 	};
-	
-	private void launchNavigator2(){
-        //这里给出一个起终点示例，实际应用中可以通过POI检索、外部POI来源等方式获取起终点坐标
-        BNaviPoint startPoint = new BNaviPoint(121.508693,31.285126,
-                "书香公寓", BNaviPoint.CoordinateType.BD09_MC);
-        BNaviPoint endPoint = new BNaviPoint(121.521191,31.303805,
-                "五角场", BNaviPoint.CoordinateType.BD09_MC);
-        BaiduNaviManager.getInstance().launchNavigator(this,
-                startPoint,                                      //起点（可指定坐标系）
-                endPoint,                                        //终点（可指定坐标系）
-                NE_RoutePlan_Mode.ROUTE_PLAN_MOD_MIN_TIME,       //算路方式
-                true,                                            //真实导航
-                BaiduNaviManager.STRATEGY_FORCE_ONLINE_PRIORITY, //在离线策略
-                new OnStartNavigationListener() {                //跳转监听
-                    
-                    @Override
-                    public void onJumpToNavigator(Bundle configParams) {
-                        Intent intent = new Intent(ParkOwnActivity.this, BNavigatorActivity.class);
-                        intent.putExtras(configParams);
-                        startActivity(intent);
-                    }
-                    
-                    @Override
-                    public void onJumpToDownloader() {
-                    }
-                });
-    }
+
+	private void launchNavigator2() {
+		// 这里给出一个起终点示例，实际应用中可以通过POI检索、外部POI来源等方式获取起终点坐标
+		BNaviPoint startPoint = new BNaviPoint(121.508693, 31.285126, "书香公寓", BNaviPoint.CoordinateType.BD09_MC);
+		BNaviPoint endPoint = new BNaviPoint(121.521191, 31.303805, "五角场", BNaviPoint.CoordinateType.BD09_MC);
+		BaiduNaviManager.getInstance().launchNavigator(this, startPoint, // 起点（可指定坐标系）
+				endPoint, // 终点（可指定坐标系）
+				NE_RoutePlan_Mode.ROUTE_PLAN_MOD_MIN_TIME, // 算路方式
+				true, // 真实导航
+				BaiduNaviManager.STRATEGY_FORCE_ONLINE_PRIORITY, // 在离线策略
+				new OnStartNavigationListener() { // 跳转监听
+
+					@Override
+					public void onJumpToNavigator(Bundle configParams) {
+						Intent intent = new Intent(ParkOwnActivity.this, BNavigatorActivity.class);
+						intent.putExtras(configParams);
+						startActivity(intent);
+					}
+
+					@Override
+					public void onJumpToDownloader() {
+					}
+				});
+	}
 }

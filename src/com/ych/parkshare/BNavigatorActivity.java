@@ -25,28 +25,29 @@ public class BNavigatorActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_bnavigator);
-		
-		//baidumap
-		//创建NmapView  
-        MapGLSurfaceView nMapView = BaiduNaviManager.getInstance().createNMapView(this);  
- 
-        //创建导航视图  
-        View navigatorView = BNavigator.getInstance().init(BNavigatorActivity.this, getIntent().getExtras(), nMapView);  
- 
-        //填充视图  
-        setContentView(navigatorView);  
- 
-        BNavigator.getInstance().setListener(mBNavigatorListener);  
-        BNavigator.getInstance().startNav();    
-                
-//        BNRoutePlaner.getInstance().setObserver(new RoutePlanObserver(this, new IJumpToDownloadListener() {  
-// 
-//            @Override  
-//            public void onJumpToDownloadOfflineData() {  
-//                // TODO Auto-generated method stub  
-// 
-//            }  
-//        }));  
+
+		// baidumap
+		// 创建NmapView
+		MapGLSurfaceView nMapView = BaiduNaviManager.getInstance().createNMapView(this);
+
+		// 创建导航视图
+		View navigatorView = BNavigator.getInstance().init(BNavigatorActivity.this, getIntent().getExtras(), nMapView);
+
+		// 填充视图
+		setContentView(navigatorView);
+
+		BNavigator.getInstance().setListener(mBNavigatorListener);
+		BNavigator.getInstance().startNav();
+
+		// BNRoutePlaner.getInstance().setObserver(new RoutePlanObserver(this,
+		// new IJumpToDownloadListener() {
+		//
+		// @Override
+		// public void onJumpToDownloadOfflineData() {
+		// // TODO Auto-generated method stub
+		//
+		// }
+		// }));
 	}
 
 	@Override
@@ -67,98 +68,98 @@ public class BNavigatorActivity extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
-	//baidumap
-	private IBNavigatorListener mBNavigatorListener = new IBNavigatorListener() {  
-		 
-        @Override  
-        public void onYawingRequestSuccess() {  
-            // TODO 偏航请求成功  
- 
-        }  
- 
-        @Override  
-        public void onYawingRequestStart() {  
-            // TODO 开始偏航请求  
- 
-        }  
- 
-        @Override  
-        public void onPageJump(int jumpTiming, Object arg) {  
-            // TODO 页面跳转回调  
-            if(IBNavigatorListener.PAGE_JUMP_WHEN_GUIDE_END == jumpTiming){
-            	finish();
-            }else if(IBNavigatorListener.PAGE_JUMP_WHEN_ROUTE_PLAN_FAIL == jumpTiming){  
-                finish();  
-            }  
-        }  
- 
-        @Override  
-        public void notifyGPSStatusData(int arg0) {  
-            // TODO Auto-generated method stub  
- 
-        }  
- 
-        @Override  
-        public void notifyLoacteData(LocData arg0) {  
-            // TODO Auto-generated method stub  
- 
-        }  
- 
-        @Override  
-        public void notifyNmeaData(String arg0) {  
-            // TODO Auto-generated method stub  
- 
-        }  
- 
-        @Override  
-        public void notifySensorData(SensorData arg0) {  
-            // TODO Auto-generated method stub  
- 
-        }  
- 
-        @Override  
-        public void notifyStartNav() {  
-            // TODO Auto-generated method stub  
-            BaiduNaviManager.getInstance().dismissWaitProgressDialog();  
-        }  
- 
-        @Override  
-        public void notifyViewModeChanged(int arg0) {  
-            // TODO Auto-generated method stub  
- 
-        }  
- 
+
+	// baidumap
+	private IBNavigatorListener mBNavigatorListener = new IBNavigatorListener() {
+
+		@Override
+		public void onYawingRequestSuccess() {
+			// TODO 偏航请求成功
+
+		}
+
+		@Override
+		public void onYawingRequestStart() {
+			// TODO 开始偏航请求
+
+		}
+
+		@Override
+		public void onPageJump(int jumpTiming, Object arg) {
+			// TODO 页面跳转回调
+			if (IBNavigatorListener.PAGE_JUMP_WHEN_GUIDE_END == jumpTiming) {
+				finish();
+			} else if (IBNavigatorListener.PAGE_JUMP_WHEN_ROUTE_PLAN_FAIL == jumpTiming) {
+				finish();
+			}
+		}
+
+		@Override
+		public void notifyGPSStatusData(int arg0) {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void notifyLoacteData(LocData arg0) {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void notifyNmeaData(String arg0) {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void notifySensorData(SensorData arg0) {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void notifyStartNav() {
+			// TODO Auto-generated method stub
+			BaiduNaviManager.getInstance().dismissWaitProgressDialog();
+		}
+
+		@Override
+		public void notifyViewModeChanged(int arg0) {
+			// TODO Auto-generated method stub
+
+		}
+
 	};
 
-	@Override  
-	public void onResume() {  
-	    BNavigator.getInstance().resume();  
-	    super.onResume();  
-	    BNMapController.getInstance().onResume();  
-	};  
-	
-	@Override  
-	public void onPause() {  
-	    BNavigator.getInstance().pause();  
-	    super.onPause();  
-	    BNMapController.getInstance().onPause();  
-	}  
-	
-	@Override  
-	public void onConfigurationChanged(Configuration newConfig) {  
-	    BNavigator.getInstance().onConfigurationChanged(newConfig);  
-	    super.onConfigurationChanged(newConfig);  
-	}  
-	
-	public void onBackPressed(){  
-	    BNavigator.getInstance().onBackPressed();  
-	}  
-	
-	@Override  
-	public void onDestroy(){  
-	    BNavigator.destory();  
-	    BNRoutePlaner.getInstance().setObserver(null);  
-	    super.onDestroy();  
+	@Override
+	public void onResume() {
+		BNavigator.getInstance().resume();
+		super.onResume();
+		BNMapController.getInstance().onResume();
+	};
+
+	@Override
+	public void onPause() {
+		BNavigator.getInstance().pause();
+		super.onPause();
+		BNMapController.getInstance().onPause();
+	}
+
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		BNavigator.getInstance().onConfigurationChanged(newConfig);
+		super.onConfigurationChanged(newConfig);
+	}
+
+	public void onBackPressed() {
+		BNavigator.getInstance().onBackPressed();
+	}
+
+	@Override
+	public void onDestroy() {
+		BNavigator.destory();
+		BNRoutePlaner.getInstance().setObserver(null);
+		super.onDestroy();
 	}
 }

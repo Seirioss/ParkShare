@@ -92,6 +92,8 @@
     <string name="switch_ble">启动蓝牙</string>
     <string name="switch_password">记住密码</string>
 
+
     <string name="title_activity_bnavigator">BNavigatorActivity</string>
+    <string name="title_activity_collapse_activity">CollapseActivityActivity</string>
 
 </resources>

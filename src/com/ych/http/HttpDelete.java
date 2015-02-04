@@ -14,7 +14,7 @@
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
-*/
+ */
 
 package com.ych.http;
 
@@ -23,33 +23,35 @@ import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
 import java.net.URI;
 
 /**
- * The current Android (API level 21) bundled version of the Apache Http Client does not implement
- * a HttpEntityEnclosingRequestBase type of HTTP DELETE method.
- * Until the Android version is updated this can serve in it's stead.
- * This implementation can and should go away when the official solution arrives.
+ * The current Android (API level 21) bundled version of the Apache Http Client
+ * does not implement a HttpEntityEnclosingRequestBase type of HTTP DELETE
+ * method. Until the Android version is updated this can serve in it's stead.
+ * This implementation can and should go away when the official solution
+ * arrives.
  */
 public final class HttpDelete extends HttpEntityEnclosingRequestBase {
-    public final static String METHOD_NAME = "DELETE";
+	public final static String METHOD_NAME = "DELETE";
 
-    public HttpDelete() {
-        super();
-    }
+	public HttpDelete() {
+		super();
+	}
 
-    public HttpDelete(final URI uri) {
-        super();
-        setURI(uri);
-    }
+	public HttpDelete(final URI uri) {
+		super();
+		setURI(uri);
+	}
 
-    /**
-     * @throws IllegalArgumentException if the uri is invalid.
-    */
-    public HttpDelete(final String uri) {
-            super();
-            setURI(URI.create(uri));
-    }
+	/**
+	 * @throws IllegalArgumentException
+	 *             if the uri is invalid.
+	 */
+	public HttpDelete(final String uri) {
+		super();
+		setURI(URI.create(uri));
+	}
 
-    @Override
-    public String getMethod() {
-        return METHOD_NAME;
-    }
+	@Override
+	public String getMethod() {
+		return METHOD_NAME;
+	}
 }

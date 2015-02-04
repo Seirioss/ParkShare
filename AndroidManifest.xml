@@ -6,7 +6,7 @@
 
     <uses-sdk
         android:minSdkVersion="18"
-        android:targetSdkVersion="19" />
+        android:targetSdkVersion="21" />
     <!-- 安装应用权限 -->
     <uses-permission android:name="android.permission.INSTALL_PACKAGES" />
 
@@ -66,9 +66,9 @@
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="buiszDnXAPUNv6hBMobM0jGo" />
-          <meta-data
+        <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="H1Ko7kw7sUFHEaXZ2yITfbCc" />  
+            android:value="H1Ko7kw7sUFHEaXZ2yITfbCc" />
 
         <activity
             android:name=".MainActivity"
@@ -100,6 +100,7 @@
         <activity
             android:name=".TabHostActivity"
             android:hardwareAccelerated="false"
+            android:launchMode="singleInstance"
             android:logo="@drawable/ic_register" >
         </activity>
         <activity android:name=".ParkRentActivity" />
@@ -175,7 +176,10 @@
             </intent-filter>
         </service>
         <!-- push结束 -->
-
+        <activity
+            android:name=".CollapseActivity"
+            android:label="@string/title_activity_collapse_activity" >
+        </activity>
     </application>
 
 </manifest>
