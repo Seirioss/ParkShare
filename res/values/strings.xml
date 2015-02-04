@@ -95,5 +95,5 @@
 
     <string name="title_activity_bnavigator">BNavigatorActivity</string>
     <string name="title_activity_collapse_activity">CollapseActivityActivity</string>
-	<string name="test">赵迪生在字符串资源文件的98行添加了一条赵迪生要用到的字符串</string>
+	<string name="testtest">赵迪生在字符串资源文件的98行添加了一条赵迪生要用到的字符串</string>
 </resources>
