@@ -45,6 +45,7 @@ import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
 import android.provider.DocumentsContract.Root;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -78,8 +79,10 @@ public class ParkRentActivity extends Activity {
 	private AsyncHttpClient asyncHttpClient;
 	private boolean is_borrowed;
 	private boolean is_shared;
-	
-	private String macaddress=new String();
+	private String action;
+
+	private String macaddress = new String();
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -88,6 +91,8 @@ public class ParkRentActivity extends Activity {
 		actionBar.setTitle("返回");
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setDisplayShowHomeEnabled(false);
+		action = getIntent().getAction();
+
 		parkpk = getIntent().getStringExtra("pk").toString();
 		asyncHttpClient = new AsyncHttpClient();
 		PersistentCookieStore PersistentCookieStore = ((GlobalVariable) getApplication()).getPersistentCookieStore();
@@ -125,16 +130,16 @@ public class ParkRentActivity extends Activity {
 		return true;
 
 	}
-	
+
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		menu.clear();
 		menu.add(MENU_REFRESH);
 		menu.add(MENU_STORE);
-		if(is_borrowed==true&&is_shared==true){
+		if (is_borrowed == true && is_shared == true) {
 			menu.add(MENU_BOOK_CANLCER);
 		}
-		
+
 		return super.onPrepareOptionsMenu(menu);
 	}
 
@@ -145,6 +150,12 @@ public class ParkRentActivity extends Activity {
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == android.R.id.home) {
+			if (!TextUtils.isEmpty(action)) {
+				if(action.equals(AppConstants.ACTION_BaiduPushMessageReceiver)){
+					Intent intent=new Intent(ParkRentActivity.this,TabHostActivity.class);
+					startActivity(intent);
+				}
+			}
 			finish();
 			return super.onOptionsItemSelected(item);
 		}
@@ -165,10 +176,11 @@ public class ParkRentActivity extends Activity {
 
 	@Override
 	protected void onDestroy() {
-
-		super.onDestroy();
+		asyncHttpClient.cancelAllRequests(true);
 		unbindService(conn);
+		super.onDestroy();
 	}
+
 	private OnCheckedChangeListener onCheckedChangeListener = new OnCheckedChangeListener() {
 
 		@Override
@@ -196,24 +208,24 @@ public class ParkRentActivity extends Activity {
 			super.onSuccess(statusCode, headers, response);
 			if (statusCode == 200) {
 				try {
-					is_borrowed=response.getBoolean("is_borrowed");
-					is_shared=response.getBoolean("is_shared");
-					String address=response.getString("address");
-					String describe=response.getString("describe");
-					String time_start=response.getJSONObject("shareinfo").getString("start_time");
-					String time_end=response.getJSONObject("shareinfo").getString("end_time");
-					macaddress=response.getJSONObject("lockkey").getString("mac_address");
-					if(is_borrowed==true&&is_shared==true){
+					is_borrowed = response.getBoolean("is_borrowed");
+					is_shared = response.getBoolean("is_shared");
+					String address = response.getString("address");
+					String describe = response.getString("describe");
+					String time_start = response.getJSONObject("shareinfo").getString("start_time");
+					String time_end = response.getJSONObject("shareinfo").getString("end_time");
+					macaddress = response.getJSONObject("lockkey").getString("mac_address");
+					if (is_borrowed == true && is_shared == true) {
 						switchpark.setEnabled(true);
 					}
-					if (is_borrowed==false) {
+					if (is_borrowed == false) {
 						switchpark.setEnabled(false);
 					}
 					textaddress.setText(address);
 					textdescription.setText(describe);
 					texttimesend.setText(time_end);
 					texttimestart.setText(time_start);
-					
+
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -224,7 +236,7 @@ public class ParkRentActivity extends Activity {
 		@Override
 		public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
 			super.onFailure(statusCode, headers, responseString, throwable);
-			textremark.setText("刷新失败："+statusCode);
+			textremark.setText("刷新失败：" + statusCode);
 		}
 	};
 	private JsonHttpResponseHandler storelJsonHttpResponseHandler = new JsonHttpResponseHandler("utf-8") {
@@ -237,30 +249,30 @@ public class ParkRentActivity extends Activity {
 		public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
 			super.onFailure(statusCode, headers, responseString, throwable);
 		}
-		
+
 	};
-	private TextHttpResponseHandler bookcanceltextHttpResponseHandler=new TextHttpResponseHandler("utf-8") {
-		
+	private TextHttpResponseHandler bookcanceltextHttpResponseHandler = new TextHttpResponseHandler("utf-8") {
+
 		@Override
 		public void onSuccess(int statusCode, Header[] headers, String responseString) {
-			if(statusCode==200){
-				if(responseString.equals("0")){
-					textremark.setText("退订成功\n"+(int)(Math.random()*100+1));
+			if (statusCode == 200) {
+				if (responseString.equals("0")) {
+					textremark.setText("退订成功\n" + (int) (Math.random() * 100 + 1));
 					textaddress.setText("");
 					textdescription.setText("");
 					texttimesend.setText("");
 					texttimestart.setText("");
 					switchpark.setEnabled(false);
 					asyncHttpClient.post(AppConstants.BASE_URL + AppConstants.URL_PARKINFO, new RequestParams("parkid", parkpk), refreshuiJsonHttpResponseHandler);
-				}else {
+				} else {
 					Toast.makeText(ParkRentActivity.this, responseString, Toast.LENGTH_SHORT).show();
 				}
 			}
 		}
-		
+
 		@Override
 		public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-			
+
 		}
 	};
 }

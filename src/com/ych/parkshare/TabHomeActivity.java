@@ -142,11 +142,13 @@ public class TabHomeActivity extends Activity {
 			if (name.equals(currentusername)) {
 				Intent intent = new Intent(TabHomeActivity.this, ParkOwnActivity.class);
 				intent.putExtra("pk", pk);
+				intent.setAction(AppConstants.ACTION_TabHomeActivity);
 				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
 			} else {
 				Intent intent = new Intent(TabHomeActivity.this, ParkRentActivity.class);
 				intent.putExtra("pk", pk);
+				intent.setAction(AppConstants.ACTION_TabHomeActivity);
 				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
 			}

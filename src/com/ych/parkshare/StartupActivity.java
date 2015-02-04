@@ -119,7 +119,6 @@ public class StartupActivity extends Activity {
 				try {
 					version_newest = response.getString("version");
 					appdownurl = response.getString("url");
-
 					if (!version_newest.equals(version_current)) {
 						AlertDialog.Builder builder = new Builder(StartupActivity.this);
 

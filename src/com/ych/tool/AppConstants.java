@@ -1,6 +1,7 @@
 package com.ych.tool;
 
 import android.R.string;
+import android.content.Context;
 import android.net.NetworkInfo.State;
 
 public class AppConstants {
@@ -20,4 +21,6 @@ public class AppConstants {
 	public final static String URL_LOGIN="login/";
 	public final static String URL_UPDATEPUSHINFO="user/addpushinfo/";
 	public final static String URL_CHECHAPPVERSION="update/";
+	public final static String ACTION_BaiduPushMessageReceiver="com.ych.receivers.BaiduPushMessageReceiver";
+	public final static String ACTION_TabHomeActivity="com.ych.parkshare.TabHomeActivity";
 }

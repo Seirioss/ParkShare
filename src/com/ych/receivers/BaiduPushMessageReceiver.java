@@ -51,9 +51,7 @@ public class BaiduPushMessageReceiver extends FrontiaPushMessageReceiver {
 
 	@Override
 	public void onMessage(Context arg0, String arg1, String arg2) {
-		// TODO Auto-generated method stub
-		System.out.println("message:arg1:" + arg1);
-		System.out.println("message:arg2:" + arg2);
+		
 
 	}
 
@@ -67,6 +65,7 @@ public class BaiduPushMessageReceiver extends FrontiaPushMessageReceiver {
 					Intent intent = new Intent(arg0, ParkRentActivity.class);
 					intent.putExtra("pk", parkid);
 					intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+					intent.setAction(AppConstants.ACTION_BaiduPushMessageReceiver);
 					arg0.getApplicationContext().startActivity(intent);
 				}
 			}
