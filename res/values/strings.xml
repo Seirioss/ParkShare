@@ -86,7 +86,12 @@
     <string name="sharename">用户</string>
     <string name="myparkinfo">我的车位详情</string>
     <string name="rentparkinfo">租用车位详情</string>
-	
+    <string name="switch_update">开启检测更新</string>
+    <string name="switch_notify">接收通知</string>
+    <string name="switch_shortcut">设置快捷键</string>
+    <string name="switch_ble">启动蓝牙</string>
+    <string name="switch_password">记住密码</string>
+
     <string name="title_activity_bnavigator">BNavigatorActivity</string>
 
 </resources>

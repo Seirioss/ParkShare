@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/tabhome_background" >
+ 
+    <View 
+        android:id="@+id/line1"
+        android:layout_width="fill_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/darkorange"/>
+
+    <LinearLayout
+        android:id="@+id/managementLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/line1"
+        android:orientation="horizontal"
+        android:background="@drawable/selector_gainsboro_white">
+
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="45dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="80dp"
+            android:gravity="center_vertical"
+            android:background="@android:color/transparent"
+            android:text="@string/switch_update" />
+        
+        <Switch 
+            android:id="@+id/switch_update"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"/>
+        
+    </LinearLayout>
+    
+    <View 
+        android:id="@+id/line2"
+        android:layout_width="fill_parent"
+        android:layout_height="0.5dp"
+        android:layout_below="@id/managementLayout"
+        android:background="@color/darkorange"/>
+    
+    <LinearLayout
+        android:id="@+id/logoutLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/managementLayout"
+        android:layout_below="@+id/line2"
+        android:orientation="horizontal"
+        android:background="@drawable/selector_gainsboro_white">
+
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="45dp"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="80dp"
+            android:text="@string/switch_notify" />  
+            
+        <Switch 
+            android:id="@+id/switch_notify"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"/>
+        
+    </LinearLayout>   
+   
+    <View 
+        android:id="@+id/line3"
+        android:layout_width="fill_parent"
+        android:layout_height="0.5dp"
+        android:layout_below="@id/logoutLayout"
+        android:background="@color/darkorange"/>   
+        
+    <LinearLayout
+        android:id="@+id/settingsLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/logoutLayout"
+        android:layout_below="@+id/line3"
+        android:orientation="horizontal"
+        android:background="@drawable/selector_gainsboro_white">
+
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="45dp"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="80dp"
+            android:text="@string/switch_shortcut" /> 
+            
+        <Switch 
+            android:id="@+id/switch_shortcut"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"/>
+        
+    </LinearLayout>   
+    <View 
+        android:id="@+id/line4"
+        android:layout_width="fill_parent"
+        android:layout_height="0.5dp"
+        android:layout_below="@id/settingsLayout"
+        android:background="@color/darkorange"/>
+    
+	<LinearLayout
+        android:id="@+id/checkupdateLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/settingsLayout"
+        android:layout_below="@+id/line4"
+        android:orientation="horizontal"
+        android:background="@drawable/selector_gainsboro_white">
+
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="45dp"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="80dp"
+            android:text="@string/switch_ble" /> 
+            
+        <Switch 
+            android:id="@+id/switch_ble"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"/>
+        
+    </LinearLayout>   
+    <View 
+        android:id="@+id/line5"
+        android:layout_width="fill_parent"
+        android:layout_height="0.5dp"
+        android:layout_below="@id/checkupdateLayout"
+        android:background="@color/darkorange"/>
+    
+    <LinearLayout
+        android:id="@+id/helpaboutLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/checkupdateLayout"
+        android:layout_below="@+id/line5"
+        android:orientation="horizontal"
+        android:background="@drawable/selector_gainsboro_white">
+
+        <TextView
+            android:id="@+id/helpandabout"
+            android:layout_width="100dp"
+            android:layout_height="45dp"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="80dp"
+            android:text="@string/switch_password" />   
+            
+        <Switch 
+            android:id="@+id/switch_password"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"/>
+        
+    </LinearLayout>   
+    
+    <View 
+        android:id="@+id/line6"
+        android:layout_width="fill_parent"
+        android:layout_height="0.5dp"
+        android:layout_below="@id/helpaboutLayout"
+        android:background="@color/darkorange"/>
+
+    
+
+</RelativeLayout>

@@ -16,6 +16,7 @@ import com.ych.tool.GlobalVariable;
 import com.ych.tool.SpUtils;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -27,6 +28,7 @@ public class TabMyCenterActivity extends Activity{
 	private TextView usernametext;
 	private TextView parkmanagmenttext;
 	private TextView logouttext;
+	private TextView settingstext;
 	private AsyncHttpClient client;
 	private String username;
 	
@@ -38,9 +40,11 @@ public class TabMyCenterActivity extends Activity{
 		usernametext=(TextView)findViewById(R.id.usernametext);
 		parkmanagmenttext=(TextView)findViewById(R.id.parmanagment);
 		logouttext=(TextView)findViewById(R.id.logout);
+		settingstext=(TextView)findViewById(R.id.settings);
 		
 		parkmanagmenttext.setOnClickListener(onClickListener);
 		logouttext.setOnClickListener(onClickListener);
+		settingstext.setOnClickListener(onClickListener);
 		getuserinfo();
 		username=usernametext.toString();
 		
@@ -57,6 +61,11 @@ public class TabMyCenterActivity extends Activity{
 			case(R.id.logout):
 				logout();
 				break;
+			case(R.id.settings):
+				Intent intent = new Intent(TabMyCenterActivity.this, TabMyCenterSettingsActivity.class);
+			    startActivity(intent);
+			    System.out.println("helloWorld!");
+			    break;
 			default:
 				break;				
 			}

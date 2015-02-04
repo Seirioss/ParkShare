@@ -95,6 +95,7 @@
             android:name=".TabHomeActivity"
             android:hardwareAccelerated="false" />
         <activity android:name=".TabMyCenterActivity" />
+        <activity android:name=".TabMyCenterSettingsActivity"></activity>
         <activity android:name=".TabNavigateActivity" />
         <activity
             android:name=".TabHostActivity"
