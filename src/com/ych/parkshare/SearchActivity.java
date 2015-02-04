@@ -67,9 +67,10 @@ public class SearchActivity extends Activity {
 		client.setCookieStore(persistentCookieStore);
 		// searchresult.setAdapter(ListAdapter);
 		listViewsearch.setOnItemClickListener(onItemClickListener);
-		
+
 	}
-//
+
+	//
 	@Override
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
 		// TODO Auto-generated method stub
@@ -91,7 +92,7 @@ public class SearchActivity extends Activity {
 			// TODO Auto-generated method stub
 			TextView textView = (TextView) view.findViewById(android.R.id.text1);
 			Intent intent = new Intent(SearchActivity.this, RentableParkInfoActivity.class);
-			String pk=data.get(position).get("pk").toString();
+			String pk = data.get(position).get("pk").toString();
 			intent.putExtra("pk", pk);
 			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			intent.putExtra("pk", pk);
@@ -103,10 +104,10 @@ public class SearchActivity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		
+
 		getMenuInflater().inflate(R.menu.item_actionbar_searchactivity, menu);
-		MenuItem menuItem=menu.findItem(R.id.action_item_search);
-		searchView = (SearchView)menuItem.getActionView();
+		MenuItem menuItem = menu.findItem(R.id.action_item_search);
+		searchView = (SearchView) menuItem.getActionView();
 		searchView.setIconifiedByDefault(false);
 		searchView.setOnQueryTextListener(new OnQueryTextListener() {
 
@@ -136,14 +137,14 @@ public class SearchActivity extends Activity {
 						Map<String, String> map = new HashMap<String, String>();
 						JSONObject jsonObject = response.getJSONObject(i);
 						String pk = jsonObject.getString("pk");
-						String username=jsonObject.getString("username");
-						String describe=jsonObject.getString("username");
-						String address=jsonObject.getString("address");
-						String comment=jsonObject.getString("comment");
-						String longitude=jsonObject.getString("longitude");
-						String latitude=jsonObject.getString("latitude");
-						String start_time=jsonObject.getJSONObject("shareinfo").getString("start_time").substring(11, 19);
-						String end_time=jsonObject.getJSONObject("shareinfo").getString("end_time").substring(11, 19);
+						String username = jsonObject.getString("username");
+						String describe = jsonObject.getString("username");
+						String address = jsonObject.getString("address");
+						String comment = jsonObject.getString("comment");
+						String longitude = jsonObject.getString("longitude");
+						String latitude = jsonObject.getString("latitude");
+						String start_time = jsonObject.getJSONObject("shareinfo").getString("start_time").substring(11, 19);
+						String end_time = jsonObject.getJSONObject("shareinfo").getString("end_time").substring(11, 19);
 						map.put("pk", pk);
 						map.put("username", username);
 						map.put("describe", describe);
@@ -159,10 +160,10 @@ public class SearchActivity extends Activity {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
-				String[] from=new String[]{"start_time","end_time","address"};
-				int[] to=new int[]{R.id.tv_search_starttime,R.id.tv_search_endtime,R.id.tv_search_address};
-				SimpleAdapter simpleAdapter = new SimpleAdapter(SearchActivity.this, data,R.layout.listitem_search,from,to);
+
+				String[] from = new String[] { "start_time", "end_time", "address" };
+				int[] to = new int[] { R.id.tv_search_starttime, R.id.tv_search_endtime, R.id.tv_search_address };
+				SimpleAdapter simpleAdapter = new SimpleAdapter(SearchActivity.this, data, R.layout.listitem_search, from, to);
 				listViewsearch.setAdapter(simpleAdapter);
 			}
 			super.onSuccess(statusCode, headers, response);

@@ -14,7 +14,7 @@
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
-*/
+ */
 
 package com.ych.http;
 
@@ -22,33 +22,35 @@ import java.net.URI;
 import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
 
 /**
- * The current Android (API level 21) bundled version of the Apache Http Client does not implement
- * the HTTP PATCH method. Until the Android version is updated this can serve in it's stead. 
- * This implementation can and should go away when the official solution arrives.
+ * The current Android (API level 21) bundled version of the Apache Http Client
+ * does not implement the HTTP PATCH method. Until the Android version is
+ * updated this can serve in it's stead. This implementation can and should go
+ * away when the official solution arrives.
  */
 public final class HttpPatch extends HttpEntityEnclosingRequestBase {
-	
-    public final static String METHOD_NAME = "PATCH";
 
-    public HttpPatch() {
-        super();
-    }
+	public final static String METHOD_NAME = "PATCH";
 
-    public HttpPatch(final URI uri) {
-        super();
-        setURI(uri);
-    }
+	public HttpPatch() {
+		super();
+	}
 
-    /**
-     * @throws IllegalArgumentException if the uri is invalid.
-    */
-    public HttpPatch(final String uri) {
-            super();
-            setURI(URI.create(uri));
-    }
+	public HttpPatch(final URI uri) {
+		super();
+		setURI(uri);
+	}
 
-    @Override
-    public String getMethod() {
-        return METHOD_NAME;
-    }
+	/**
+	 * @throws IllegalArgumentException
+	 *             if the uri is invalid.
+	 */
+	public HttpPatch(final String uri) {
+		super();
+		setURI(URI.create(uri));
+	}
+
+	@Override
+	public String getMethod() {
+		return METHOD_NAME;
+	}
 }

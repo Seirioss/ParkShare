@@ -10,15 +10,21 @@ import com.baidu.lbsapi.auth.LBSAuthManagerListener;
 import com.baidu.navisdk.BNaviEngineManager.NaviEngineInitListener;
 import com.baidu.navisdk.BaiduNaviManager;
 import com.ych.http.AsyncHttpClient;
+import com.ych.http.PersistentCookieStore;
+import com.ych.http.RequestParams;
 import com.ych.http.TextHttpResponseHandler;
 import com.ych.image.SmartImage;
 import com.ych.image.SmartImageView;
 import com.ych.tool.AppConstants;
 import com.ych.tool.BaiduUtils;
+import com.ych.tool.GlobalVariable;
 import com.ych.tool.SpUtils;
 
 import android.R.integer;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -26,6 +32,7 @@ import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewDebug;
+import android.widget.EditText;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
@@ -37,6 +44,7 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		//PushManager.startWork(getApplicationContext(), PushConstants.LOGIN_TYPE_API_KEY,BaiduUtils.getMetaValue(MainActivity.this, "api_key"));
+	
 		int runtime = (Integer) SpUtils.get(getApplicationContext(), AppConstants.RUN_TIME, 0);
 		if (runtime == 0) {
 			SpUtils.put(getApplicationContext(), AppConstants.RUN_TIME, runtime + 1);

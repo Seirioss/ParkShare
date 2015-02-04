@@ -42,11 +42,13 @@ public class RegisterActivity extends Activity {
 		actionBar.setHomeButtonEnabled(true);
 		actionBar.setDisplayShowTitleEnabled(false);
 		actionBar.setBackgroundDrawable(getResources().getDrawable(R.drawable.title_register));
-		//actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-	   // actionBar.setDisplayShowCustomEnabled(true);
-		//ActionBar.LayoutParams lp = new ActionBar.LayoutParams(ActionBar.LayoutParams.WRAP_CONTENT,ActionBar.LayoutParams.MATCH_PARENT,Gravity.LEFT);
-		//actionBar.setCustomView(getLayoutInflater().inflate(R.layout.title_register, null),lp);
-		
+		// actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+		// actionBar.setDisplayShowCustomEnabled(true);
+		// ActionBar.LayoutParams lp = new
+		// ActionBar.LayoutParams(ActionBar.LayoutParams.WRAP_CONTENT,ActionBar.LayoutParams.MATCH_PARENT,Gravity.LEFT);
+		// actionBar.setCustomView(getLayoutInflater().inflate(R.layout.title_register,
+		// null),lp);
+
 		nameEditText = (EditText) findViewById(R.id.register_userEdit);
 		pass1EditText = (EditText) findViewById(R.id.passwordEdit);
 		pass2EditText = (EditText) findViewById(R.id.passconfirmEdit);
@@ -113,7 +115,7 @@ public class RegisterActivity extends Activity {
 						if (responseString.equals("1")) {
 							Toast.makeText(RegisterActivity.this, "用户名已近存在", Toast.LENGTH_SHORT).show();
 						}
-					}else {
+					} else {
 						Toast.makeText(RegisterActivity.this, "请求失败", Toast.LENGTH_SHORT).show();
 					}
 				}
@@ -133,7 +135,7 @@ public class RegisterActivity extends Activity {
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
 			return true;
-		}else {
+		} else {
 			return super.onOptionsItemSelected(item);
 		}
 	}

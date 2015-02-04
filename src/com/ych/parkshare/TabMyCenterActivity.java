@@ -22,90 +22,88 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
 
-public class TabMyCenterActivity extends Activity{
-	
+public class TabMyCenterActivity extends Activity {
+
 	private TextView usernametext;
 	private TextView parkmanagmenttext;
 	private TextView logouttext;
 	private AsyncHttpClient client;
 	private String username;
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_mycenter);
-		
-		usernametext=(TextView)findViewById(R.id.usernametext);
-		parkmanagmenttext=(TextView)findViewById(R.id.parmanagment);
-		logouttext=(TextView)findViewById(R.id.logout);
-		
+
+		usernametext = (TextView) findViewById(R.id.usernametext);
+		parkmanagmenttext = (TextView) findViewById(R.id.parmanagment);
+		logouttext = (TextView) findViewById(R.id.logout);
+
 		parkmanagmenttext.setOnClickListener(onClickListener);
 		logouttext.setOnClickListener(onClickListener);
 		getuserinfo();
-		username=usernametext.toString();
-		
+		username = usernametext.toString();
+
 	}
-	
+
 	private OnClickListener onClickListener = new OnClickListener() {
-		
+
 		@Override
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
-			switch(v.getId()){
-			case(R.id.parmanagment):
+			switch (v.getId()) {
+			case (R.id.parmanagment):
 				break;
-			case(R.id.logout):
+			case (R.id.logout):
 				logout();
 				break;
 			default:
-				break;				
+				break;
 			}
 		}
-		
+
 	};
-	
-	private void logout(){
-		client=new AsyncHttpClient();
-		PersistentCookieStore persistentCookieStore=((GlobalVariable)getApplication()).getPersistentCookieStore();
+
+	private void logout() {
+		client = new AsyncHttpClient();
+		PersistentCookieStore persistentCookieStore = ((GlobalVariable) getApplication()).getPersistentCookieStore();
 		client.setCookieStore(persistentCookieStore);
 		client.post("http://121.40.61.76:8080/parkManagementSystem/logout/", new TextHttpResponseHandler() {
-			
+
 			@Override
-			public void onSuccess(int statusCode, Header[] headers,
-					String responseString) {
+			public void onSuccess(int statusCode, Header[] headers, String responseString) {
 				// TODO Auto-generated method stub
 				Log.i("logout", responseString);
 				SpUtils.put(getApplicationContext(), AppConstants.USER_REMEMBER, false);
 			}
-			
+
 			@Override
-			public void onFailure(int statusCode, Header[] headers,
-					String responseString, Throwable throwable) {
+			public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
 				// TODO Auto-generated method stub
-				
+
 			}
 		});
 	}
-	
-    private void getuserinfo(){
+
+	private void getuserinfo() {
 		client = new AsyncHttpClient();
-		PersistentCookieStore persistentCookieStore=((GlobalVariable)getApplication()).getPersistentCookieStore();
+		PersistentCookieStore persistentCookieStore = ((GlobalVariable) getApplication()).getPersistentCookieStore();
 		client.setCookieStore(persistentCookieStore);
-		client.post("http://121.40.61.76:8080/parkManagementSystem/user/park/", new JsonHttpResponseHandler("utf-8"){
-			
+		client.post("http://121.40.61.76:8080/parkManagementSystem/user/park/", new JsonHttpResponseHandler("utf-8") {
+
 			@Override
-			public void onSuccess(int statusCode, Header[] headers, JSONObject response){
+			public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
 				super.onSuccess(statusCode, headers, response);
-				try{
-					JSONArray jsonArray=response.getJSONArray("parks");
+				try {
+					JSONArray jsonArray = response.getJSONArray("parks");
 					JSONObject jsonObject1 = jsonArray.getJSONObject(0).getJSONObject("fields");
 					usernametext.setText(jsonObject1.getString("username").toString());
-					
-				}catch (JSONException e) {
+
+				} catch (JSONException e) {
 					e.printStackTrace();
 				}
 			}
 		});
-		
+
 	}
 }

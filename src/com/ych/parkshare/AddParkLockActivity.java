@@ -76,7 +76,7 @@ public class AddParkLockActivity extends Activity {
 				// TODO Auto-generated method stub
 				String latitude = "0";
 				String longitude = "0";
-				String macaddress ="0";
+				String macaddress = "0";
 				String serialnumber = editTextserialnumber.getText().toString();
 				String describe = editTextdescribe.getText().toString();
 				String address = editTextaddress.getText().toString();
@@ -117,7 +117,7 @@ public class AddParkLockActivity extends Activity {
 			if (statusCode == 200) {
 				if (responseString.equals("0")) {
 					Toast.makeText(AddParkLockActivity.this, "添加成功", Toast.LENGTH_SHORT).show();
-				}else {
+				} else {
 					Toast.makeText(AddParkLockActivity.this, responseString.toString(), Toast.LENGTH_SHORT).show();
 				}
 			}

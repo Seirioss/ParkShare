@@ -19,7 +19,6 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-
 public class RefreshableView extends LinearLayout implements OnTouchListener {
 
 	public static final int STATUS_PULL_TO_REFRESH = 0;
@@ -179,10 +178,11 @@ public class RefreshableView extends LinearLayout implements OnTouchListener {
 		addView(header, 0);
 	}
 
-/*	public RefreshableView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-		super(context, attrs, defStyleAttr, defStyleRes);
-		// TODO Auto-generated constructor stub
-	}*/
+	/*
+	 * public RefreshableView(Context context, AttributeSet attrs, int
+	 * defStyleAttr, int defStyleRes) { super(context, attrs, defStyleAttr,
+	 * defStyleRes); // TODO Auto-generated constructor stub }
+	 */
 
 	public RefreshableView(Context context, AttributeSet attrs, int defStyleAttr) {
 		super(context, attrs, defStyleAttr);
