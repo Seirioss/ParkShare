@@ -23,6 +23,7 @@ public class SwitchPark extends BluetoothGattCallback {
 	@Override
 	public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
 		super.onConnectionStateChange(gatt, status, newState);
+		System.out.println(status);
 		if (status == BluetoothGatt.GATT_SUCCESS) {
 			gatt.discoverServices();
 			System.out.println("onConnectionStateChange" + sw);

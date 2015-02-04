@@ -98,4 +98,10 @@ public class TabHostActivity extends TabActivity {
 		return true;
 	}
 
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+	}
+	
 }
