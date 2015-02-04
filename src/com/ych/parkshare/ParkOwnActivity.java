@@ -155,7 +155,7 @@ public class ParkOwnActivity extends Activity {
 		@Override
 		public void onClick(View arg0) {
 			// TODO Auto-generated method stub
-			launchNavigator2();
+			launchNavigator();
 		}
 		
 	};
@@ -375,7 +375,7 @@ public class ParkOwnActivity extends Activity {
 		}
 	};
 	
-	private void launchNavigator2(){
+	private void launchNavigator(){
         //这里给出一个起终点示例，实际应用中可以通过POI检索、外部POI来源等方式获取起终点坐标
         BNaviPoint startPoint = new BNaviPoint(121.508693,31.285126,
                 "书香公寓", BNaviPoint.CoordinateType.BD09_MC);

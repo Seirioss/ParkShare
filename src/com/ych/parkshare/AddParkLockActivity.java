@@ -1,6 +1,7 @@
 package com.ych.parkshare;
 
 import org.apache.http.Header;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.ych.http.AsyncHttpClient;
@@ -13,6 +14,7 @@ import com.ych.tool.GlobalVariable;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.util.Log;
 import android.view.View.OnClickListener;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
@@ -35,6 +37,16 @@ public class AddParkLockActivity extends Activity {
 	private EditText editTextremake;
 
 	private AsyncHttpClient asyncHttpClient;
+	
+	//baidu LBS CLOUD
+		public final static String LBS_BASIC_URL="http://api.map.baidu.com/geodata/v3/poi/";
+		public final static String LBS_POI_CREATE="create";
+		public final static String LBS_POI_DELETE="delete";
+		public final static String LBS_POI_LIST="list";
+		public final static String LBS_POI_DETAIL="detail";
+		public final static String LBS_POI_UPDATE="update";
+		public final static String BD_STORE_AK="6M4od7BaqsQFsjbOgOlFkgX8";
+		public String geotableid = "93340";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +94,18 @@ public class AddParkLockActivity extends Activity {
 				requestParams.put("latitude", longitude);
 				requestParams.put("remake", remake);
 				asyncHttpClient.post(AppConstants.BASE_URL + AppConstants.URL_ADDPARK, requestParams, addparkTextHttpResponseHandler);
+				
+				//LBS add poi
+				RequestParams lbsRequestParams = new RequestParams();
+				lbsRequestParams.put("geotable_id", geotableid);                  
+				lbsRequestParams.put("ak", BD_STORE_AK);
+				lbsRequestParams.put("title", "testpoi");
+				lbsRequestParams.put("address", "testpoiaddress");
+				lbsRequestParams.put("longitude", 121.512856);
+				lbsRequestParams.put("latitude", 31.288289);
+				lbsRequestParams.put("park_num", 3);
+				lbsRequestParams.put("coord_type", "3");
+				asyncHttpClient.post(LBS_BASIC_URL+LBS_POI_CREATE,lbsRequestParams, lbsaddpoiJsonHttpResponseHandler);
 			}
 		});
 	}
@@ -120,4 +144,36 @@ public class AddParkLockActivity extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
+	
+private JsonHttpResponseHandler lbsaddpoiJsonHttpResponseHandler = new JsonHttpResponseHandler("utf-8"){
+		
+		@Override
+		public void onSuccess(int statuscode , Header[] headers, JSONObject response){
+			super.onSuccess(statuscode, headers, response);
+			if(statuscode == 200){
+				try {
+					if(response.getInt("status") == 0){
+						String parkpoiid = response.getString("id");
+						String statusdescribe = response.getString("message");
+						Log.i("parkpoiid",parkpoiid);
+//						Toast.makeText(AddParkLockActivity.this, parkpoiid, Toast.LENGTH_SHORT).show();
+					}else{
+						Log.i("status", response.getString("status"));
+						Log.i("lbscreaterror", response.getString("message"));
+//						Toast.makeText(AddParkLockActivity.this, statuscode, Toast.LENGTH_SHORT).show();						
+					}
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}				
+				
+			}
+			
+		}
+		@Override
+		public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse){
+//			Toast.makeText(AddParkLockActivity.this, "添加失败 , 网络有问题" + statusCode, Toast.LENGTH_SHORT).show();
+		}
+		
+	};
 }

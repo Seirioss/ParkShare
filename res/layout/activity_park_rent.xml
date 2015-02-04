@@ -158,5 +158,6 @@
          android:layout_height="30dp"
          android:layout_alignParentRight="true"
          android:layout_alignTop="@+id/activity_park_rent_text_title"
-         android:src="@drawable/navigation" />
+         android:src="@drawable/navigation" 
+         android:clickable="true"/>
 </RelativeLayout>
