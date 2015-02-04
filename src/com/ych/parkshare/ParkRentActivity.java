@@ -10,6 +10,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.baidu.navisdk.BNaviPoint;
+import com.baidu.navisdk.BaiduNaviManager;
+import com.baidu.navisdk.BaiduNaviManager.OnStartNavigationListener;
+import com.baidu.navisdk.comapi.routeplan.RoutePlanParams.NE_RoutePlan_Mode;
 import com.ych.http.AsyncHttpClient;
 import com.ych.http.JsonHttpResponseHandler;
 import com.ych.http.PersistentCookieStore;
@@ -51,9 +55,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -79,9 +85,11 @@ public class ParkRentActivity extends Activity {
 	private AsyncHttpClient asyncHttpClient;
 	private boolean is_borrowed;
 	private boolean is_shared;
+	
+	private String macaddress=new String();
+	private ImageView imagenavigation;
 	private String action;
 
-	private String macaddress = new String();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -106,6 +114,9 @@ public class ParkRentActivity extends Activity {
 		Intent intent = new Intent(ParkRentActivity.this, BLEservice.class);
 		bindService(intent, conn, Context.BIND_AUTO_CREATE);
 		switchpark.setOnCheckedChangeListener(onCheckedChangeListener);
+		imagenavigation=(ImageView)findViewById(R.id.navigation);
+		imagenavigation.setOnClickListener(onImageClickListener);
+		
 		asyncHttpClient.post(AppConstants.BASE_URL + AppConstants.URL_PARKINFO, new RequestParams("parkid", parkpk), refreshuiJsonHttpResponseHandler);
 	}
 
@@ -275,4 +286,40 @@ public class ParkRentActivity extends Activity {
 
 		}
 	};
+	
+	private View.OnClickListener onImageClickListener = new OnClickListener(){
+
+		@Override
+		public void onClick(View arg0) {
+			// TODO Auto-generated method stub
+			launchNavigator();
+		}
+		
+	};
+	private void launchNavigator(){
+        //这里给出一个起终点示例，实际应用中可以通过POI检索、外部POI来源等方式获取起终点坐标
+        BNaviPoint startPoint = new BNaviPoint(121.508693,31.285126,
+                "书香公寓", BNaviPoint.CoordinateType.BD09_MC);
+        BNaviPoint endPoint = new BNaviPoint(121.521191,31.303805,
+                "五角场", BNaviPoint.CoordinateType.BD09_MC);
+        BaiduNaviManager.getInstance().launchNavigator(this,
+                startPoint,                                      //起点（可指定坐标系）
+                endPoint,                                        //终点（可指定坐标系）
+                NE_RoutePlan_Mode.ROUTE_PLAN_MOD_MIN_TIME,       //算路方式
+                true,                                            //真实导航
+                BaiduNaviManager.STRATEGY_FORCE_ONLINE_PRIORITY, //在离线策略
+                new OnStartNavigationListener() {                //跳转监听
+                    
+                    @Override
+                    public void onJumpToNavigator(Bundle configParams) {
+                        Intent intent = new Intent(ParkRentActivity.this, BNavigatorActivity.class);
+                        intent.putExtras(configParams);
+                        startActivity(intent);
+                    }
+                    
+                    @Override
+                    public void onJumpToDownloader() {
+                    }
+                });
+    }
 }
