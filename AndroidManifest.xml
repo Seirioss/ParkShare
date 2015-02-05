@@ -2,11 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.ych.parkshare"
     android:versionCode="20100202"
-    android:versionName="2.0" >
+    android:versionName="2.1" >
 
     <uses-sdk
         android:minSdkVersion="18"
-        android:targetSdkVersion="21" />
+        android:targetSdkVersion="19" />
     <!-- 安装应用权限 -->
     <uses-permission android:name="android.permission.INSTALL_PACKAGES" />
 
@@ -63,12 +63,20 @@
             android:name="api_key"
             android:value="hGvOmP8qNLNgH7sxWFID0upG" />
         <!-- 百度地图apikey -->
+        
+         <!-- 岑佳音的key -->
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="buiszDnXAPUNv6hBMobM0jGo" />
+        <!--  陈雷的key-->
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="H1Ko7kw7sUFHEaXZ2yITfbCc" />
+        
+       <!-- 发行key -->
+         <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="ycK43OXLMweO0fBXAWIoyArj" />
 
         <activity
             android:name=".MainActivity"
@@ -95,7 +103,8 @@
             android:name=".TabHomeActivity"
             android:hardwareAccelerated="false" />
         <activity android:name=".TabMyCenterActivity" />
-        <activity android:name=".TabMyCenterSettingsActivity"></activity>
+        <activity android:name=".TabMyCenterSettingsActivity" >
+        </activity>
         <activity android:name=".TabNavigateActivity" />
         <activity
             android:name=".TabHostActivity"

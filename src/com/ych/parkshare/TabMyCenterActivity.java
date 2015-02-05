@@ -91,6 +91,7 @@ public class TabMyCenterActivity extends Activity {
 				// TODO Auto-generated method stub
 				Log.i("logout", responseString);
 				SpUtils.put(getApplicationContext(), AppConstants.USER_REMEMBER, false);
+				System.exit(0);
 			}
 
 			@Override

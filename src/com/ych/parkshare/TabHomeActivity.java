@@ -65,18 +65,69 @@ public class TabHomeActivity extends Activity {
 	@Override
 	protected void onStart() {
 		// TODO Auto-generated method stub
-		asyncHttpClient.post(AppConstants.BASE_URL + AppConstants.URL_USERPARKS, refreshjsonHttpResponseHandler);
+		asyncHttpClient.post(AppConstants.BASE_URL + AppConstants.URL_USERPARKS, refreshjsonHttpResponseHandler_asyncHttpClient);
 		super.onStart();
 	}
 
 	private PullToRefreshListener pullToRefreshListener = new PullToRefreshListener() {
 		@Override
 		public void onRefresh() {
-			syncHttpClient.post(AppConstants.BASE_URL + AppConstants.URL_USERPARKS, refreshjsonHttpResponseHandler);
+			syncHttpClient.post(AppConstants.BASE_URL + AppConstants.URL_USERPARKS, refreshjsonHttpResponseHandler_syncHttpClient);
 			refreshableView.finishRefreshing();
 		}
 	};
-	private JsonHttpResponseHandler refreshjsonHttpResponseHandler = new JsonHttpResponseHandler("utf-8") {
+	private JsonHttpResponseHandler refreshjsonHttpResponseHandler_syncHttpClient = new JsonHttpResponseHandler("utf-8") {
+
+		@Override
+		public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+			if (statusCode == 200) {
+				listparks = new ArrayList<Map<String, String>>();
+				try {
+					for (int i = 0; i < response.length(); i++) {
+						JSONObject jsonObject = response.getJSONObject(i);
+						String address = jsonObject.getString("address");
+						String comment = jsonObject.getString("comment");
+						String describe = jsonObject.getString("describe");
+						String pk = jsonObject.getString("pk");
+						boolean is_borrowed = jsonObject.getBoolean("is_borrowed");
+						boolean is_shared = jsonObject.getBoolean("is_shared");
+						String username = jsonObject.getString("username");
+						Map<String, String> map = new HashMap<String, String>();
+						map.put("address", address);
+						map.put("comment", comment);
+						map.put("describe", describe);
+						map.put("username", username);
+						map.put("pk", pk);
+						if (!is_shared) {
+							map.put("status", "未分享");
+						} else {
+							if (is_borrowed) {
+								map.put("status", "被租用");
+							} else {
+								map.put("status", "无人租用");
+							}
+						}
+						listparks.add(map);
+
+					}
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				Message message = uihHandler.obtainMessage();
+				message.what = UPDATE;
+				message.sendToTarget();
+			}
+			super.onSuccess(statusCode, headers, response);
+		}
+
+		@Override
+		public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+			super.onFailure(statusCode, headers, responseString, throwable);
+		}
+
+	};
+	private JsonHttpResponseHandler refreshjsonHttpResponseHandler_asyncHttpClient = new JsonHttpResponseHandler("utf-8") {
 
 		@Override
 		public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
