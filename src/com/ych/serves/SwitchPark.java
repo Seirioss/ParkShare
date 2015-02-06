@@ -23,10 +23,8 @@ public class SwitchPark extends BluetoothGattCallback {
 	@Override
 	public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
 		super.onConnectionStateChange(gatt, status, newState);
-		System.out.println(status);
 		if (status == BluetoothGatt.GATT_SUCCESS) {
 			gatt.discoverServices();
-			System.out.println("onConnectionStateChange" + sw);
 		} else {
 			gatt.disconnect();
 			gatt.close();
@@ -50,7 +48,6 @@ public class SwitchPark extends BluetoothGattCallback {
 	@Override
 	public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
 		super.onCharacteristicWrite(gatt, characteristic, status);
-		System.out.println("onCharacteristicWrite" + sw);
 		gatt.disconnect();
 		gatt.close();
 	}

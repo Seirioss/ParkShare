@@ -38,8 +38,8 @@ public class BLEservice extends Service {
 	public static final int MSG_BREAKCONNECT_BLE = 50;
 	public static final int MSG_WRITE_BLE = 6;
 	public static final int MSG_WRITE_BLE_RESULT = 7;
-	public static final int MSG_OPENT_BLE = 8;// 0
-	public static final int MSG_CLOSE_BLE = 9;// 1
+	public static final int MSG_OPENT_BLE = 8;// "O"
+	public static final int MSG_CLOSE_BLE = 9;// "C"
 
 	public final static String ADDRESS = "88:33:14:DD:88:92";
 	public final static String ADDRESS_ = "88:33:14:DD:8A:1E";

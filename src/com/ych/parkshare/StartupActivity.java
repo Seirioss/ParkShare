@@ -85,9 +85,11 @@ public class StartupActivity extends Activity {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			Message message = handler.obtainMessage();
-			message.what = TIMER;
-			message.sendToTarget();
+			if (handler != null) {
+				Message message = handler.obtainMessage();
+				message.what = TIMER;
+				message.sendToTarget();
+			}
 		}
 	};
 	private Handler handler = new Handler() {
