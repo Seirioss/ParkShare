@@ -44,6 +44,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -57,7 +58,7 @@ public class ParkOwnActivity extends Activity {
 	private Intent intentaccept;
 	private String pk = new String();
 	protected Messenger serviceMessenger;
-	private Switch switchpark;
+//	private Switch switchpark;
 	private final static String MENU_REFRESH = "刷新";
 	private final static String MENU_SHARE = "普通分享";
 	private final static String MENU_SHAREVIP = "分享给指定用户";
@@ -75,6 +76,9 @@ public class ParkOwnActivity extends Activity {
 
 	private String macaddress;
 	private ImageView imagenavigation;
+	
+	private Button openbutton;
+	private Button closebutton;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -96,15 +100,21 @@ public class ParkOwnActivity extends Activity {
 		texttimesend = (TextView) findViewById(R.id.activity_park_rent_text_endtime);
 		textremark = (TextView) findViewById(R.id.remarks);
 		textrentstate = (TextView) findViewById(R.id.rentstate);
-		switchpark = (Switch) findViewById(R.id.parkdetail_switch_control);
+//		switchpark = (Switch) findViewById(R.id.parkdetail_switch_control);
 
 		imagenavigation = (ImageView) findViewById(R.id.navigation);
 		imagenavigation.setOnClickListener(onImageClickListener);
 
 		Intent intent = new Intent(ParkOwnActivity.this, BLEservice.class);
 		bindService(intent, conn, Context.BIND_AUTO_CREATE);
-		switchpark.setOnCheckedChangeListener(onCheckedChangeListener);
-		switchpark.setEnabled(false);
+//		switchpark.setOnCheckedChangeListener(onCheckedChangeListener);
+//		switchpark.setEnabled(false);
+		
+		openbutton=(Button)findViewById(R.id.openbutton);
+		openbutton.setOnClickListener(onClickListener);
+		closebutton=(Button)findViewById(R.id.closebutton);
+		closebutton.setOnClickListener(onClickListener);
+		
 		// asyncHttpClient.post(AppConstants.BASE_URL+AppConstants.URL_PARKINFO,new
 		// RequestParams("parkid",parkpk) ,refreshJsonHttpResponseHandler);
 		asyncHttpClient.post(AppConstants.BASE_URL + AppConstants.URL_PARKINFO, new RequestParams("parkid", parkpk), refreshJsonHttpResponseHandler);
@@ -121,8 +131,9 @@ public class ParkOwnActivity extends Activity {
 		@Override
 		public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 			Message message = null;
-			if (isChecked) {
+			if (!isChecked) {
 				message = Message.obtain(null, BLEservice.MSG_OPENT_BLE, macaddress);
+				System.out.println(isChecked);
 
 			} else {
 				message = Message.obtain(null, BLEservice.MSG_CLOSE_BLE, macaddress);
@@ -132,10 +143,38 @@ public class ParkOwnActivity extends Activity {
 					serviceMessenger.send(message);
 				}
 			} catch (RemoteException e) {
-				// TODO Auto-generated catch block
+				// TODO Auto-generated catch block 
 				e.printStackTrace();
 			}
 		}
+	};
+	
+	private OnClickListener onClickListener = new OnClickListener(){
+
+		@Override
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			Message message = null;
+			switch(v.getId()){
+			case(R.id.closebutton):
+				message = Message.obtain(null,BLEservice.MSG_OPENT_BLE,macaddress);
+				break;
+			case(R.id.openbutton):
+				message = Message.obtain(null, BLEservice.MSG_CLOSE_BLE, macaddress);
+				break;
+			default:
+				break;
+			}
+			try {
+				if (serviceMessenger != null) {
+					serviceMessenger.send(message);
+				}
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block 
+				e.printStackTrace();
+			}
+		}
+		
 	};
 
 	private ServiceConnection conn = new ServiceConnection() {
@@ -288,20 +327,29 @@ public class ParkOwnActivity extends Activity {
 					textdescription.setText(response.getString("describe"));
 					if (is_shared == false) {
 
-						switchpark.setEnabled(true);
+//						switchpark.setEnabled(true);
+						openbutton.setClickable(true);
+						closebutton.setClickable(true);
+						
 						macaddress = response.getJSONObject("lockkey").getString("mac_address");
 						textrentstate.setText("车位还没有分享");
 						texttimestart.setText("");
 						texttimesend.setText("");
 					}
 					if (is_shared == true && is_borrowed == true) {
-						switchpark.setEnabled(false);
+//						switchpark.setEnabled(false);
+						openbutton.setClickable(false);
+						closebutton.setClickable(false);						
+						
 						textrentstate.setText("车位被借用");
 						texttimestart.setText(response.getJSONObject("shareinfo").getString("start_time"));
 						texttimesend.setText(response.getJSONObject("shareinfo").getString("end_time"));
 					}
 					if (is_shared == true && is_borrowed == false) {
-						switchpark.setEnabled(false);
+//						switchpark.setEnabled(false);
+						openbutton.setClickable(false);
+						closebutton.setClickable(false);
+						
 						textrentstate.setText("车位分享还没有被借用");
 						texttimestart.setText(response.getJSONObject("shareinfo").getString("start_time"));
 						texttimesend.setText(response.getJSONObject("shareinfo").getString("end_time"));
