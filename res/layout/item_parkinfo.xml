@@ -1,57 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="122dp"
-    android:background="@drawable/parkinfo_background"
-    android:scaleX="0.95"
-    android:scaleY="0.97" 
-    android:descendantFocusability="blocksDescendants">
-
-    <TextView
-        android:id="@+id/parkinfo_user"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="18dp"
-        android:layout_marginRight="18dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/parkinfo_text_background"
-        android:text="就"
-        android:textSize="19dp" />
-
-    <TextView
-        android:id="@+id/parkinfo_address"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/parkinfo_user"
-        android:layout_marginLeft="18dp"
-        android:layout_marginRight="18dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/parkinfo_text_background"
-        android:text="就"
-        android:textSize="19dp" />
+    android:layout_height="130dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp" 
+    android:paddingTop="8dp">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_below="@+id/parkinfo_address" 
-        android:layout_marginLeft="18dp"
-        android:layout_marginRight="18dp"
-        android:layout_marginTop="10dp">
-		<View 
-		    android:layout_width="match_parent"
-		    android:layout_height="match_parent"
-		    android:layout_weight="20"/>
+        android:layout_height="match_parent"
+        android:background="@drawable/parkinfo_background" 
+        android:orientation="vertical">
+
         <TextView
-            android:id="@+id/parkinfo_status"
+            android:id="@+id/parkinfo_user"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginRight="25dp"
-            android:layout_marginLeft="20dp"
-            android:layout_weight="20"
-            android:background="#e02b2b"
-            android:gravity="center"
-            android:text="分享信息"
-            android:textColor="#000000" />
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="18dp"
+            android:layout_marginRight="18dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/parkinfo_text_background"
+            android:text="就"
+            android:textSize="19dp" />
+
+        <TextView
+            android:id="@+id/parkinfo_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/parkinfo_user"
+            android:layout_marginLeft="18dp"
+            android:layout_marginRight="18dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/parkinfo_text_background"
+            android:text="就"
+            android:textSize="19dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_below="@+id/parkinfo_address"
+            android:layout_marginLeft="18dp"
+            android:layout_marginRight="18dp"
+            android:layout_marginTop="10dp" >
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="20" />
+
+            <TextView
+                android:id="@+id/parkinfo_status"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="25dp"
+                android:layout_weight="20"
+                android:background="#e02b2b"
+                android:gravity="center"
+                android:text="分享信息"
+                android:textColor="#000000" />
+        </LinearLayout>
     </LinearLayout>
 
 </RelativeLayout>
