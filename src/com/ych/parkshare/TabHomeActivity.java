@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -182,7 +183,7 @@ public class TabHomeActivity extends Activity {
 
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+			Log.i("htc", "clickyes");
 			String name = ((TextView) view.findViewById(R.id.parkinfo_user)).getText().toString();
 			String pk = listparks.get(position).get("pk");
 
@@ -195,6 +196,7 @@ public class TabHomeActivity extends Activity {
 				intent.setAction(AppConstants.ACTION_TabHomeActivity);
 				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
+				
 			} else {
 				Intent intent = new Intent(TabHomeActivity.this, ParkRentActivity.class);
 				intent.putExtra("pk", pk);

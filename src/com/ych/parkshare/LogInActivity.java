@@ -98,7 +98,7 @@ public class LogInActivity extends Activity {
 				break;
 			case R.id.buttonsignup:
 				Intent intent = new Intent(LogInActivity.this, RegisterActivity.class);
-				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
 				break;
 			case R.id.forgetpassword:

@@ -63,7 +63,7 @@
             android:textSize="18dp" />
 
         <EditText
-            android:id="@+id/editparkdescription"
+            android:id="@+id/editparkaddress"
             android:layout_width="match_parent"
             android:layout_height="25dp"
             android:layout_weight="1"
@@ -100,7 +100,7 @@
 	            android:textSize="18dp" />
 	
 	        <EditText
-	            android:id="@+id/editparkaddress"
+	            android:id="@+id/editparkdescription"
 	            android:layout_width="match_parent"
 	            android:layout_height="25dp"
 	            android:layout_weight="1"

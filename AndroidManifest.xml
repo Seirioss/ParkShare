@@ -108,9 +108,10 @@
         <activity android:name=".TabNavigateActivity" />
         <activity
             android:name=".TabHostActivity"
-            android:hardwareAccelerated="false"
-            android:launchMode="singleInstance"
+            android:hardwareAccelerated="false"  
+            android:launchMode="singleInstance"          
             android:logo="@drawable/ic_register" >
+            <!--  -->
         </activity>
         <activity android:name=".ParkRentActivity" />
         <activity android:name=".SearchActivity" />

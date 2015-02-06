@@ -4,7 +4,8 @@
     android:layout_height="122dp"
     android:background="@drawable/parkinfo_background"
     android:scaleX="0.95"
-    android:scaleY="0.97" >
+    android:scaleY="0.97" 
+    android:descendantFocusability="blocksDescendants">
 
     <TextView
         android:id="@+id/parkinfo_user"
