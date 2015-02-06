@@ -58,6 +58,7 @@ import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
@@ -70,7 +71,7 @@ public class ParkRentActivity extends Activity {
 	private Intent intentaccept;
 	private String pk = new String();
 	protected Messenger serviceMessenger;
-	private Switch switchpark;
+//	private Switch switchpark;
 	private Menu menumenu;
 	private final static String MENU_REFRESH = "刷新";
 	private final static String MENU_BOOK_CANLCER = "取消预订";
@@ -90,6 +91,8 @@ public class ParkRentActivity extends Activity {
 	private ImageView imagenavigation;
 	private String action;
 
+	private Button openbutton;
+	private Button closebutton;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -110,12 +113,17 @@ public class ParkRentActivity extends Activity {
 		texttimestart = (TextView) findViewById(R.id.activity_park_rent_text_starttime);
 		texttimesend = (TextView) findViewById(R.id.activity_park_rent_text_endtime);
 		textremark = (TextView) findViewById(R.id.remarks);
-		switchpark = (Switch) findViewById(R.id.parkdetail_switch_control);
+//		switchpark = (Switch) findViewById(R.id.parkdetail_switch_control);
 		Intent intent = new Intent(ParkRentActivity.this, BLEservice.class);
 		bindService(intent, conn, Context.BIND_AUTO_CREATE);
-		switchpark.setOnCheckedChangeListener(onCheckedChangeListener);
+//		switchpark.setOnCheckedChangeListener(onCheckedChangeListener);
 		imagenavigation=(ImageView)findViewById(R.id.navigation);
 		imagenavigation.setOnClickListener(onImageClickListener);
+		
+		openbutton=(Button)findViewById(R.id.openbutton);
+		openbutton.setOnClickListener(onClickListener);
+		closebutton=(Button)findViewById(R.id.closebutton);
+		closebutton.setOnClickListener(onClickListener);
 		
 		asyncHttpClient.post(AppConstants.BASE_URL + AppConstants.URL_PARKINFO, new RequestParams("parkid", parkpk), refreshuiJsonHttpResponseHandler);
 	}
@@ -213,6 +221,35 @@ public class ParkRentActivity extends Activity {
 			}
 		}
 	};
+	
+	private OnClickListener onClickListener = new OnClickListener(){
+
+		@Override
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			Message message = null;
+			switch(v.getId()){
+			case(R.id.closebutton):
+				message = Message.obtain(null,BLEservice.MSG_OPENT_BLE,macaddress);
+				break;
+			case(R.id.openbutton):
+				message = Message.obtain(null, BLEservice.MSG_CLOSE_BLE, macaddress);
+				break;
+			default:
+				break;
+			}
+			try {
+				if (serviceMessenger != null) {
+					serviceMessenger.send(message);
+				}
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block 
+				e.printStackTrace();
+			}
+		}
+		
+	};
+	
 	private JsonHttpResponseHandler refreshuiJsonHttpResponseHandler = new JsonHttpResponseHandler("utf-8") {
 
 		public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -227,10 +264,14 @@ public class ParkRentActivity extends Activity {
 					String time_end = response.getJSONObject("shareinfo").getString("end_time");
 					macaddress = response.getJSONObject("lockkey").getString("mac_address");
 					if (is_borrowed == true && is_shared == true) {
-						switchpark.setEnabled(true);
+//						switchpark.setEnabled(true);
+						openbutton.setClickable(true);
+						closebutton.setClickable(true);
 					}
 					if (is_borrowed == false) {
-						switchpark.setEnabled(false);
+//						switchpark.setEnabled(false);
+						openbutton.setClickable(false);
+						closebutton.setClickable(false);
 					}
 					textaddress.setText(address);
 					textdescription.setText(describe);
@@ -273,7 +314,9 @@ public class ParkRentActivity extends Activity {
 					textdescription.setText("");
 					texttimesend.setText("");
 					texttimestart.setText("");
-					switchpark.setEnabled(false);
+//					switchpark.setEnabled(false);
+					openbutton.setClickable(false);
+					closebutton.setClickable(false);
 					asyncHttpClient.post(AppConstants.BASE_URL + AppConstants.URL_PARKINFO, new RequestParams("parkid", parkpk), refreshuiJsonHttpResponseHandler);
 				} else {
 					Toast.makeText(ParkRentActivity.this, responseString, Toast.LENGTH_SHORT).show();

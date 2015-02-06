@@ -19,12 +19,13 @@
         android:text="@string/myparkinfo"
         android:textSize="20dp" 
         android:textColor="@color/white"/>
+    
 <!--  停车场地址 -->
     <TextView
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/parkdetail_switch_control"
+        android:layout_below="@+id/buttonlinearLayout1"
         android:layout_marginTop="5dp"
         android:text="@string/parkaddress"
         android:textColor="@color/white"
@@ -152,7 +153,7 @@
         android:background="@drawable/parkinfo_text_background"
         android:textColor="@color/darkslategray" />
 
-     <Switch
+     <!-- <Switch
         android:id="@+id/parkdetail_switch_control"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -162,7 +163,7 @@
         android:layout_centerHorizontal="true"
         android:textOff="@string/closepark"
         android:textOn="@string/openpark" 
-        /> 
+        />  -->
 
 <!--     <ImageView
         android:id="@+id/lockcontrol"
@@ -180,5 +181,33 @@
          android:layout_alignParentRight="true"
          android:layout_alignTop="@+id/activity_park_rent_text_title"
          android:src="@drawable/navigation" />
+
+     <LinearLayout
+         android:id="@+id/buttonlinearLayout1"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_below="@+id/activity_park_rent_text_title"
+         android:layout_marginTop="10dp"
+         android:layout_marginBottom="10dp"
+         android:layout_centerHorizontal="true"
+         android:orientation="horizontal" >
+
+         <Button
+             android:id="@+id/openbutton"
+             android:layout_width="wrap_content"
+             android:layout_height="30dp"
+             android:layout_marginRight="50dp"
+             android:background="@drawable/confirmbuttonbackground"
+             android:text="@string/openpark"
+             android:textColor="@color/white" />
+
+         <Button
+             android:id="@+id/closebutton"
+             android:layout_width="wrap_content"
+             android:layout_height="30dp"
+             android:background="@drawable/signupbuttonbackground"
+             android:text="@string/closepark"
+             android:textColor="@color/white" />
+     </LinearLayout>
 
 </RelativeLayout>
