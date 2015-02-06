@@ -185,7 +185,7 @@ public class TabHomeActivity extends Activity {
 
 			String name = ((TextView) view.findViewById(R.id.parkinfo_user)).getText().toString();
 			String pk = listparks.get(position).get("pk");
-
+			System.out.println("22222222222222222222222");
 			String currentusername = (String) SpUtils.get(getApplicationContext(), AppConstants.USER_NAME, "");
 			name = name.trim();
 			currentusername = currentusername.trim();
