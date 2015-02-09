@@ -63,25 +63,25 @@
             android:name="api_key"
             android:value="hGvOmP8qNLNgH7sxWFID0upG" />
         <!-- 百度地图apikey -->
-        
-         <!-- 岑佳音的key -->
+
+
+        <!-- 岑佳音的key -->
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="buiszDnXAPUNv6hBMobM0jGo" />
-        <!--  陈雷的key-->
+        <!-- 发行key -->
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="ycK43OXLMweO0fBXAWIoyArj" />
+        <!-- 陈雷的key -->
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="H1Ko7kw7sUFHEaXZ2yITfbCc" />
-        
-       <!-- 发行key -->
-         <meta-data
-            android:name="com.baidu.lbsapi.API_KEY"
-            android:value="ycK43OXLMweO0fBXAWIoyArj" />
 
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name" 
-            android:theme="@android:style/Theme.NoDisplay">
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.NoDisplay" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -97,35 +97,25 @@
             android:hardwareAccelerated="false" />
         <activity
             android:name=".RegisterActivity"
-            android:hardwareAccelerated="false"
-            android:logo="@drawable/ic_register" />
+            android:hardwareAccelerated="false" />
         <activity android:name=".GuideActivity" />
         <activity
             android:name=".TabHomeActivity"
             android:hardwareAccelerated="false" />
         <activity android:name=".TabMyCenterActivity" />
-        <activity android:name=".TabMyCenterSettingsActivity" >
-        </activity>
+        <activity android:name=".TabMyCenterSettingsActivity" />
         <activity android:name=".TabNavigateActivity" />
         <activity
             android:name=".TabHostActivity"
-            android:hardwareAccelerated="false"  
-            android:launchMode="singleInstance"          
-            android:logo="@drawable/ic_register" >
-            <!--  -->
+            android:hardwareAccelerated="false"
+            android:launchMode="singleTask" >
         </activity>
         <activity android:name=".ParkRentActivity" />
         <activity android:name=".SearchActivity" />
         <activity android:name=".AddParkLockActivity" />
         <activity android:name=".RentableParkInfoActivity" />
-        <activity
-            android:name=".ParkOwnActivity"
-            android:label="@string/title_activity_park_own" >
-        </activity>
-        <activity
-            android:name=".ReceiveRequestActivity"
-            android:label="@string/title_activity_receive" >
-        </activity>
+        <activity android:name=".ParkOwnActivity" />
+        <activity android:name=".ReceiveRequestActivity" />
 
         <service
             android:name="com.baidu.navi.location.f"
