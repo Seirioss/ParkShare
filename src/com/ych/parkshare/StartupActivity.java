@@ -97,9 +97,17 @@ public class StartupActivity extends Activity {
 		@Override
 		public void handleMessage(Message msg) {
 			if (msg.what == TIMER) {
-				Intent intent = new Intent(StartupActivity.this, LogInActivity.class);
-				startActivity(intent);
-				StartupActivity.this.finish();
+				boolean login= (Boolean) SpUtils.get(getApplicationContext(), AppConstants.USER_LOGIN, false);
+				if(login){
+					Intent intent = new Intent(StartupActivity.this, TabHostActivity.class);
+					startActivity(intent);
+					StartupActivity.this.finish();
+				}else {
+					Intent intent = new Intent(StartupActivity.this, LogInActivity.class);
+					startActivity(intent);
+					StartupActivity.this.finish();
+				}
+				
 			}
 			super.handleMessage(msg);
 		}

@@ -77,6 +77,10 @@
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="H1Ko7kw7sUFHEaXZ2yITfbCc" />
+        <!-- 发行key -->
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="ycK43OXLMweO0fBXAWIoyArj" />
 
         <activity
             android:name=".MainActivity"
