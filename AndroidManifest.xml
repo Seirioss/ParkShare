@@ -73,14 +73,15 @@
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="ycK43OXLMweO0fBXAWIoyArj" />
+         <!-- 发行key -->
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="ycK43OXLMweO0fBXAWIoyArj" />
         <!-- 陈雷的key -->
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="H1Ko7kw7sUFHEaXZ2yITfbCc" />
-        <!-- 发行key -->
-        <meta-data
-            android:name="com.baidu.lbsapi.API_KEY"
-            android:value="ycK43OXLMweO0fBXAWIoyArj" />
+       
 
         <activity
             android:name=".MainActivity"
@@ -120,6 +121,12 @@
         <activity android:name=".RentableParkInfoActivity" />
         <activity android:name=".ParkOwnActivity" />
         <activity android:name=".ReceiveRequestActivity" />
+
+        <receiver android:name="com.ych.receivers.NetBroadcastReceiver" >
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
 
         <service
             android:name="com.baidu.navi.location.f"

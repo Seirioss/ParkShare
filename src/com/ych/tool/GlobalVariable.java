@@ -20,11 +20,13 @@ import android.os.Environment;
 
 public class GlobalVariable extends Application {
 	private PersistentCookieStore persistentCookieStore;
+	public static boolean netWorkAvailable;
 
 	@Override
 	public void onCreate() {
 		persistentCookieStore = new PersistentCookieStore(getApplicationContext());
 		FrontiaApplication.initFrontiaApplication(getApplicationContext());
+		netWorkAvailable=NetworkConnections.isNetworkAvailable(getApplicationContext());
 		//Thread.setDefaultUncaughtExceptionHandler(uncaughtExceptionHandler);
 	}
 
@@ -34,6 +36,14 @@ public class GlobalVariable extends Application {
 
 	public void setPersistentCookieStore(PersistentCookieStore persistentCookieStore) {
 		this.persistentCookieStore = persistentCookieStore;
+	}
+	
+	public static boolean isNetWorkAvailable() {
+		return netWorkAvailable;
+	}
+
+	public static void setNetWorkAvailable(boolean netWorkAvailable) {
+		GlobalVariable.netWorkAvailable = netWorkAvailable;
 	}
 
 	// 处理每次程序奔溃

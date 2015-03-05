@@ -1,11 +1,22 @@
 package com.ych.parkshare;
 
 import java.io.File;
+import java.sql.SQLException;
 
 import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.kymjs.kjframe.utils.KJLoger;
 
+import com.j256.ormlite.android.apptools.OpenHelperManager;
+import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
+import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.logger.Log;
+import com.j256.ormlite.logger.Logger;
+import com.litesuits.common.assist.Toastor;
+import com.litesuits.common.data.DataKeeper;
+import com.ych.dao.DatabaseHelper;
+import com.ych.dao.Park;
 import com.ych.http.AsyncHttpClient;
 import com.ych.http.FileAsyncHttpResponseHandler;
 import com.ych.http.JsonHttpResponseHandler;
@@ -46,6 +57,7 @@ public class StartupActivity extends Activity {
 	private String appdownurl;
 	private AsyncHttpClient asyncHttpClient;
 	private TextView tv_version;
+	private DatabaseHelper helper=null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +66,7 @@ public class StartupActivity extends Activity {
 		setContentView(R.layout.activity_startup);
 		asyncHttpClient = new AsyncHttpClient();
 		tv_version = (TextView) findViewById(R.id.tv_startup_version);
-
+		helper=OpenHelperManager.getHelper(getApplicationContext(), DatabaseHelper.class);
 		PackageManager packageManager = getPackageManager();
 		PackageInfo packageInfo = null;
 		try {
@@ -65,21 +77,23 @@ public class StartupActivity extends Activity {
 		}
 		version_current = packageInfo.versionName;
 		tv_version.setText("版本:" + version_current);
-		boolean state = NetworkConnections.isNetworkAvailable(getApplicationContext());
-		if (!state) {
+		boolean netstate = NetworkConnections.isNetworkAvailable(getApplicationContext());
+		/*if (!netstate) {
 			Toast.makeText(StartupActivity.this, "网络不可用", Toast.LENGTH_SHORT).show();
 			new Thread(timerRunnable).start();
 		} else {
 			asyncHttpClient.post(AppConstants.BASE_URL + AppConstants.URL_CHECHAPPVERSION, versionjsonHttpResponseHandler);
+		}*/
+		if(!netstate){
+			new Toastor(this).showSingletonToast("网络不可用");
 		}
-
+		new Thread(timerRunnable).start();
 	}
 
 	private Runnable timerRunnable = new Runnable() {
 		@Override
 		public void run() {
 			try {
-				int time = AssetsProperties.load(getApplicationContext(), "propertie").getInt("startuptime", 0);
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
@@ -97,8 +111,8 @@ public class StartupActivity extends Activity {
 		@Override
 		public void handleMessage(Message msg) {
 			if (msg.what == TIMER) {
-				boolean login= (Boolean) SpUtils.get(getApplicationContext(), AppConstants.USER_LOGIN, false);
-				if(login){
+				boolean loginstate= (Boolean) SpUtils.get(getApplicationContext(), AppConstants.USER_LOGIN, false);
+				if(loginstate){
 					Intent intent = new Intent(StartupActivity.this, TabHostActivity.class);
 					startActivity(intent);
 					StartupActivity.this.finish();
@@ -107,7 +121,6 @@ public class StartupActivity extends Activity {
 					startActivity(intent);
 					StartupActivity.this.finish();
 				}
-				
 			}
 			super.handleMessage(msg);
 		}

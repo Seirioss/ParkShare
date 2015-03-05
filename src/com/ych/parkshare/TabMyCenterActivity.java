@@ -81,6 +81,7 @@ public class TabMyCenterActivity extends Activity {
 	};
 
 	private void logout() {
+		SpUtils.put(getApplicationContext(), AppConstants.USER_LOGIN, false);
 		client = new AsyncHttpClient();
 		PersistentCookieStore persistentCookieStore = ((GlobalVariable) getApplication()).getPersistentCookieStore();
 		client.setCookieStore(persistentCookieStore);

@@ -13,6 +13,7 @@ public class AppConstants {
 	public final static String BASE_URL = "http://121.40.61.76:8080/parkManagementSystem/";
 	public final static String URL_PARKINFO = "park/";
 	public final static String URL_USERPARKS = "user/park/";
+	public final static String URL_USERPARKSDETAIL = "user/park/detail/";
 	public final static String URL_BOOKCANCEL = "user/cancelborrow/";
 	public final static String URL_BOOK = "user/borrow/";
 	public final static String URL_SHARECANCEL = "user/cancelshare/";

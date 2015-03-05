@@ -330,7 +330,6 @@ public class ParkOwnActivity extends Activity {
 //						switchpark.setEnabled(true);
 						openbutton.setClickable(true);
 						closebutton.setClickable(true);
-						
 						macaddress = response.getJSONObject("lockkey").getString("mac_address");
 						textrentstate.setText("车位还没有分享");
 						texttimestart.setText("");
