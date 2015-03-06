@@ -25,8 +25,8 @@ public class GlobalVariable extends Application {
 	@Override
 	public void onCreate() {
 		persistentCookieStore = new PersistentCookieStore(getApplicationContext());
-		FrontiaApplication.initFrontiaApplication(getApplicationContext());
 		netWorkAvailable=NetworkConnections.isNetworkAvailable(getApplicationContext());
+		FrontiaApplication.initFrontiaApplication(getApplicationContext());
 		//Thread.setDefaultUncaughtExceptionHandler(uncaughtExceptionHandler);
 	}
 

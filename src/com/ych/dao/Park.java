@@ -224,4 +224,11 @@ public class Park {
 		this.lock_name = lock_name;
 	}
 
+	@Override
+	public String toString() {
+		return "Park [id=" + id + ", pk=" + pk + ", MAC=" + MAC + ", key_lock=" + key_lock + ", key_open=" + key_open + ", address=" + address + ", comment=" + comment + ", describe=" + describe + ", name_own=" + name_own + ", longitude=" + longitude + ", latitude=" + latitude + ", lock_name="
+				+ lock_name + ", is_shared=" + is_shared + ", time_share_begig=" + time_share_begig + ", time_share_end=" + time_share_end + ", is_borrowed=" + is_borrowed + ", name_borrowed=" + name_borrowed + ", time_borrowed_begin=" + time_borrowed_begin + ", time_borrowed_end="
+				+ time_borrowed_end + ", price=" + price + "]";
+	}
+
 }

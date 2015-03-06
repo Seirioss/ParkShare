@@ -1,5 +1,9 @@
 package com.ych.parkshare;
 
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,6 +16,17 @@ import com.baidu.navisdk.BNaviPoint;
 import com.baidu.navisdk.BaiduNaviManager;
 import com.baidu.navisdk.BaiduNaviManager.OnStartNavigationListener;
 import com.baidu.navisdk.comapi.routeplan.RoutePlanParams.NE_RoutePlan_Mode;
+import com.j256.ormlite.android.apptools.OpenHelperManager;
+import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.stmt.PreparedQuery;
+import com.j256.ormlite.stmt.QueryBuilder;
+import com.j256.ormlite.stmt.StatementBuilder.StatementType;
+import com.j256.ormlite.support.CompiledStatement;
+import com.j256.ormlite.support.DatabaseConnection;
+import com.j256.ormlite.support.DatabaseResults;
+import com.litesuits.common.assist.Toastor;
+import com.ych.dao.DatabaseHelper;
+import com.ych.dao.Park;
 import com.ych.http.AsyncHttpClient;
 import com.ych.http.JsonHttpResponseHandler;
 import com.ych.http.PersistentCookieStore;
@@ -34,10 +49,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -54,11 +71,13 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.Toast;
 
 public class ParkOwnActivity extends Activity {
-
+	private final static String TAG = "ParkOwnActivity";
+	private final static int UPDATEVIEW = 1;
+	private final static int TOASTSHOW = 2;
 	private Intent intentaccept;
 	private String pk = new String();
 	protected Messenger serviceMessenger;
-//	private Switch switchpark;
+	// private Switch switchpark;
 	private final static String MENU_REFRESH = "刷新";
 	private final static String MENU_SHARE = "普通分享";
 	private final static String MENU_SHAREVIP = "分享给指定用户";
@@ -76,13 +95,14 @@ public class ParkOwnActivity extends Activity {
 
 	private String macaddress;
 	private ImageView imagenavigation;
-	
+
 	private Button openbutton;
 	private Button closebutton;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
 		setContentView(R.layout.activity_park_own);
 
 		ActionBar actionBar = getActionBar();
@@ -100,24 +120,38 @@ public class ParkOwnActivity extends Activity {
 		texttimesend = (TextView) findViewById(R.id.activity_park_rent_text_endtime);
 		textremark = (TextView) findViewById(R.id.remarks);
 		textrentstate = (TextView) findViewById(R.id.rentstate);
-//		switchpark = (Switch) findViewById(R.id.parkdetail_switch_control);
+		// switchpark = (Switch) findViewById(R.id.parkdetail_switch_control);
 
 		imagenavigation = (ImageView) findViewById(R.id.navigation);
 		imagenavigation.setOnClickListener(onImageClickListener);
 
 		Intent intent = new Intent(ParkOwnActivity.this, BLEservice.class);
 		bindService(intent, conn, Context.BIND_AUTO_CREATE);
-//		switchpark.setOnCheckedChangeListener(onCheckedChangeListener);
-//		switchpark.setEnabled(false);
-		
-		openbutton=(Button)findViewById(R.id.openbutton);
+		// switchpark.setOnCheckedChangeListener(onCheckedChangeListener);
+		// switchpark.setEnabled(false);
+
+		openbutton = (Button) findViewById(R.id.openbutton);
 		openbutton.setOnClickListener(onClickListener);
-		closebutton=(Button)findViewById(R.id.closebutton);
+		closebutton = (Button) findViewById(R.id.closebutton);
 		closebutton.setOnClickListener(onClickListener);
-		
 		// asyncHttpClient.post(AppConstants.BASE_URL+AppConstants.URL_PARKINFO,new
 		// RequestParams("parkid",parkpk) ,refreshJsonHttpResponseHandler);
-		asyncHttpClient.post(AppConstants.BASE_URL + AppConstants.URL_PARKINFO, new RequestParams("parkid", parkpk), refreshJsonHttpResponseHandler);
+		// asyncHttpClient.post(AppConstants.BASE_URL +
+		// AppConstants.URL_PARKINFO, new RequestParams("parkid", parkpk),
+		// refreshJsonHttpResponseHandler);
+
+	}
+
+	@Override
+	protected void onStart() {
+		if (GlobalVariable.netWorkAvailable) {
+			asyncHttpClient.post(AppConstants.BASE_URL + AppConstants.URL_USERPARKSDETAIL, refreshJsonHttpResponseHandler);
+		} else {
+			Message message = uiHandler.obtainMessage();
+			message.what = UPDATEVIEW;
+			message.sendToTarget();
+		}
+		super.onStart();
 	}
 
 	@Override
@@ -143,23 +177,23 @@ public class ParkOwnActivity extends Activity {
 					serviceMessenger.send(message);
 				}
 			} catch (RemoteException e) {
-				// TODO Auto-generated catch block 
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 	};
-	
-	private OnClickListener onClickListener = new OnClickListener(){
+
+	private OnClickListener onClickListener = new OnClickListener() {
 
 		@Override
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
 			Message message = null;
-			switch(v.getId()){
-			case(R.id.closebutton):
-				message = Message.obtain(null,BLEservice.MSG_OPENT_BLE,macaddress);
+			switch (v.getId()) {
+			case (R.id.closebutton):
+				message = Message.obtain(null, BLEservice.MSG_OPENT_BLE, macaddress);
 				break;
-			case(R.id.openbutton):
+			case (R.id.openbutton):
 				message = Message.obtain(null, BLEservice.MSG_CLOSE_BLE, macaddress);
 				break;
 			default:
@@ -170,11 +204,11 @@ public class ParkOwnActivity extends Activity {
 					serviceMessenger.send(message);
 				}
 			} catch (RemoteException e) {
-				// TODO Auto-generated catch block 
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-		
+
 	};
 
 	private ServiceConnection conn = new ServiceConnection() {
@@ -231,17 +265,24 @@ public class ParkOwnActivity extends Activity {
 			return super.onOptionsItemSelected(item);
 		}
 		String title = item.getTitle().toString();
-		if (title.equals(MENU_REFRESH)) {
-			asyncHttpClient.post(AppConstants.BASE_URL + AppConstants.URL_PARKINFO, new RequestParams("parkid", parkpk), refreshJsonHttpResponseHandler);
-		}
-		if (title.equals(MENU_SHARE)) {
-			sharepark();
-		}
-		if (title.equals(MENU_SHARE_CANLCER)) {
-			asyncHttpClient.post(AppConstants.BASE_URL + AppConstants.URL_SHARECANCEL, new RequestParams("parkid", parkpk), sharecancelTextHttpResponseHandler);
-		}
-		if (title.equals(MENU_SHAREVIP)) {
-			shareparkvip();
+		if (GlobalVariable.netWorkAvailable) {
+			if (title.equals(MENU_REFRESH)) {
+				asyncHttpClient.post(AppConstants.BASE_URL + AppConstants.URL_USERPARKSDETAIL, new RequestParams("parkid", parkpk), refreshJsonHttpResponseHandler);
+			}
+			if (title.equals(MENU_SHARE)) {
+				sharepark();
+			}
+			if (title.equals(MENU_SHARE_CANLCER)) {
+				asyncHttpClient.post(AppConstants.BASE_URL + AppConstants.URL_SHARECANCEL, new RequestParams("parkid", parkpk), sharecancelTextHttpResponseHandler);
+			}
+			if (title.equals(MENU_SHAREVIP)) {
+				shareparkvip();
+			}
+		} else {
+			Message message = uiHandler.obtainMessage();
+			message.what = TOASTSHOW;
+			message.obj = "网络不可用";
+			message.sendToTarget();
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -311,54 +352,14 @@ public class ParkOwnActivity extends Activity {
 	private JsonHttpResponseHandler refreshJsonHttpResponseHandler = new JsonHttpResponseHandler("utf-8") {
 
 		@Override
-		public void onSuccess(int statusCode, Header[] headers, String responseString) {
-			super.onSuccess(statusCode, headers, responseString);
-			System.out.println(responseString);
-		}
-
-		@Override
-		public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-			super.onSuccess(statusCode, headers, response);
+		public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
 			if (statusCode == 200) {
-				try {
-					is_borrowed = response.getBoolean("is_borrowed");
-					is_shared = response.getBoolean("is_shared");
-					textaddress.setText(response.getString("address"));
-					textdescription.setText(response.getString("describe"));
-					if (is_shared == false) {
-
-//						switchpark.setEnabled(true);
-						openbutton.setClickable(true);
-						closebutton.setClickable(true);
-						macaddress = response.getJSONObject("lockkey").getString("mac_address");
-						textrentstate.setText("车位还没有分享");
-						texttimestart.setText("");
-						texttimesend.setText("");
-					}
-					if (is_shared == true && is_borrowed == true) {
-//						switchpark.setEnabled(false);
-						openbutton.setClickable(false);
-						closebutton.setClickable(false);						
-						
-						textrentstate.setText("车位被借用");
-						texttimestart.setText(response.getJSONObject("shareinfo").getString("start_time"));
-						texttimesend.setText(response.getJSONObject("shareinfo").getString("end_time"));
-					}
-					if (is_shared == true && is_borrowed == false) {
-//						switchpark.setEnabled(false);
-						openbutton.setClickable(false);
-						closebutton.setClickable(false);
-						
-						textrentstate.setText("车位分享还没有被借用");
-						texttimestart.setText(response.getJSONObject("shareinfo").getString("start_time"));
-						texttimesend.setText(response.getJSONObject("shareinfo").getString("end_time"));
-					}
-				} catch (JSONException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-
+				updateparkcache(response);
+				Message message = uiHandler.obtainMessage();
+				message.what = UPDATEVIEW;
+				message.sendToTarget();
 			}
+			super.onSuccess(statusCode, headers, response);
 		}
 
 		@Override
@@ -373,7 +374,7 @@ public class ParkOwnActivity extends Activity {
 		public void onSuccess(int statusCode, Header[] headers, String responseString) {
 			if (statusCode == 200) {
 				if (responseString.equals("0")) {
-					asyncHttpClient.post(AppConstants.BASE_URL + AppConstants.URL_PARKINFO, new RequestParams("parkid", parkpk), refreshJsonHttpResponseHandler);
+					asyncHttpClient.post(AppConstants.BASE_URL + AppConstants.URL_USERPARKSDETAIL, new RequestParams("parkid", parkpk), refreshJsonHttpResponseHandler);
 				} else {
 					textremark.setText(responseString);
 				}
@@ -392,7 +393,7 @@ public class ParkOwnActivity extends Activity {
 			if (statusCode == 200) {
 				if (responseString.equals("0")) {
 					textremark.setText(responseString);
-					asyncHttpClient.post(AppConstants.BASE_URL + AppConstants.URL_PARKINFO, new RequestParams("parkid", parkpk), refreshJsonHttpResponseHandler);
+					asyncHttpClient.post(AppConstants.BASE_URL + AppConstants.URL_USERPARKSDETAIL, new RequestParams("parkid", parkpk), refreshJsonHttpResponseHandler);
 				} else {
 					textremark.setText(responseString);
 				}
@@ -411,7 +412,7 @@ public class ParkOwnActivity extends Activity {
 		public void onSuccess(int statusCode, Header[] headers, String responseString) {
 			if (statusCode == 200) {
 				if (responseString.equals("0")) {
-					asyncHttpClient.post(AppConstants.BASE_URL + AppConstants.URL_PARKINFO, new RequestParams("parkid", parkpk), refreshJsonHttpResponseHandler);
+					asyncHttpClient.post(AppConstants.BASE_URL + AppConstants.URL_USERPARKSDETAIL, new RequestParams("parkid", parkpk), refreshJsonHttpResponseHandler);
 				} else {
 					textremark.setText(responseString);
 				}
@@ -422,32 +423,177 @@ public class ParkOwnActivity extends Activity {
 		public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
 		}
 	};
-	
-	private void launchNavigator(){
-        //这里给出一个起终点示例，实际应用中可以通过POI检索、外部POI来源等方式获取起终点坐标
-        BNaviPoint startPoint = new BNaviPoint(121.508693,31.285126,
-                "书香公寓", BNaviPoint.CoordinateType.BD09_MC);
-        BNaviPoint endPoint = new BNaviPoint(121.521191,31.303805,
-                "五角场", BNaviPoint.CoordinateType.BD09_MC);
-        BaiduNaviManager.getInstance().launchNavigator(this,
-                startPoint,                                      //起点（可指定坐标系）
-                endPoint,                                        //终点（可指定坐标系）
-                NE_RoutePlan_Mode.ROUTE_PLAN_MOD_MIN_TIME,       //算路方式
-                true,                                            //真实导航
-                BaiduNaviManager.STRATEGY_FORCE_ONLINE_PRIORITY, //在离线策略
-                new OnStartNavigationListener() {                //跳转监听
-                    
-                    @Override
-                    public void onJumpToNavigator(Bundle configParams) {
-                        Intent intent = new Intent(ParkOwnActivity.this, BNavigatorActivity.class);
-                        intent.putExtras(configParams);
-                        startActivity(intent);
-                    }
-                    
-                    @Override
-                    public void onJumpToDownloader() {
-                    }
-                });
-    }
+	private Handler uiHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			switch (msg.what) {
+			case UPDATEVIEW:
+				DatabaseHelper databaseHelper = OpenHelperManager.getHelper(getApplicationContext(), DatabaseHelper.class);
+				Dao<Park, Integer> parkdao = null;
+				try {
+					parkdao = databaseHelper.getParkDataDao();
+					Park parkinfo = parkdao.queryForEq("pk", parkpk).get(0);
+					is_shared = parkinfo.isIs_shared();
+					is_borrowed = parkinfo.isIs_borrowed();
+					textaddress.setText(parkinfo.getAddress());
+					textdescription.setText(parkinfo.getDescribe());
+					if (!parkinfo.isIs_shared()) {
+
+						// switchpark.setEnabled(true);
+						openbutton.setClickable(true);
+						closebutton.setClickable(true);
+						macaddress = parkinfo.getMAC();
+						textrentstate.setText("车位还没有分享");
+						texttimestart.setText("");
+						texttimesend.setText("");
+					}
+					if (is_shared == true && is_borrowed == true) {
+						// switchpark.setEnabled(false);
+						openbutton.setClickable(false);
+						closebutton.setClickable(false);
+
+						textrentstate.setText("车位被借用");
+						texttimestart.setText(parkinfo.getTime_share_begig().toLocaleString());
+						texttimesend.setText(parkinfo.getTime_share_end().toLocaleString());
+					}
+					if (is_shared == true && is_borrowed == false) {
+						// switchpark.setEnabled(false);
+						openbutton.setClickable(false);
+						closebutton.setClickable(false);
+
+						textrentstate.setText("车位分享还没有被借用");
+						texttimestart.setText(parkinfo.getTime_share_begig().toLocaleString());
+						texttimesend.setText(parkinfo.getTime_share_end().toLocaleString());
+					}
+
+				} catch (SQLException e) {
+					Log.e(TAG, e.toString());
+					e.printStackTrace();
+				}
+				// parkdao.queryBuilder().
+				break;
+			case TOASTSHOW:
+				new Toastor(ParkOwnActivity.this).showSingletonToast((String) msg.obj);
+				break;
+			default:
+				break;
+			}
+			super.handleMessage(msg);
+		}
+
+	};
+
+	private void launchNavigator() {
+		// 这里给出一个起终点示例，实际应用中可以通过POI检索、外部POI来源等方式获取起终点坐标
+		BNaviPoint startPoint = new BNaviPoint(121.508693, 31.285126, "书香公寓", BNaviPoint.CoordinateType.BD09_MC);
+		BNaviPoint endPoint = new BNaviPoint(121.521191, 31.303805, "五角场", BNaviPoint.CoordinateType.BD09_MC);
+		BaiduNaviManager.getInstance().launchNavigator(this, startPoint, // 起点（可指定坐标系）
+				endPoint, // 终点（可指定坐标系）
+				NE_RoutePlan_Mode.ROUTE_PLAN_MOD_MIN_TIME, // 算路方式
+				true, // 真实导航
+				BaiduNaviManager.STRATEGY_FORCE_ONLINE_PRIORITY, // 在离线策略
+				new OnStartNavigationListener() { // 跳转监听
+
+					@Override
+					public void onJumpToNavigator(Bundle configParams) {
+						Intent intent = new Intent(ParkOwnActivity.this, BNavigatorActivity.class);
+						intent.putExtras(configParams);
+						startActivity(intent);
+					}
+
+					@Override
+					public void onJumpToDownloader() {
+					}
+				});
+	}
+
+	private void updateparkcache(JSONArray response) {
+		DatabaseHelper databaseHelper = OpenHelperManager.getHelper(getApplicationContext(), DatabaseHelper.class);
+		Dao<Park, Integer> parkdao = null;
+		try {
+			parkdao = databaseHelper.getParkDataDao();
+		} catch (SQLException e) {
+			Log.e(TAG, e.toString());
+			e.printStackTrace();
+		}
+		try {
+			parkdao.delete(parkdao.queryForAll());
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		for (int i = 0; i < response.length(); i++) {
+			try {
+				JSONObject jsonObject = response.getJSONObject(i);
+				int pk = jsonObject.getInt("pk");
+				String username = jsonObject.getString("username");
+				String describe = jsonObject.getString("describe");
+				String address = jsonObject.getString("address");
+				String comment = jsonObject.getString("comment");
+				double longitude = jsonObject.getDouble("longitude");
+				double latitude = jsonObject.getDouble("latitude");
+				boolean is_borrowed = jsonObject.getBoolean("is_borrowed");
+				boolean is_shared = jsonObject.getBoolean("is_shared");
+				Date end_time = null;
+				float price = 0;
+				Date start_time = null;
+				String user_borrowed = null;
+				String close_key = null;
+				String mac_address = null;
+				String lock_name = null;
+				String open_key = null;
+				String serial_number;
+				if (is_shared == true) {
+					JSONObject jsonObjectshareinfo = jsonObject.getJSONObject("shareinfo");
+					price = Float.valueOf(jsonObjectshareinfo.getString("price"));
+					user_borrowed = jsonObjectshareinfo.getString("user_borrowed");
+					String timetemp = jsonObjectshareinfo.getString("end_time");
+					timetemp = timetemp.replace("T", " ").replace("Z", "");
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+					end_time = sdf.parse(timetemp);
+					timetemp = jsonObjectshareinfo.getString("start_time");
+					timetemp = timetemp.replace("T", " ").replace("Z", "");
+					start_time = sdf.parse(timetemp);
+				}
+				JSONObject jsonObjectlockkey = jsonObject.getJSONObject("lockkey");
+				if (jsonObjectlockkey != null) {
+					close_key = jsonObjectlockkey.getString("close_key");
+					mac_address = jsonObjectlockkey.getString("mac_address");
+					lock_name = jsonObjectlockkey.getString("lock_name");
+					open_key = jsonObjectlockkey.getString("open_key");
+					serial_number = jsonObjectlockkey.getString("serial_number");
+				}
+				Park park = new Park();
+				park.setPk(pk);
+				park.setName_own(username);
+				park.setDescribe(describe);
+				park.setAddress(address);
+				park.setComment(comment);
+				park.setLatitude(latitude);
+				park.setLongitude(latitude);
+				park.setIs_borrowed(is_borrowed);
+				park.setIs_shared(is_shared);
+				park.setTime_share_end(end_time);
+				park.setTime_share_begig(start_time);
+				park.setPrice(price);
+				park.setName_borrowed(user_borrowed);
+				park.setKey_open(open_key);
+				park.setKey_lock(close_key);
+				park.setLock_name(lock_name);
+				park.setMAC(mac_address);
+				parkdao.create(park);
+
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
 
 }

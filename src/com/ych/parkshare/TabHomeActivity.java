@@ -29,10 +29,12 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.baidu.navisdk.CommonParams.NetConnectStatus;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
+import com.litesuits.common.assist.Toastor;
 import com.ych.dao.DatabaseHelper;
 import com.ych.dao.Park;
 import com.ych.http.AsyncHttpClient;
@@ -51,11 +53,12 @@ import com.ych.views.RefreshableView.PullToRefreshListener;
 //123
 
 public class TabHomeActivity extends Activity implements NetListener {
-	private final String TAG="TabHomeActivity";
+	private final String TAG = "TabHomeActivity";
 	RefreshableView refreshableView;
 	ListView listView;
 	private ListAdapter listAdapter;
 	private final static int UPDATELISTVIEW = 1;
+	private final static int SHOWTOAST = 2;
 	private List<Map<String, String>> listparks;
 	private SyncHttpClient syncHttpClient;
 	private AsyncHttpClient asyncHttpClient;
@@ -77,9 +80,9 @@ public class TabHomeActivity extends Activity implements NetListener {
 		listView = (ListView) findViewById(R.id.list_view);
 		listView.setOnItemClickListener(onItemClickListener);
 		refreshableView.setOnRefreshListener(pullToRefreshListener, 0);
-		databaseHelper=OpenHelperManager.getHelper(getApplicationContext(), DatabaseHelper.class);
+		databaseHelper = OpenHelperManager.getHelper(getApplicationContext(), DatabaseHelper.class);
 		try {
-			parkdao=databaseHelper.getParkDataDao();
+			parkdao = databaseHelper.getParkDataDao();
 		} catch (SQLException e) {
 			Log.e(TAG, e.toString());
 			e.printStackTrace();
@@ -90,6 +93,10 @@ public class TabHomeActivity extends Activity implements NetListener {
 	protected void onStart() {
 		if (GlobalVariable.netWorkAvailable) {
 			asyncHttpClient.post(AppConstants.BASE_URL + AppConstants.URL_USERPARKSDETAIL, refreshjsonHttpResponseHandler_asyncHttpClient);
+		} else {
+			Message message = uihHandler.obtainMessage();
+			message.what = UPDATELISTVIEW;
+			message.sendToTarget();
 		}
 		super.onStart();
 	}
@@ -97,7 +104,14 @@ public class TabHomeActivity extends Activity implements NetListener {
 	private PullToRefreshListener pullToRefreshListener = new PullToRefreshListener() {
 		@Override
 		public void onRefresh() {
-			syncHttpClient.post(AppConstants.BASE_URL + AppConstants.URL_USERPARKSDETAIL, refreshjsonHttpResponseHandler_syncHttpClient);
+			if (GlobalVariable.netWorkAvailable) {
+				syncHttpClient.post(AppConstants.BASE_URL + AppConstants.URL_USERPARKSDETAIL, refreshjsonHttpResponseHandler_syncHttpClient);
+			} else {
+				Message message = uihHandler.obtainMessage();
+				message.what = SHOWTOAST;
+				message.obj="网络不可用，不能刷新";
+				message.sendToTarget();
+			}
 			refreshableView.finishRefreshing();
 		}
 	};
@@ -130,11 +144,13 @@ public class TabHomeActivity extends Activity implements NetListener {
 				message.what = UPDATELISTVIEW;
 				message.sendToTarget();
 			}
+
 			super.onSuccess(statusCode, headers, response);
 		}
 
 		@Override
 		public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+
 			super.onFailure(statusCode, headers, responseString, throwable);
 		}
 
@@ -165,14 +181,15 @@ public class TabHomeActivity extends Activity implements NetListener {
 
 		}
 	};
-	private void updateparkcache(JSONArray response){
+
+	private void updateparkcache(JSONArray response) {
 		try {
 			parkdao.delete(parkdao.queryForAll());
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		for(int i=0;i<response.length();i++){
+		for (int i = 0; i < response.length(); i++) {
 			try {
 				JSONObject jsonObject = response.getJSONObject(i);
 				int pk = jsonObject.getInt("pk");
@@ -184,36 +201,36 @@ public class TabHomeActivity extends Activity implements NetListener {
 				double latitude = jsonObject.getDouble("latitude");
 				boolean is_borrowed = jsonObject.getBoolean("is_borrowed");
 				boolean is_shared = jsonObject.getBoolean("is_shared");
-				Date end_time=null;
-				float price=0;
-				Date start_time=null;
-				String user_borrowed=null;
+				Date end_time = null;
+				float price = 0;
+				Date start_time = null;
+				String user_borrowed = null;
 				String close_key = null;
 				String mac_address = null;
 				String lock_name = null;
 				String open_key = null;
 				String serial_number;
-				if(is_shared==true){
-					JSONObject jsonObjectshareinfo=jsonObject.getJSONObject("shareinfo");
-					price=Float.valueOf(jsonObjectshareinfo.getString("price"));
-					user_borrowed=jsonObjectshareinfo.getString("user_borrowed");
-					String timetemp=jsonObjectshareinfo.getString("end_time");
-					timetemp=timetemp.replace("T", " ").replace("Z", "");
-					SimpleDateFormat sdf =  new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss" );
-					end_time=sdf.parse(timetemp);
-					timetemp=jsonObjectshareinfo.getString("start_time");
-					timetemp=timetemp.replace("T", " ").replace("Z", "");
-					start_time=sdf.parse(timetemp);
+				if (is_shared == true) {
+					JSONObject jsonObjectshareinfo = jsonObject.getJSONObject("shareinfo");
+					price = Float.valueOf(jsonObjectshareinfo.getString("price"));
+					user_borrowed = jsonObjectshareinfo.getString("user_borrowed");
+					String timetemp = jsonObjectshareinfo.getString("end_time");
+					timetemp = timetemp.replace("T", " ").replace("Z", "");
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+					end_time = sdf.parse(timetemp);
+					timetemp = jsonObjectshareinfo.getString("start_time");
+					timetemp = timetemp.replace("T", " ").replace("Z", "");
+					start_time = sdf.parse(timetemp);
 				}
-				JSONObject jsonObjectlockkey=jsonObject.getJSONObject("lockkey");
-				if(jsonObjectlockkey!=null){
-					close_key=jsonObjectlockkey.getString("close_key");
-					mac_address=jsonObjectlockkey.getString("mac_address");
-					lock_name=jsonObjectlockkey.getString("lock_name");
-					open_key=jsonObjectlockkey.getString("close_key");
-					serial_number=jsonObjectlockkey.getString("serial_number");
+				JSONObject jsonObjectlockkey = jsonObject.getJSONObject("lockkey");
+				if (jsonObjectlockkey != null) {
+					close_key = jsonObjectlockkey.getString("close_key");
+					mac_address = jsonObjectlockkey.getString("mac_address");
+					lock_name = jsonObjectlockkey.getString("lock_name");
+					open_key = jsonObjectlockkey.getString("open_key");
+					serial_number = jsonObjectlockkey.getString("serial_number");
 				}
-				Park park=new Park();
+				Park park = new Park();
 				park.setPk(pk);
 				park.setName_own(username);
 				park.setDescribe(describe);
@@ -222,7 +239,7 @@ public class TabHomeActivity extends Activity implements NetListener {
 				park.setLatitude(latitude);
 				park.setLongitude(latitude);
 				park.setIs_borrowed(is_borrowed);
-				park.setIs_shared(is_borrowed);
+				park.setIs_shared(is_shared);
 				park.setTime_share_end(end_time);
 				park.setTime_share_begig(start_time);
 				park.setPrice(price);
@@ -232,7 +249,7 @@ public class TabHomeActivity extends Activity implements NetListener {
 				park.setLock_name(lock_name);
 				park.setMAC(mac_address);
 				parkdao.create(park);
-				
+
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -242,9 +259,10 @@ public class TabHomeActivity extends Activity implements NetListener {
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} 
+			}
 		}
 	}
+
 	private Handler uihHandler = new Handler() {
 
 		@Override
@@ -253,11 +271,13 @@ public class TabHomeActivity extends Activity implements NetListener {
 			case UPDATELISTVIEW:
 				String[] from = new String[] { "username", "address", "status" };
 				int[] to = new int[] { R.id.parkinfo_user, R.id.parkinfo_address, R.id.parkinfo_status };
-				listparks=getListParks();
+				listparks = getListParks();
 				listAdapter = new SimpleAdapter(TabHomeActivity.this, listparks, R.layout.item_parkinfo, from, to);
-				//listView.setAdapter(listAdapter);
+				listView.setAdapter(listAdapter);
 				break;
-
+			case SHOWTOAST:
+				new Toastor(TabHomeActivity.this).showSingletonToast((String)msg.obj);
+				break;
 			default:
 				break;
 			}
@@ -272,17 +292,32 @@ public class TabHomeActivity extends Activity implements NetListener {
 	}
 
 	protected List<Map<String, String>> getListParks() {
-		listparks=new ArrayList<Map<String,String>>();
+		listparks = new ArrayList<Map<String, String>>();
 		try {
-			List<Park> list= parkdao.queryForAll();
+			List<Park> list = parkdao.queryForAll();
 			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 				Park park = (Park) iterator.next();
-				
+				Map<String, String> map = new HashMap<String, String>();
+				map.put("address", park.getAddress());
+				map.put("comment", park.getComment());
+				map.put("describe", park.getDescribe());
+				map.put("username", park.getName_own());
+				map.put("pk", String.valueOf(park.getPk()));
+				if (!park.isIs_shared()) {
+					map.put("status", "未分享");
+				} else {
+					if (park.isIs_borrowed()) {
+						map.put("status", "被租用");
+					} else {
+						map.put("status", "无人租用");
+					}
+				}
+				listparks.add(map);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return null;
+		return listparks;
 	}
 }
