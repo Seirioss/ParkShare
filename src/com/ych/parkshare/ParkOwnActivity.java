@@ -82,6 +82,7 @@ public class ParkOwnActivity extends Activity {
 	private final static String MENU_SHARE = "普通分享";
 	private final static String MENU_SHAREVIP = "分享给指定用户";
 	private final static String MENU_SHARE_CANLCER = "取消分享";
+	private final static String MENU_BORROW_END = "结束租用";
 	private AsyncHttpClient asyncHttpClient;
 	private TextView textdescription;
 	private TextView texttimestart;
@@ -239,6 +240,7 @@ public class ParkOwnActivity extends Activity {
 		menu.add(MENU_REFRESH);
 		menu.add(MENU_SHARE);
 		menu.add(MENU_SHARE_CANLCER);
+		menu.add(MENU_BORROW_END);
 		return true;
 	}
 
@@ -246,6 +248,7 @@ public class ParkOwnActivity extends Activity {
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		menu.clear();
 		menu.add(MENU_REFRESH);
+		menu.add(MENU_BORROW_END);
 		if (is_shared == false) {
 			menu.add(MENU_SHARE);
 			menu.add(MENU_SHAREVIP);
@@ -277,6 +280,9 @@ public class ParkOwnActivity extends Activity {
 			}
 			if (title.equals(MENU_SHAREVIP)) {
 				shareparkvip();
+			}
+			if (title.equals(MENU_BORROW_END)) {
+			    settlement();
 			}
 		} else {
 			Message message = uiHandler.obtainMessage();
@@ -344,6 +350,24 @@ public class ParkOwnActivity extends Activity {
 				requestParams.put("endtime", timeend);
 				requestParams.put("price", 100);
 				asyncHttpClient.post(AppConstants.BASE_URL + AppConstants.URL_SHARE, requestParams, shareTextHttpResponseHandler);
+			}
+		});
+		builder.create().show();
+	}
+	
+	private void settlement() {
+		LayoutInflater inflater = getLayoutInflater();
+		final View layout = inflater.inflate(R.layout.dialog_settlement, (ViewGroup)findViewById(R.id.settlement));
+		AlertDialog.Builder builder = new Builder(ParkOwnActivity.this);
+		builder.setTitle("确认支付");
+		builder.setView(layout);
+		builder.setNegativeButton("取消", null);
+		builder.setPositiveButton("确认支付", new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				Toast.makeText(ParkOwnActivity.this, "支付成功", Toast.LENGTH_SHORT).show();
 			}
 		});
 		builder.create().show();
