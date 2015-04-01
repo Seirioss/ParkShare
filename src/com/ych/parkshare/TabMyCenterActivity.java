@@ -16,6 +16,9 @@ import com.ych.tool.GlobalVariable;
 import com.ych.tool.SpUtils;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -42,12 +45,6 @@ public class TabMyCenterActivity extends Activity {
 		parkmanagmenttext=(TextView)findViewById(R.id.parmanagment);
 		logouttext=(TextView)findViewById(R.id.logout);
 		settingstext=(TextView)findViewById(R.id.settings);
-		
-
-		usernametext = (TextView) findViewById(R.id.usernametext);
-		parkmanagmenttext = (TextView) findViewById(R.id.parmanagment);
-		logouttext = (TextView) findViewById(R.id.logout);
-
 
 		parkmanagmenttext.setOnClickListener(onClickListener);
 		logouttext.setOnClickListener(onClickListener);
@@ -64,13 +61,27 @@ public class TabMyCenterActivity extends Activity {
 			// TODO Auto-generated method stub
 			switch (v.getId()) {
 			case (R.id.parmanagment):
+				Intent intent_parmanagent = new Intent(TabMyCenterActivity.this, MyParkAcitvity.class);
+			    startActivity(intent_parmanagent);
 				break;
 			case (R.id.logout):
-				logout();
+				AlertDialog.Builder builder = new Builder(TabMyCenterActivity.this);
+			    builder.setTitle("确认");
+			    builder.setMessage("确认注销并推出？");
+			    builder.setNegativeButton("取消", null);
+			    builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO Auto-generated method stub
+						logout();
+					}
+				});
+                builder.create().show();	
 				break;
 			case(R.id.settings):
-				Intent intent = new Intent(TabMyCenterActivity.this, TabMyCenterSettingsActivity.class);
-			    startActivity(intent);
+				Intent intent_settings = new Intent(TabMyCenterActivity.this, TabMyCenterSettingsActivity.class);
+			    startActivity(intent_settings);
 			    System.out.println("helloWorld!");
 			    break;
 			default:
